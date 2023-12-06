@@ -11,7 +11,7 @@ export default function Contact() {
   return (
     <>
       <Layout breadcrumbCategory="Contact us">
-        <div className="hero-section about gap mt-6 mb-5 mb-lg-10">
+        <div className="hero-section about gap mt-5 mb-5 mb-lg-10">
           <div className="container col-lg-6"></div>
           <div className="container col-lg-6">
             <div className="row align-items-center justify-content-center">

@@ -32,16 +32,6 @@ eval("/**\n * Hoists a name from a module or promised module.\n *\n * @param mod
 
 /***/ }),
 
-/***/ "./node_modules/next/font/google/target.css?{\"path\":\"pages/_app.js\",\"import\":\"Josefin_Sans\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"josefin\"}":
-/*!****************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/font/google/target.css?{"path":"pages/_app.js","import":"Josefin_Sans","arguments":[{"subsets":["latin"]}],"variableName":"josefin"} ***!
-  \****************************************************************************************************************************************************************/
-/***/ ((module) => {
-
-eval("// Exports\nmodule.exports = {\n\t\"style\": {\"fontFamily\":\"'__Josefin_Sans_02b14a', '__Josefin_Sans_Fallback_02b14a'\",\"fontStyle\":\"normal\"},\n\t\"className\": \"__className_02b14a\"\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9ub2RlX21vZHVsZXMvbmV4dC9mb250L2dvb2dsZS90YXJnZXQuY3NzP3tcInBhdGhcIjpcInBhZ2VzL19hcHAuanNcIixcImltcG9ydFwiOlwiSm9zZWZpbl9TYW5zXCIsXCJhcmd1bWVudHNcIjpbe1wic3Vic2V0c1wiOltcImxhdGluXCJdfV0sXCJ2YXJpYWJsZU5hbWVcIjpcImpvc2VmaW5cIn0iLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBLFdBQVcsOEZBQThGO0FBQ3pHO0FBQ0EiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9kYWJhci8uL25vZGVfbW9kdWxlcy9uZXh0L2ZvbnQvZ29vZ2xlL3RhcmdldC5jc3M/NTA4MyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBFeHBvcnRzXG5tb2R1bGUuZXhwb3J0cyA9IHtcblx0XCJzdHlsZVwiOiB7XCJmb250RmFtaWx5XCI6XCInX19Kb3NlZmluX1NhbnNfMDJiMTRhJywgJ19fSm9zZWZpbl9TYW5zX0ZhbGxiYWNrXzAyYjE0YSdcIixcImZvbnRTdHlsZVwiOlwibm9ybWFsXCJ9LFxuXHRcImNsYXNzTmFtZVwiOiBcIl9fY2xhc3NOYW1lXzAyYjE0YVwiXG59O1xuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./node_modules/next/font/google/target.css?{\"path\":\"pages/_app.js\",\"import\":\"Josefin_Sans\",\"arguments\":[{\"subsets\":[\"latin\"]}],\"variableName\":\"josefin\"}\n");
-
-/***/ }),
-
 /***/ "./node_modules/next/dist/client/add-base-path.js":
 /*!********************************************************!*\
   !*** ./node_modules/next/dist/client/add-base-path.js ***!
