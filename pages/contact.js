@@ -9,7 +9,8 @@ export default function Contact() {
   return (
     <>
       <Layout breadcrumbCategory="Contact us">
-        <div className="hero-section about gap mt-20 mb-4">
+        <div className="hero-section about gap mt-40 mb-5 mb-lg-10">
+          <div className="container col-lg-6"></div>
           <div className="container col-lg-6">
             <div className="row align-items-center justify-content-center">
               <div
@@ -25,12 +26,12 @@ export default function Contact() {
                   </p>
                 </div>
                 <div className="row justify-content-center">
-                  <div className="col-lg-4 col-md-4 col-sm-12">
-                  <div className="address">
+                  <div className="col-lg-4 col-md-4 col-sm-12 ">
+                  <div className="address mb-4">
                       <MdAlternateEmail style={{ fontSize:"xx-large" }}/>
                       <a href="mailto:hello@thedabar.com">
-                        <h6>Connect with Us:</h6>
-                      </a>
+                    <h6 className="mt-2 mb-2">Connect with Us:</h6>
+                  </a>
                       <span>Whether it’s feedback, queries, or your latest brainwave, our inbox is always open.
 </span>
                       <a href="mailto:quick.info@mail.net">

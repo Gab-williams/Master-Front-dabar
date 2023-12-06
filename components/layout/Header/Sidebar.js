@@ -49,7 +49,7 @@ export default function Sidebar({ handleSidebarClose }) {
                   href="https://www.instagram.com/the.dabar/?igshid=YzAwZjE1ZTI0Zg%3D%3D"
                   target="_blank"
                 >
-                  Where visuals meet visionary content
+                  @the.dabar
                 </Link>
               </li>
               <li>
@@ -58,7 +58,7 @@ export default function Sidebar({ handleSidebarClose }) {
                   href="https://www.facebook.com/profile.php?id=61552875998422&mibextid=ZbWKwL"
                   target="_blank"
                 >
-                  For updates and community interactions
+                  @dabar
                 </Link>
               </li>
               <li>
@@ -67,7 +67,7 @@ export default function Sidebar({ handleSidebarClose }) {
                   href="https://twitter.com/Dabarnetwork?t=FdWs0919Lh2CqQxq50VUMg"
                   target="_blank"
                 >
-                  Let’s tweet the talk
+                  @dabarnetwork
                 </Link>
               </li>
               <li>
@@ -76,7 +76,7 @@ export default function Sidebar({ handleSidebarClose }) {
                   href="https://www.linkedin.com/company/darbar-media/"
                   target="_blank"
                 >
-                  Connect with us professionally
+                 @dabar-media
                 </Link>
               </li>
             </ul>

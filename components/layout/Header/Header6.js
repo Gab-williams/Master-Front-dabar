@@ -25,11 +25,11 @@ export default function Header6({ scroll,
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-lg-4 col-md-6 col-sm-6 order-2 order-lg-0">
-                                <div className="header__top-search">
+                                {/* <div className="header__top-search">
                                     <form action="#">
                                         <input type="text" value={search} onChange={(e) => setsearch(e.target.value)} placeholder="Search here... " />
                                     </form>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="col-lg-4 col-md-3 order-0 order-lg-2 d-none d-md-block">
                                 <div className="header__top-logo logo text-lg-center">
