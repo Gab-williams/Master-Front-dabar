@@ -20,14 +20,14 @@ import {
 } from "react-share";
 export default function Business() {
   const router = useRouter();
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
+  // const defaultOptions = {
+  //   loop: true,
+  //   autoplay: true,
+  //   animationData: animationData,
+  //   rendererSettings: {
+  //     preserveAspectRatio: "xMidYMid slice",
+  //   },
+  // };
 
  
   const { hello } = router.query;
@@ -490,7 +490,7 @@ export default function Business() {
                         padding: "4rem",
                       }}
                     >
-                      <Lottie options={defaultOptions} width={300} />
+                      
                       <h1>Coming Soon!</h1>
                       <h4>Hold onto your hats</h4>
                       <h4>mind-blowing content is loading!</h4>
