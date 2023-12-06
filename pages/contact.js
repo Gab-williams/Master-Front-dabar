@@ -2,14 +2,16 @@ import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 import { FaLinkedin } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa6";
+import { FaFacebook, FaLinkedinIn } from "react-icons/fa6";
 import { MdAlternateEmail } from "react-icons/md";
+import { FaXTwitter } from "react-icons/fa6";
+import { MdAttachEmail } from "react-icons/md";
 
 export default function Contact() {
   return (
     <>
       <Layout breadcrumbCategory="Contact us">
-        <div className="hero-section about gap mt-40 mb-5 mb-lg-10">
+        <div className="hero-section about gap mt-6 mb-5 mb-lg-10">
           <div className="container col-lg-6"></div>
           <div className="container col-lg-6">
             <div className="row align-items-center justify-content-center">
@@ -26,6 +28,20 @@ export default function Contact() {
                   </p>
                 </div>
                 <div className="row justify-content-center">
+                 
+                  <div className="col-lg-4 col-md-4 col-sm-12">
+                    <div className="address">
+                      <FaFacebook style={{ fontSize:"xx-large" }}/>
+                      <a href="https://www.facebook.com/profile.php?id=61552875998422&mibextid=ZbWKwL"
+                      target="_blank"
+                      >
+                        <h6 className="mt-2 mb-2">Facebook/Dabar</h6>
+                      </a>
+                      <span>Stay in the loop and be part of our ever-growing community.</span>
+                      
+                      <span>Follow us on facebook</span>
+                    </div>
+                  </div>
                   <div className="col-lg-4 col-md-4 col-sm-12 ">
                   <div className="address mb-4">
                       <MdAlternateEmail style={{ fontSize:"xx-large" }}/>
@@ -41,25 +57,12 @@ export default function Contact() {
                   </div>
                   <div className="col-lg-4 col-md-4 col-sm-12">
                     <div className="address">
-                      <FaFacebook style={{ fontSize:"xx-large" }}/>
-                      <a href="https://www.facebook.com/profile.php?id=61552875998422&mibextid=ZbWKwL"
-                      target="_blank"
-                      >
-                        <h6>Facebook/Dabar</h6>
-                      </a>
-                      <span>Stay in the loop and be part of our ever-growing community.</span>
-                      
-                      <span>Follow us on facebook</span>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-4 col-sm-12">
-                    <div className="address">
                       <FaInstagramSquare
                        style={{ fontSize:"xx-large" }}
                       />
                       <a href="https://www.instagram.com/the.dabar/?igshid=YzAwZjE1ZTI0Zg%3D%3D"
                         target="_blank">
-                        <h6>Instagram.com/the.dabar</h6>
+                        <h6 className="mt-2 mb-2">@the.dabar</h6>
                       </a>
                       <span>Where visuals meet visionary content</span>
                       <span>Follow us on instagram</span>
@@ -69,24 +72,25 @@ export default function Contact() {
                   
                   <div className="row justify-content-center">
                   <div className="col-lg-4 col-md-4 col-sm-12">
-                  <div className="address">
-                      <FaFacebook style={{ fontSize:"xx-large" }}/>
-                      <a href="mailto:quick.info@mail.net">
-                        <h6>Connect with Us:</h6>
+                    <div className="address">
+                      < FaXTwitter 
+                       style={{ fontSize:"xx-large" }}
+                      />
+                      <a href="https://twitter.com/Dabarnetwork?t=FdWs0919Lh2CqQxq50VUMg"
+                        target="_blank">
+                        <h6 className="mt-2 mb-2">@the.dabar</h6>
                       </a>
-                      <span>Lorem ipsum dolor sit.</span>
-                      <a href="mailto:quick.info@mail.net">
-                        <h6>quick.info@mail.net</h6>
-                      </a>
-                      <span>Dolore magna aliqua</span>
+                      <span>Let’s tweet the talk.</span>
+                      <span>Follow us on twitter X</span>
+                
                     </div>
                   </div>
                   <div className="col-lg-4 col-md-4 col-sm-12">
                     <div className="address">
-                      <FaLinkedin style={{ fontSize:"xx-large" }}/>
+                      <FaLinkedinIn  style={{ fontSize:"xx-large" }}/>
                       <a href="https://www.linkedin.com/company/darbar-media/"
                         target="_blank">
-                        <h6>quick.info@mail.net</h6>
+                        <h6 className="mt-2 mb-2">@dabar-media</h6>
                       </a>
                       <span> Connect with us professionally.</span>
                       
@@ -95,17 +99,14 @@ export default function Contact() {
                   </div>
                   <div className="col-lg-4 col-md-4 col-sm-12">
                     <div className="address">
-                      <FaInstagramSquare
+                    <MdAttachEmail 
                        style={{ fontSize:"xx-large" }}
                       />
-                      <a href="callto:+14253261627">
-                        <h6>+1 425 326 16 27</h6>
+                      <a href="mailto:pitch@thedabar.com">
+                        <h6 className="mt-2 mb-2">Have a story that aligns with our passion?</h6>
                       </a>
-                      <span>Et netus et malesuada</span>
-                      <a href="callto:+14253261627">
-                        <h6>+1 425 326 16 27</h6>
-                      </a>
-                      <span>Enim tortor auctor urna</span>
+                      <span>Send us your pitch</span>
+                      
                     </div>
                   </div>
                   </div>
