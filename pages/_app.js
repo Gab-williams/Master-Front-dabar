@@ -13,6 +13,10 @@ import '../public/assets/css/main.css'
 import '../public/assets/css/slick.css'
 import '../public/assets/css/spacing.css'
 import '../public/assets/css/swiper-bundle.css'
+import { Josefin_Sans } from 'next/font/google'
+
+// If loading a variable font, you don't need to specify the font weight
+const josefin = Josefin_Sans({ subsets: ['latin'] })
 
 function MyApp({ Component, pageProps }) {
 
@@ -24,11 +28,14 @@ function MyApp({ Component, pageProps }) {
 
     }, [])
     return (<>
+    <main className={josefin.className}>
         {!loading ? (
             <Component {...pageProps} />
         ) : (
             <Preloader />
+            
         )}
+        </main>
     </>)
 }
 
