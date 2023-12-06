@@ -245,7 +245,7 @@ export default function Home1() {
       <Layout headerStyle={6} footerStyle={3} footerClass="black-bg" logoWhite>
         <div className="slider__marquee clearfix">
           <div className="marquee_mode">
-            <Marquee className="js-marquee" pauseOnHover={true}>
+            <Marquee className="js-marquee font-weight-bold" pauseOnHover={true}>
               <h6 className="item">
                 BTC $20211.23 <span>+1.07%</span>
               </h6>
@@ -290,7 +290,7 @@ export default function Home1() {
                       >
                         {Herodata[0].subcategories}
                       </Link>
-                      <h2 className="title tgcommon__hover mt-4 mb-4">
+                      <h2 className="title tgcommon__hover mt-4 mb-4 font-weight-bold">
                         <Link href={`/blog/${Herodata[0].id}`}>
                           {Herodata[0].heading}
                         </Link>

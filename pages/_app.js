@@ -29,15 +29,27 @@ function MyApp({ Component, pageProps }) {
             <Head>
                 <link
                     rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap"
+                />
+                 <link
+                    rel="stylesheet"
                     href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap"
                 />
                 <style>{`
+                 @font-face {
+                    font-family: 'Josefin Sans';
+                    font-style: bold;
+                    font-weight: 400;
+                    src: url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap') format('woff2');
+                }
+                
                     @font-face {
                         font-family: 'Josefin Sans';
-                        font-style: normal;
-                        font-weight: 400;
-                        src: url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap') format('woff2');
+                        font-style: bold;
+                        font-weight: 700;
+                        src: url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap') format('woff2');
                     }
+                    
 
                     body {
                         font-family: 'Josefin Sans', sans-serif;
