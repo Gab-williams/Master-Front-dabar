@@ -87,18 +87,6 @@ export default function Contact() {
                   </div>
                   <div className="col-lg-4 col-md-4 col-sm-12">
                     <div className="address">
-                      <FaLinkedinIn  style={{ fontSize:"xx-large" }}/>
-                      <a href="https://www.linkedin.com/company/darbar-media/"
-                        target="_blank">
-                        <h6 className="mt-2 mb-2">@dabar-media</h6>
-                      </a>
-                      <span> Connect with us professionally.</span>
-                      
-                      <span>Dolore magna aliqua</span>
-                    </div>
-                  </div>
-                  <div className="col-lg-4 col-md-4 col-sm-12">
-                    <div className="address">
                     <MdAttachEmail 
                        style={{ fontSize:"xx-large" }}
                       />
@@ -109,6 +97,19 @@ export default function Contact() {
                       
                     </div>
                   </div>
+                  <div className="col-lg-4 col-md-4 col-sm-12">
+                    <div className="address">
+                      <FaLinkedinIn  style={{ fontSize:"xx-large" }}/>
+                      <a href="https://www.linkedin.com/company/darbar-media/"
+                        target="_blank">
+                        <h6 className="mt-2 mb-2">@dabar-media</h6>
+                      </a>
+                      <span> Connect with us professionally.</span>
+                      
+                      {/* <span>Dolore magna aliqua</span> */}
+                    </div>
+                  </div>
+                  
                   </div>
                 
             

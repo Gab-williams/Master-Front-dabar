@@ -2,7 +2,19 @@ import BlogSidebar2 from "@/components/elements/BlogSidebar2"
 import Layout from "@/components/layout/Layout"
 import Link from "next/link"
 import { useRouter } from "next/router";
+import {
+  
+    FacebookShareButton,
+   
+    LinkedinShareButton,
+   
+    TwitterShareButton,
+    
+  } from "react-share";
+
 import { useEffect, useState } from "react";
+import { FaFacebookF } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import {createClient} from 'contentful';
 import ReactPaginate from 'react-paginate';
 export default function Blog() {
@@ -83,11 +95,34 @@ export default function Blog() {
                             <div className="col-lg-1">
                                 <div className="blog-details-social">
                                     <ul className="list-wrap">
-                                        <li><Link href="#"><i className="fab fa-facebook-f" /></Link></li>
-                                        <li><Link href="#"><i className="fab fa-twitter" /></Link></li>
-                                        <li><Link href="#"><i className="fab fa-linkedin-in" /></Link></li>
-                                        <li><Link href="#"><i className="fab fa-instagram" /></Link></li>
-                                        <li><Link href="#"><i className="fas fa-share" /></Link></li>
+                                    <li>
+                        <Link href="#">
+                          <TwitterShareButton
+                            url={`https://${location.hostname}`}
+                          >
+                            <FaXTwitter />
+                          </TwitterShareButton>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="#">
+                          <FacebookShareButton
+                            url={`https://${location.hostname}`}
+                          >
+                           <FaFacebookF />
+                          </FacebookShareButton>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="#">
+                          <LinkedinShareButton
+                            url={`https://${location.hostname}`}
+                          >
+                            <i className="fab fa-linkedin-in" />
+                          </LinkedinShareButton>
+                        </Link>
+                      </li>
+                      
                                     </ul>
                                 </div>
                             </div>
