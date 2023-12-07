@@ -4776,9 +4776,8 @@ input[type=color] {
   color: var(--tg-heading-color);
 }
 .pagination__wrap ul li a:hover {
-  border-color: var(--tg-theme-primary);
-  background-color: var(--tg-theme-primary);
-  color: var(--tg-common-color-white);
+
+  color: var(--tg-theme-primary);
 }
 .pagination__wrap ul li.active a {
   pointer-events: none;
