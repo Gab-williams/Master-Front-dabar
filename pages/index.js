@@ -299,7 +299,7 @@ export default function Home1() {
                           Herodata[0].summary == null
                             ? ""
                             : Herodata[0].summary.length > 100
-                            ? Herodata[0].summary.substr(0, 150) + "..."
+                            ? Herodata[0].summary.substr(0, 120) + "..."
                             : Herodata[0].summary}
                         </p>
                       </h2>
@@ -666,7 +666,7 @@ export default function Home1() {
                         </li>
                         <li>{item.timez}</li>
                       </ul>
-                      <h3 className="title tgcommon__hover">
+                      <h3 className="title tgcommon__hover w-97">
                         <Link href={`/blog/${item.id}`}>{item.heading}</Link>
                       </h3>
                     </div>
