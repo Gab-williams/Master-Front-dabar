@@ -4771,9 +4771,12 @@ input[type=color] {
   width: 50px;
   height: 50px;
   font-size: 15px;
- 
   font-weight: var(--tg-fw-bold);
   color: var(--tg-heading-color);
+  padding-left:0rem
+}
+.ol,ul {
+  padding-left: 0rem
 }
 .pagination__wrap ul li a:hover {
 
