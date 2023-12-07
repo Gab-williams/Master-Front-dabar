@@ -372,7 +372,7 @@ export default function Business() {
                         : ""}
                     </div>
 
-                    {Data && Data.length > 0 ? (
+                    {Data && Data.length >= 6? (
                       <div className="latest__post-item">
                         <div className="latest__post-thumb tgImage__hover">
                           <Link
