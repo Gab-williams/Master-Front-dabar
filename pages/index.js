@@ -307,10 +307,10 @@ export default function Home1() {
                       <ul className="tgbanner__content-meta list-wrap">
                         <li>
                           <Link href={`/blog/${Herodata[0].id}`}>
-                          {Herodata[1].writername}
+                          {Herodata[0].writername}
                           </Link>
                         </li>
-                        <li>{Herodata[1].timez}</li>
+                        <li>{Herodata[0].timez}</li>
                       </ul>
                     </div>
                   </div>
