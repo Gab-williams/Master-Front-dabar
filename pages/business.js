@@ -35,6 +35,7 @@ export default function Business() {
   const [pageSize, setpageSize] = useState(6);
   const [currentPage, setcurrentPage] = useState(1);
   const [Data, SetData] = useState([]);
+  const [datex, setdatex] = useState("");
   const [numberofpage, setnumberofpage] = useState(1);
   const [orignalarr, setorignalarr] = useState([]);
   const [randomx, setRandomx] = useState([])
@@ -53,7 +54,7 @@ export default function Business() {
 
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.createdAt);
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
           const monthNames = [
             "Jan",
             "Feb",
@@ -214,7 +215,7 @@ export default function Business() {
                                 .
                               </Link>
                             </li>
-                            <li>nov 22, 2022</li>
+                            <li>{Data[0].timez}</li>
                           </ul>
                           <h3 className="title tgcommon__hover">
                             <Link
