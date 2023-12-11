@@ -59,7 +59,7 @@ export default function BlogDetails() {
         }
       } catch (error) {}
 
-      let timez = new Date(story.sys.createdAt);
+      let timez = new Date(story.sys.updatedAt);
       const monthNames = [
         "Jan",
         "Feb",
@@ -211,7 +211,7 @@ export default function BlogDetails() {
                         <li>
                           <Link href="/blog">{dataLocial?.writer}.</Link>
                         </li>
-                        <li>{datex}</li>
+                        <li>{dataLocial.timez}</li>
                         <li>{readtime}</li>
                       </ul>
                       <h2 className="title">{fieldsdata.heading}</h2>
