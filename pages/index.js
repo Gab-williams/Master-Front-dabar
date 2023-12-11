@@ -17,13 +17,7 @@ export default function Home1() {
     space: "t0pszie0jiqu",
     accessToken: "bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM",
   });
-  // const HubSpotFormComponent = () => (
-  //   <HubSpotForm
-  //     portalId="143734171"
-  //     formId="87688757723"
-  //     loading={<div>Loading...</div>}
-  //   />
-  // );
+
   
 
   useEffect(() => {
@@ -704,7 +698,7 @@ export default function Home1() {
                           </Link>
                         </li>
                       </ul>
-                      <HubSpotForm />
+                     
                       <ul className="tgbanner__content-meta list-wrap"><li className="text-black"><Link href={`/blog/${item.id}`}>By {item.writername}</Link></li></ul>
                       <h4 className="title tgcommon__hover">
                         <Link href={`/blog/${item.id}`}>{item.heading}</Link>
