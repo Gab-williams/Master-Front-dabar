@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import ModalVideo from "react-modal-video";
 import { createClient } from "contentful";
+import HubSpotForm from 'react-hubspot-form';
 
 export default function Home1() {
   const [isOpen, setOpen] = useState(false);
@@ -16,6 +17,14 @@ export default function Home1() {
     space: "t0pszie0jiqu",
     accessToken: "bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM",
   });
+  // const HubSpotFormComponent = () => (
+  //   <HubSpotForm
+  //     portalId="143734171"
+  //     formId="87688757723"
+  //     loading={<div>Loading...</div>}
+  //   />
+  // );
+  
 
   useEffect(() => {
     const HeroAPi = async () => {
@@ -29,7 +38,7 @@ export default function Home1() {
       const newData = await Promise.all(
         top?.items.map(async (item) => {
           // console.log(item.fields.storyId.fields.preSummary)
-          let timez = new Date(item.fields.storyId.sys.createdAt);
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
           const monthNames = [
             "Jan",
             "Feb",
@@ -85,7 +94,7 @@ export default function Home1() {
 
       const newData = await Promise.all(
         features?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.createdAt);
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
           const monthNames = [
             "Jan",
             "Feb",
@@ -140,7 +149,7 @@ export default function Home1() {
       });
       const newData = await Promise.all(
         popularstories?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.createdAt);
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
           const monthNames = [
             "Jan",
             "Feb",
@@ -196,7 +205,7 @@ export default function Home1() {
       });
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.createdAt);
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
           const monthNames = [
             "Jan",
             "Feb",
@@ -695,6 +704,7 @@ export default function Home1() {
                           </Link>
                         </li>
                       </ul>
+                      <HubSpotForm />
                       <ul className="tgbanner__content-meta list-wrap"><li className="text-black"><Link href={`/blog/${item.id}`}>By {item.writername}</Link></li></ul>
                       <h4 className="title tgcommon__hover">
                         <Link href={`/blog/${item.id}`}>{item.heading}</Link>
