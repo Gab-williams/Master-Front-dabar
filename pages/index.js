@@ -447,7 +447,7 @@ export default function Home1() {
                 <div className="col-sm-6">
                   <div className="section__title">
                     <span className="section__sub-title">Featured</span>
-                    <h3 className="section__main-title">Editor Choice</h3>
+                    <h3 className="section__main-title">Editor's Choice</h3>
                   </div>
                 </div>
                 <div className="col-sm-6">
