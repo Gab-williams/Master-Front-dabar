@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import ModalVideo from "react-modal-video";
 import { createClient } from "contentful";
-import HubSpotForm from 'react-hubspot-form';
+
 
 export default function Home1() {
   const [isOpen, setOpen] = useState(false);
