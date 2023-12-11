@@ -38,7 +38,7 @@ export default function Blog() {
             let story = await client.getEntries({content_type:"currentstories",select:'fields', })
             const newData = await Promise.all(
               story?.items.map(async (item) => {
-                let timez = new Date(item.fields.storyId.sys.createdAt)
+                let timez = new Date(item.fields.storyId.sys.updatedAt)
                   const monthNames = [
                     "Jan", "Feb", "Mar",
                     "Apr", "May", "Jun", "Jul",
