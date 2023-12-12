@@ -74,12 +74,22 @@ export default function Business() {
           const year = timez.getFullYear();
           const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
 
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
+          let data;
+
+          try {
+            // Check if item, storyId, and categoryId are defined before accessing properties
+            if (item && item.fields && item.fields.storyId && item.fields.storyId.fields.categoryId) {
+              data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+            } else {
+              // Handle the case where some properties are undefined
+              console.error('Error: Some properties are undefined.');
+              // You might want to throw an error, log a message, or handle this case in an appropriate way.
+            }
+          } catch (error) {
+            console.error('Error fetching entry:', error);
+          }
+          
+          let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
           let answer = data.fields.category;
           let answriter = writer.fields.name;
           return {
@@ -112,6 +122,56 @@ export default function Business() {
     };
 
     fetchStories();
+    const Local = async () => {
+      let story = await client.getEntries({
+        content_type: "currentstories",
+        select: "fields",
+      });
+      const newData = await Promise.all(
+        story?.items.map(async (item) => {
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
+          const monthNames = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sept",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const day = timez.getDate();
+          const monthIndex = timez.getMonth();
+          const year = timez.getFullYear();
+          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+
+          let data = await client.getEntry(
+            item.fields.storyId.fields.categoryId.sys.id
+          );
+          let writer = await client.getEntry(
+            item.fields.storyId.fields.writerId.sys.id
+          );
+          let answer = data.fields.category;
+          let answriter = writer.fields.name;
+          return {
+            heading: item.fields.storyId.fields.heading,
+            summary: item.fields.storyId.fields.summary,
+            presummary: item.fields.storyId.fields.preSummary,
+            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+            category: answer,
+            writer: answriter,
+            id: item.sys.id,
+            timez: formattedDate,
+          };
+        })
+      );
+      localStorage.setItem("stories", JSON.stringify(newData));
+    };
+    Local();
   }, [hello]);
 
   const handleNext = (ans) => {
