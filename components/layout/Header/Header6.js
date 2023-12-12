@@ -40,7 +40,7 @@ export default function Header6({ scroll,
                             <div className="col-lg-4 col-md-3 col-sm-6 order-3 d-none d-sm-block">
                                 <div className="header__top-right">
                                     <ul className="list-wrap">
-                                        <li className="news-btn"><Link href="https://share-eu1.hsforms.com/10lCgsD4dR1KrSyxWLXmnjA2dkpzv" target="blank" className="btn"><span className="btn-text">subscribe</span></Link></li>
+                                        <li className="news-btn"><Link href="https://share-eu1.hsforms.com/1H9YWJNkyTs2irrw8MuDbNw2dkpzv" target="blank" className="btn"><span className="btn-text">subscribe</span></Link></li>
                                         {/* <li className="lang">
                                         <div className="dropdown">
                                                 <button className={`dropdown-toggle ${langToggle ? "show" : ""}`} type="button" onClick={handleLangToggle}>
