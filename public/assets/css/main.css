@@ -4874,6 +4874,8 @@ input[type=color] {
 }
 .blog-details-content p {
   margin-bottom: 25px;
+  font-size: 20px;
+  font-weight: 300;
 }
 .blog-details-inner {
   margin: 40px 0 0;
