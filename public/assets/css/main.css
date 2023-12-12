@@ -4936,7 +4936,7 @@ input[type=color] {
 }
 @media (max-width: 1199.98px) {
   .blog-details-images .details-inner-image img {
-    height: 180px;
+    height: auto;
   }
 }
 .blog-details-bottom {
