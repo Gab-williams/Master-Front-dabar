@@ -84,7 +84,7 @@ export default function Blog() {
       const indexofFirstPost = indexofLastPost - pageSize;
       let ansdata = orignalarr.slice(indexofFirstPost, indexofLastPost);
       console.log(ansdata)
-      SetData(ansdata)
+      setData(ansdata)
       }
 
     return (
@@ -169,7 +169,7 @@ export default function Blog() {
                                          <ReactPaginate
                                         previousLabel={'<'}
                                         nextLabel={'>'}
-                                       
+                                        pageCount={numberofpage}
                                             breakLabel={"..."}
                                             marginPagesDisplayed={1}
                                             pageRangeDisplayed={1}

@@ -17,6 +17,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "coingecko-api-v3": "^0.0.29",
     "contentful": "^10.6.13",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",

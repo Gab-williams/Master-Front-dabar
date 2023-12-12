@@ -2,274 +2,240 @@ import Layout from "@/components/layout/Layout";
 import TrendingSlider from "@/components/slider/TrendingSlider";
 import data from "@/util/blogData";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import Marquee from "react-fast-marquee";
 import ModalVideo from "react-modal-video";
-import { createClient } from "contentful";
-
+import {createClient} from 'contentful';
+import { CoinGeckoClient } from 'coingecko-api-v3';
 
 export default function Home1() {
   const [isOpen, setOpen] = useState(false);
-  const [Herodata, setHerodata] = useState([]);
-  const [featured, setfeatured] = useState([]);
-  const [popular, setPopular] = useState([]);
-  const client = createClient({
-    space: "t0pszie0jiqu",
-    accessToken: "bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM",
+  const [Herodata, setHerodata] = useState([])
+  const [featured, setfeatured] = useState([])
+  const [popular, setPopular] = useState([])
+  const [cyptocoin, setcyptocoin] = useState([])
+  const client =  createClient({
+    space:'t0pszie0jiqu',
+    accessToken:'bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM',
   });
 
+  const coin = new CoinGeckoClient({
+    timeout: 10000,
+    autoRetry: true,
+  });
+
+  useEffect(()=>{
   
-
-  useEffect(() => {
-    const HeroAPi = async () => {
+    const HeroAPi = async()=>{
       // Hero Stories
-      let top = await client.getEntries({
-        content_type: "topstories",
-        select: "fields",
-      });
-      // top?.items
+      let top = await client.getEntries({content_type:"topstories",
+      select:'fields'})
+     // top?.items
+     console.log("doosh", top?.items)
 
-      const newData = await Promise.all(
-        top?.items.map(async (item) => {
-          // console.log(item.fields.storyId.fields.preSummary)
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
-          const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sept",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = timez.getDate();
-          const monthIndex = timez.getMonth();
-          const year = timez.getFullYear();
-          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-          let getid = await client.getEntry(item.sys.id);
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let answer = data.fields.category;
-          return {
-            heading: item.fields.storyId.fields.heading,
-            // summary: item.fields.storyId.fields.summary,
-            summary: item.fields.storyId.fields.preSummary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            subcategories: answer,
-            id: getid.sys.id,
-            writername: writer.fields.name,
-            timez: formattedDate,
-          };
-        })
-      );
+     const newData = await Promise.all(
+      top?.items.map(async (item) => {
+       
+        // console.log(item.fields.storyId.fields.preSummary)
+        let timez = new Date(item.fields.storyId.sys.updatedAt)
+        const monthNames = [
+         "Jan", "Feb", "Mar",
+         "Apr", "May", "Jun", "Jul",
+         "Aug", "Sept", "Oct",
+         "Nov", "Dec"
+       ];
+       const day = timez.getDate();
+        const monthIndex = timez.getMonth();
+        const year = timez.getFullYear();
+        const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+        let getid = await client.getEntry(item.sys.id)
+        let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+        let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
+        let answer = data.fields.category;
+        return {
+          heading: item.fields.storyId.fields.heading,
+          // summary: item.fields.storyId.fields.summary,
+          summary:item.fields.storyId.fields.preSummary,
+          thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+          subcategories: answer,
+          id:getid.sys.id,
+          writername:writer.fields.name,
+          timez:formattedDate
+        };
+      })
+    );
 
-      const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
-      let arrx = shuffledArray.slice(0, 4);
+    const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
+    let arrx =  shuffledArray.slice(0, 4); 
 
-      setHerodata(arrx);
-    };
+    setHerodata(arrx)
+    }
 
-    HeroAPi();
+    HeroAPi()
 
-    const Feature = async () => {
-      let features = await client.getEntries({
-        content_type: "feature",
-        select: "fields",
-      });
+
+
+    const Feature = async()=>{
+      let features = await client.getEntries({content_type:"feature", select:'fields'})
+
 
       const newData = await Promise.all(
         features?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
+
+          let timez = new Date(item.fields.storyId.sys.updatedAt)
           const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sept",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = timez.getDate();
+           "Jan", "Feb", "Mar",
+           "Apr", "May", "Jun", "Jul",
+           "Aug", "Sept", "Oct",
+           "Nov", "Dec"
+         ];
+         const day = timez.getDate();
           const monthIndex = timez.getMonth();
           const year = timez.getFullYear();
           const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-          // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
+           // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
           // console.log(item.fields.storyId.fields.categoryId.sys.id)
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let getid = await client.getEntry(item.sys.id);
-          //  console.log(data)
-          let answer = data.fields.category;
+         let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+         let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
+         let getid = await client.getEntry(item.sys.id)
+        //  console.log(data)
+         let answer = data.fields.category;
 
-          return {
-            heading: item.fields.storyId.fields.heading,
-            //  summary: item.fields.storyId.fields.summary,
-            summary: item.fields.storyId.fields.preSummary,
-            category: answer,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            writername: writer.fields.name,
-            timez: formattedDate,
-            id: getid.sys.id,
-          };
-        })
-      );
-      setfeatured(newData);
-    };
+         return {
+           heading: item.fields.storyId.fields.heading,
+          //  summary: item.fields.storyId.fields.summary,
+          summary:item.fields.storyId.fields.preSummary,
+           category: answer,
+           thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
+           writername:writer.fields.name,
+           timez:formattedDate,
+           id:getid.sys.id,
+         };
+       })
+     );
+     setfeatured(newData)
+             
+    }
 
-    Feature();
+    Feature()
 
-    const Popular = async () => {
-      let popularstories = await client.getEntries({
-        content_type: "popularstories",
-        select: "fields",
-      });
+  
+
+
+    const Popular = async()=>{
+      let popularstories = await client.getEntries({content_type:"popularstories", select:'fields'})
       const newData = await Promise.all(
         popularstories?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
+
+          let timez = new Date(item.fields.storyId.sys.updatedAt)
           const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sept",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = timez.getDate();
+           "Jan", "Feb", "Mar",
+           "Apr", "May", "Jun", "Jul",
+           "Aug", "Sept", "Oct",
+           "Nov", "Dec"
+         ];
+         const day = timez.getDate();
           const monthIndex = timez.getMonth();
           const year = timez.getFullYear();
           const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-          // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
+           // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
           // console.log(item.fields.storyId.fields.categoryId.sys.id)
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let getid = await client.getEntry(item.sys.id);
-          //  console.log(data)
-          let answer = data.fields.category;
+         let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+         let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
+         let getid = await client.getEntry(item.sys.id)
+        //  console.log(data)
+         let answer = data.fields.category;
 
-          return {
-            heading: item.fields.storyId.fields.heading,
-            //  summary: item.fields.storyId.fields.summary,
-            summary: item.fields.storyId.fields.preSummary,
-            category: answer,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            writername: writer.fields.name,
-            timez: formattedDate,
-            id: getid.sys.id,
-          };
-        })
-      );
+         return {
+           heading: item.fields.storyId.fields.heading,
+          //  summary: item.fields.storyId.fields.summary,
+          summary:item.fields.storyId.fields.preSummary,
+           category: answer,
+           thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
+           writername:writer.fields.name,
+           timez:formattedDate,
+           id:getid.sys.id,
+         };
+       })
+     );
 
-      setPopular(newData);
-    };
+     setPopular(newData)
 
-    Popular();
+    }
 
-    const Local = async () => {
-      let story = await client.getEntries({
-        content_type: "currentstories",
-        select: "fields",
-      });
+    Popular()
+
+ 
+    const Local = async()=>{
+      let story = await client.getEntries({content_type:"currentstories",select:'fields', })
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
-          const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sept",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = timez.getDate();
-          const monthIndex = timez.getMonth();
-          const year = timez.getFullYear();
-          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
+          let timez = new Date(item.fields.storyId.sys.updatedAt)
+            const monthNames = [
+              "Jan", "Feb", "Mar",
+              "Apr", "May", "Jun", "Jul",
+              "Aug", "Sept", "Oct",
+              "Nov", "Dec"
+            ];   
+            const day = timez.getDate();
+            const monthIndex = timez.getMonth();
+            const year = timez.getFullYear();
+            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+            
+           
+          let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+          let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id)
           let answer = data.fields.category;
-          let answriter = writer.fields.name;
-          return {
+           let answriter = writer.fields.name
+           return {
             heading: item.fields.storyId.fields.heading,
             summary: item.fields.storyId.fields.summary,
-            presummary: item.fields.storyId.fields.preSummary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+            presummary:item.fields.storyId.fields.preSummary,
+            thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
             category: answer,
-            writer: answriter,
-            id: item.sys.id,
-            timez: formattedDate,
-          };
-        })
-      );
-      localStorage.setItem("stories", JSON.stringify(newData));
+            writer:answriter,
+            id:item.sys.id,
+            timez:formattedDate
+           };
+         })
+       );
+     localStorage.setItem("stories", JSON.stringify(newData))
+    }
+    Local()
+
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append("Cookie", "__cf_bm=i9nmscfUnJa3HYnpNFfHx9p5E_dZSH9Xt.gikiporXM-1702413803-1-AfR+pfSKU0ClDff2SKh3SCBVExJTfqw82Oag2ZBY1WPjslTJIt02r58noo7UKDFffru20dEAvEBqxh0/lR+kS4k=");
+    
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
     };
-    Local();
-  }, []);
+    
+    fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&vs_currency=eur&vs_currency=jpy", requestOptions)
+      .then(response => response.json())
+      .then(result =>{
+      let info =  result.map((item)=>{
+          const roundedNumber = parseFloat(item.atl.toFixed(2));
+          return {symbol:item.symbol, atl:roundedNumber, current_price:item.current_price}
+        })
+
+        setcyptocoin(cyptocoin=>info)
+      })
+      .catch(error => console.log('error', error))
+  },[])
   return (
     <>
       <Layout headerStyle={6} footerStyle={3} footerClass="black-bg" logoWhite>
         <div className="slider__marquee clearfix">
           <div className="marquee_mode">
-            <Marquee className="js-marquee font-weight-bold" pauseOnHover={true}>
-              <h6 className="item">
-                BTC $20211.23 <span>+1.07%</span>
+            <Marquee className="js-marquee" pauseOnHover={true}>
+              {cyptocoin.map((item)=>{
+                return   <h6 className="item">
+                {item.symbol} ${item.current_price} <span>+{item.atl}</span>
               </h6>
-              <h6 className="item">
-                eth $1533.56 <span>+3.12%</span>
-              </h6>
-              <h6 className="item">
-                bnb $281.43 <span>+0.02%</span>
-              </h6>
-              <h6 className="item">
-                busd $1.00 <span>+0.01%</span>
-              </h6>
-              <h6 className="item minus">
-                xrp $0.33 <span>-2.62%</span>
-              </h6>
-              <h6 className="item">
-                ada $0.45 <span>+0.16%</span>
-              </h6>
-              <h6 className="item minus">
-                sol $31.54 <span>-1.14%</span>
-              </h6>
+              })}
             </Marquee>
           </div>
         </div>
