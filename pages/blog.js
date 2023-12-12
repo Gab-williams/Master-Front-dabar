@@ -79,12 +79,12 @@ export default function Blog() {
     },[])
 
     const handleNext =(ans)=>{
-        let number = ans.selected + 1;  
-        const indexofLastPost =  number * pageSize;
-        const indexofFirstPost = indexofLastPost - pageSize;
-        let ansdata = orignalarr.slice(indexofFirstPost, indexofLastPost);
-        console.log(ansdata)
-        SetData(ansdata)
+      let number = ans.selected + 1;  
+      const indexofLastPost =  number * pageSize;
+      const indexofFirstPost = indexofLastPost - pageSize;
+      let ansdata = orignalarr.slice(indexofFirstPost, indexofLastPost);
+      console.log(ansdata)
+      SetData(ansdata)
       }
 
     return (
@@ -166,8 +166,7 @@ export default function Blog() {
                                             <li><Link href="#">06</Link></li>
                                             <li><Link href="#"><i className="fas fa-angle-double-right" /></Link></li>
                                         </ul> */}
-
-                                            <ReactPaginate
+                                         <ReactPaginate
                                         previousLabel={'<'}
                                         nextLabel={'>'}
                                         pageCount={numberofpage}
@@ -180,7 +179,7 @@ export default function Blog() {
                                             pageLinkClassName={''}
                                         // previousClassName={'bg-gray-400 rounded-lg px-2 py-1 text-lg justify-center items-center text-white'}
                                         // nextClassName={'bg-gray-400 px-2 py-1 text-lg justify-center items-center text-white rounded-lg '}
-                                        /> 
+                                        />  
                                     </div>
                                 </div>
                             </div>
