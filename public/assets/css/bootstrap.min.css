@@ -628,6 +628,13 @@ progress {
   padding-right: calc(var(--bs-gutter-x) * 0.5);
   padding-left: calc(var(--bs-gutter-x) * 0.5);
   margin-top: var(--bs-gutter-y);
+  padding-bottom: 20px;
+  
+}
+@media (max-width: 767px) {
+  .row > * {
+    padding-bottom: 20px;
+  }
 }
 .col {
   flex: 1 0 0%;
@@ -6549,6 +6556,9 @@ fieldset:disabled .btn {
 }
 .w-75 {
   width: 75% !important;
+}
+.w-97 {
+  width: 97% !important;
 }
 .w-100 {
   width: 100% !important;
