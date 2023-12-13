@@ -348,7 +348,7 @@ export default function Business() {
                                           item.id
                                         )}`}
                                       >
-                                        {Data[0].heading}
+                                        {item.heading}
                                       </Link>
                                     </h3>
                                     <p>{item.summary}</p>
