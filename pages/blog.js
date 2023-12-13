@@ -169,7 +169,7 @@ export default function Blog() {
                                    <ReactPaginate
   previousLabel={'<'}
   nextLabel={'>'}
-  pageCount={numberofpage}
+  
   breakLabel={"..."}
   marginPagesDisplayed={1}
   pageRangeDisplayed={1}
