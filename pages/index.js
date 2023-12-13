@@ -437,7 +437,7 @@ export default function Home1() {
                             backgroundImage: `url(${item.thumbnail})`,
                           }}
                         >
-                          {/* 0{item.id} */}
+                        
                         </div>
                         <div className="featured__content">
                           <ul className="tgbanner__content-meta list-wrap">
@@ -644,7 +644,7 @@ export default function Home1() {
               ))}
             </div>
             <div className="row">
-              {popular.slice(2, 5)?.map((item, i) => (
+              {popular.slice(2, 6)?.map((item, i) => (
                 <div className="col-xl-3 col-lg-4 col-md-6" key={i}>
                   <div className="trending__post stories-small-post__item">
                     <div className="trending__post-thumb tgImage__hover">

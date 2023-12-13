@@ -70,7 +70,7 @@ export default function TrendingSlider({ showItem }) {
                 modules={[Autoplay, Pagination, Navigation]}
                 slidesPerView={showItem}
                 spaceBetween={30}
-                loop={true}
+                loop={false}
                 autoplay={{
                     delay: 2500,
                     disableOnInteraction: false,
