@@ -166,13 +166,13 @@ export default function Blog() {
                                             <li><Link href="#">06</Link></li>
                                             <li><Link href="#"><i className="fas fa-angle-double-right" /></Link></li>
                                         </ul> */}
-                                   <ReactPaginate
+                                   ReactPaginate
   previousLabel={'<'}
   nextLabel={'>'}
-  
+  pageCount={numberofpage}
   breakLabel={"..."}
-  marginPagesDisplayed={1}
-  pageRangeDisplayed={1}
+  marginPagesDisplayed={numberofpage}
+  pageRangeDisplayed={0}
   onPageChange={handleNext}
   containerClassName={'list-wrap'}
   // pageclassNameName={' '}
