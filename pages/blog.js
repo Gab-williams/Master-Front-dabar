@@ -166,7 +166,7 @@ export default function Blog() {
                                             <li><Link href="#">06</Link></li>
                                             <li><Link href="#"><i className="fas fa-angle-double-right" /></Link></li>
                                         </ul> */}
-                                   ReactPaginate
+                                   <ReactPaginate
   previousLabel={'<'}
   nextLabel={'>'}
   pageCount={numberofpage}
