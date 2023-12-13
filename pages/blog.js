@@ -171,14 +171,11 @@ export default function Blog() {
   nextLabel={'>'}
   pageCount={numberofpage}
   breakLabel={"..."}
-  marginPagesDisplayed={numberofpage}
+  marginPagesDisplayed={0}
   pageRangeDisplayed={0}
   onPageChange={handleNext}
   containerClassName={'list-wrap'}
-  // pageclassNameName={' '}
   pageLinkClassName={''}
-  // previousClassName={'bg-gray-400 rounded-lg px-2 py-1 text-lg justify-center items-center text-white'}
-  // nextClassName={'bg-gray-400 px-2 py-1 text-lg justify-center items-center text-white rounded-lg '}
 />
                                     </div>
                                 </div>
