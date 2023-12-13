@@ -219,7 +219,7 @@ export default function Home1() {
       let info =  result.map((item)=>{
           const roundedNumber = parseFloat(item.atl.toFixed(2));
           return {symbol:item.symbol, atl:roundedNumber, current_price:item.current_price}
-        })
+          }).slice(0,14)
 
         setcyptocoin(cyptocoin=>info)
       })
