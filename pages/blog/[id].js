@@ -106,41 +106,7 @@ export default function BlogDetails() {
 
   const [random, setrandom] = useState([]);
   useEffect(() => {
-    const recentstories = async () => {
-      let newstories = await client.getEntries({
-        content_type: "currentstories",
-        select: "fields",
-      });
 
-      const newData = await Promise.all(
-        newstories?.items.map(async (item) => {
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let answer = data.fields.category;
-          let answriter = writer.fields.name;
-          return {
-            heading: item.fields.storyId.fields.heading,
-            summary: item.fields.storyId.fields.summary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            category: answer,
-            writer: answriter,
-            id: item.sys.id,
-          };
-        })
-      );
-
-      const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
-      let arrx = shuffledArray.slice(0, 2);
-      setrandom(arrx);
-      // console.log(arrx)
-      // setData(Data=>arrx)
-    };
-
-    recentstories();
     const Local = async () => {
       let story = await client.getEntries({
         content_type: "currentstories",
@@ -192,6 +158,52 @@ export default function BlogDetails() {
     };
     Local();
   }, []);
+
+
+  useEffect(()=>{
+    const recentstories = async () => {
+      let newstories = await client.getEntries({
+        content_type: "currentstories",
+        select: "fields",
+      });
+
+      const newData = await Promise.all(
+        newstories?.items.map(async (item) => {
+          let data = await client.getEntry(
+            item.fields.storyId.fields.categoryId.sys.id
+          );
+          let writer = await client.getEntry(
+            item.fields.storyId.fields.writerId.sys.id
+          );
+          let answer = data.fields.category;
+          let answriter = writer.fields.name;
+          return {
+            heading: item.fields.storyId.fields.heading,
+            summary: item.fields.storyId.fields.summary,
+            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+            category: answer,
+            writer: answriter,
+            id: item.sys.id,
+          };
+        })
+      );
+      let filterdata =  newData.filter((item)=>item.id != id)
+      const shuffledArray = [...filterdata];
+      for (let i = shuffledArray.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      }
+      
+      // Randomly select two objects
+      const ans = shuffledArray.slice(0, 2)
+    
+      setrandom(ans);
+      // console.log(arrx)
+      // setData(Data=>arrx)
+    };
+
+    recentstories();
+  },[id])
 
   const options = {
     renderNode: {
