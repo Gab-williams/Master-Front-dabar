@@ -65,9 +65,8 @@ export default function Home1() {
       })
     );
 
-    const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
-    let arrx =  shuffledArray.slice(0, 4); 
-
+    // const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
+    let arrx =  newData.slice(0, 4); 
     setHerodata(arrx)
     }
 
@@ -219,7 +218,7 @@ export default function Home1() {
       let info =  result.map((item)=>{
           const roundedNumber = parseFloat(item.atl.toFixed(2));
           return {symbol:item.symbol, atl:roundedNumber, current_price:item.current_price}
-          }).slice(0,14)
+        }).slice(0,14)
 
         setcyptocoin(cyptocoin=>info)
       })
@@ -366,6 +365,7 @@ export default function Home1() {
             </div>
           </div>
         </section>
+        
         <section className="trending-post-area section__hover-line pt-25">
           <div className="container">
             <div className="section__title-wrap mb-40">
@@ -644,7 +644,7 @@ export default function Home1() {
               ))}
             </div>
             <div className="row">
-              {popular.slice(2, 6)?.map((item, i) => (
+              {popular.slice(2, 10)?.map((item, i) => (
                 <div className="col-xl-3 col-lg-4 col-md-6" key={i}>
                   <div className="trending__post stories-small-post__item">
                     <div className="trending__post-thumb tgImage__hover">
