@@ -330,7 +330,7 @@ export default function BlogDetails() {
                                         <h5 className="title tgcommon__hover">
                                           <Link href={`/blog/${item.id}`}>
                                             {item.heading.length > 70
-                                              ? item.heading.substr(0, 20) +
+                                              ? item.heading.substr(0, 70) +
                                                 ".."
                                               : item.heading}
                                           </Link>
