@@ -1,20 +1,45 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 
 export default function Footer3({ footerClass, logoWhite }) {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [message, setMessage] = useState("")
+
+  const apiClient = axios.create({
+    baseURL: "https://dabarmedia.com/",
+    withCredentials: true
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubscribed(true)
+            let formData = new FormData()
+            formData.append('email',  email)
+              apiClient.get('/sanctum/csrf-cookie').then(()=>{
+                  let headers = new Headers();
+                  headers.append('Content-Type', 'application/json')
+                  let urlxw = '/api/subscribe';
+                  apiClient.post(urlxw, formData, headers).then(res=>{
+                    console.log(res)
+                      if(res.data.success){
+                          setMessage(res.data.success) 
+                          setEmail("")  
+                          setIsSubscribed(false)
 
-    // Perform your form submission logic here
-    // For demonstration purposes, let's just set isSubscribed to true
-    // You should replace this with your actual form submission logic
-    setIsSubscribed(true);
-
-    // Clear the email input after successful submission
-    setEmail('');
+                      }
+      
+                  }).catch(err=>{
+                      let error = err.response.data.errors
+      
+                      if(error.email){
+                          setMessage(error.email)
+                          setIsSubscribed(false)
+                          setEmail("")
+                      }
+                  })
+                   })
   };
 
   return (
@@ -130,7 +155,7 @@ export default function Footer3({ footerClass, logoWhite }) {
               <div className="col-lg-6">
                 <div className="copyright__text">
                   <p>
-                    All Rights Reserved © <a>Dabar</a> -{" "}
+                    All Rights Reserved Â© <a>Dabar</a> -{" "}
                     {new Date().getFullYear()}
                   </p>
                 </div>
