@@ -610,7 +610,7 @@ export default function Home1() {
                 <div className="col-sm-6">
                   <div className="section__read-more text-start text-sm-end">
                     <Link href="/blog">
-                      Stories Post <i className="far fa-long-arrow-right" />
+                      More Post <i className="far fa-long-arrow-right" />
                     </Link>
                   </div>
                 </div>
