@@ -155,7 +155,7 @@ export default function Footer3({ footerClass, logoWhite }) {
               <div className="col-lg-6">
                 <div className="copyright__text">
                   <p>
-                    All Rights Reserved Â© <a>Dabar</a> -{" "}
+                    All Rights Reserved © <a>Dabar</a> -{" "}
                     {new Date().getFullYear()}
                   </p>
                 </div>
