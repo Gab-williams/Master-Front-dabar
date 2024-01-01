@@ -14,11 +14,19 @@ import '../public/assets/css/main.css';
 import '../public/assets/css/slick.css';
 import '../public/assets/css/spacing.css';
 import '../public/assets/css/swiper-bundle.css';
+import ReactGA from "react-ga4";
+
+
+
 
 function MyApp({ Component, pageProps }) {
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        ReactGA.initialize("G-J8HLPZVV8W");
+        ReactGA.pageview(window.location.pathname + window.location.search, [], 'Custom Title');
+
         setTimeout(() => {
             setLoading(false);
         }, 1000);
