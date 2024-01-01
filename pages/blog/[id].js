@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import data from "../../util/blogData";
 import { createClient } from "contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-
+import ReactGA from "react-ga4";
 export default function BlogDetails() {
   let Router = useRouter();
   const [item, setItem] = useState(null);
@@ -31,7 +31,7 @@ export default function BlogDetails() {
 
   useEffect(() => {
     //setItem(data.find((data) => data.id == id))
-
+ 
     const fetchData = async () => {
       let story = await client.getEntry(id);
       //    let writeridx = fieldsdata.writerId?.sys.id
@@ -203,6 +203,17 @@ export default function BlogDetails() {
     };
 
     recentstories();
+  },[id])
+
+  useEffect(()=>{
+    ReactGA.initialize("G-J8HLPZVV8W");
+    ReactGA.set({ title: 'Story Page' });
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
+    ReactGA.event({
+      category: fieldsdata.heading,
+      action: "Story Page",
+      label: `${window.location.origin}/blog/${id}`, // optional
+    });
   },[id])
 
   const options = {

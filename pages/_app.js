@@ -14,11 +14,20 @@ import '../public/assets/css/main.css';
 import '../public/assets/css/slick.css';
 import '../public/assets/css/spacing.css';
 import '../public/assets/css/swiper-bundle.css';
+import ReactGA from "react-ga4";
+
+
+
 
 function MyApp({ Component, pageProps }) {
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        ReactGA.initialize("G-J8HLPZVV8W");
+        ReactGA.set({ title: 'Home' });
+        ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
+
         setTimeout(() => {
             setLoading(false);
         }, 1000);
