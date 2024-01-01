@@ -18,7 +18,6 @@ import {
   TwitterShareButton,
   
 } from "react-share";
-import ReactGA from "react-ga4";
 export default function Business() {
   const router = useRouter();
   const defaultOptions = {
@@ -47,9 +46,6 @@ export default function Business() {
   });
 
   useEffect(() => {
-    ReactGA.initialize("G-J8HLPZVV8W");
-    ReactGA.pageview(window.location.pathname + window.location.search, [], 'Custom Title');
-
     const fetchStories = async () => {
       let story = await client.getEntries({
         content_type: "currentstories",
@@ -117,13 +113,6 @@ export default function Business() {
         (item) => item.category.toLowerCase() == hello.toLowerCase()
       );
       setorignalarr(filterdata);
-
-      ReactGA.event({
-        category: hello,
-        action: "Category Page",
-        label: hello, // optional
-      });
-
       let page = Math.ceil(filterdata.length / 6);
       const indexofLastPost = currentPage * pageSize;
       const indexofFirstPost = indexofLastPost - pageSize;
