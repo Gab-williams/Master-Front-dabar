@@ -15,6 +15,7 @@ import '../public/assets/css/slick.css';
 import '../public/assets/css/spacing.css';
 import '../public/assets/css/swiper-bundle.css';
 import ReactGA from "react-ga4";
+import GoogleAnalytics from "@bradgarropy/next-google-analytics"
 
 
 
@@ -22,6 +23,7 @@ import ReactGA from "react-ga4";
 function MyApp({ Component, pageProps }) {
 
     const [loading, setLoading] = useState(true);
+    <GoogleAnalytics measurementId="G-J8HLPZVV8W" />
 
     useEffect(() => {
         ReactGA.initialize("G-J8HLPZVV8W");
@@ -34,8 +36,11 @@ function MyApp({ Component, pageProps }) {
     }, []);
 
     return (
+        
         <>
             <Head>
+            
+                
                 <link
                     rel="stylesheet"
                     href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap"
