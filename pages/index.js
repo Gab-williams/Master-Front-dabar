@@ -644,7 +644,7 @@ export default function Home1() {
               ))}
             </div>
             <div className="row">
-              {popular.slice(2, 10)?.map((item, i) => (
+              {popular.slice(2, 14)?.map((item, i) => (
                 <div className="col-xl-3 col-lg-4 col-md-6" key={i}>
                   <div className="trending__post stories-small-post__item">
                     <div className="trending__post-thumb tgImage__hover">
