@@ -7,7 +7,7 @@ import Marquee from "react-fast-marquee";
 import ModalVideo from "react-modal-video";
 import {createClient} from 'contentful';
 import { CoinGeckoClient } from 'coingecko-api-v3';
-
+import AdSense from 'react-adsense';
 export default function Home1() {
   const [isOpen, setOpen] = useState(false);
   const [Herodata, setHerodata] = useState([])
@@ -396,12 +396,24 @@ export default function Home1() {
           <div className="container">
             <div className="col-12">
               <div className="advertisement__image text-center">
-                <Link href="/#">
+                {/* <Link href="/#">
                   <img
                     src="/assets/img/others/advertisement.png"
                     alt="advertisement"
                   />
-                </Link>
+                </Link> */}
+
+             
+                <a>
+                            <AdSense.Google
+              client='ca-pub-9082964821197319'
+              slot='2185107768'
+              style={{ display: 'block' }}
+              format='auto'
+              responsive={true}
+            />
+
+                </a>
               </div>
             </div>
           </div>
@@ -471,12 +483,22 @@ export default function Home1() {
           <div className="container">
             <div className="col-12">
               <div className="advertisement__image text-center">
-                <Link href="/#">
+                {/* <Link href="/#">
                   <img
                     src="/assets/img/others/advertisement.png"
                     alt="advertisement"
                   />
-                </Link>
+                </Link> */}
+
+                <a>
+                <AdSense.Google
+              client='ca-pub-9082964821197319'
+              slot='2185107768'
+              style={{ display: 'block' }}
+              format='auto'
+              responsive={true}
+            />
+                </a>
               </div>
             </div>
           </div>
@@ -644,7 +666,7 @@ export default function Home1() {
               ))}
             </div>
             <div className="row">
-              {popular.slice(2, 14)?.map((item, i) => (
+              {popular.slice(2, 10)?.map((item, i) => (
                 <div className="col-xl-3 col-lg-4 col-md-6" key={i}>
                   <div className="trending__post stories-small-post__item">
                     <div className="trending__post-thumb tgImage__hover">
