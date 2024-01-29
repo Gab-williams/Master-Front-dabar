@@ -14,6 +14,8 @@ import data from "../../util/blogData";
 import { createClient } from "contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import ReactGA from "react-ga4";
+import Image from "next/image";
+import { NextSeo } from "next-seo";
 export default function BlogDetails() {
   let Router = useRouter();
   const [item, setItem] = useState(null);
@@ -208,7 +210,8 @@ export default function BlogDetails() {
   useEffect(()=>{
     ReactGA.initialize("G-J8HLPZVV8W");
     ReactGA.set({ title: 'Story Page' });
-    ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });        
+
     ReactGA.event({
       category: fieldsdata.heading,
       action: "Story Page",
@@ -220,18 +223,57 @@ export default function BlogDetails() {
     renderNode: {
       "embedded-asset-block": (node) => {
         return (
-          <img
-            src={node.data.target.fields.file.url}
-            alt={node.data.target.fields.description}
-          />
+          // <img
+          //   src={node.data.target.fields.file.url}
+          //   alt={node.data.target.fields.description}
+          // />
+          <Image
+          src={'https:' +(node.data.target.fields.file.url) }
+          alt="img"
+          loading="eager"
+          layout="responsive"
+          width={1200}
+          height={800}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
         );
       },
     },
   };
   const contentbody = documentToReactComponents(fieldsdata.body, options);
+  // console.log(fieldsdata)
+    let original = window.location.origin
   return (
     <>
+       {fieldsdata &&
+         <NextSeo  
+         title={fieldsdata.heading}
+        description={fieldsdata.summary?.substring(0, 250)  }
+        canonical={original+'/blog/'+id}
+        openGraph={{ 
+          type:'website',
+          locale:'en_us',
+          url:'https://thedabar.com/blog/'+id,
+          title:'The Dabar',
+          siteName:'The Dabar',
+          description:fieldsdata.summary?.substring(0, 250),
+          images:[
+              {
+                  url:fieldsdata.thumbnail?.fields.file.url,
+                  alt:'The Dabar',
+                  type:'The Dabar',
+                  secureUrl:fieldsdata.thumbnail?.fields.file.url,
+              }
+          ]
+         }}
+         />
+       }
+     
       {fieldsdata && (
+        // <NextSeo  
+        // title={fieldsdata.heading}
+        // description={fieldsdata.summary?.substring(0, 2500)  }
+        // >
         <Layout
           breadcrumbCategory={category}
           breadcrumbPostTitle={fieldsdata.heading}
@@ -312,10 +354,20 @@ export default function BlogDetails() {
 
                         <div className="details-advertisement">
                           <Link href="#">
-                            <img
+                            {/* <img
                               src="/assets/img/others/advertisement02.png"
                               alt="img"
-                            />
+                            /> */}
+                            
+              <Image
+                        src="/assets/img/others/advertisement02.png"
+                        alt="img"
+                        loading="eager"
+                        layout="responsive"
+                        width={1200}
+                        height={800}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
                           </Link>
                         </div>
    
@@ -341,6 +393,7 @@ export default function BlogDetails() {
                                       <div className="thumb">
                                         <Link href={`/blog/${item.id}`}>
                                           <img src={item.thumbnail} alt="img" />
+                                          
                                         </Link>
                                       </div>
                                       <div className="content">
@@ -388,6 +441,7 @@ export default function BlogDetails() {
             </section>
           </>
         </Layout>
+        // </NextSeo>
       )}
     </>
   );

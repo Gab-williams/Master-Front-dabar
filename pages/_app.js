@@ -1,51 +1,53 @@
 import Preloader from "@/components/elements/Preloader";
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import "swiper/css";
+import 'swiper/css';
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "../public/assets/css/animate.min.css";
-import "../public/assets/css/bootstrap.min.css";
-import "../public/assets/css/flaticon.css";
-import "../public/assets/css/fontawesome-all.min.css";
-import "../public/assets/css/imageRevealHover.css";
-import "../public/assets/css/magnific-popup.css";
-import "../public/assets/css/main.css";
-import "../public/assets/css/slick.css";
-import "../public/assets/css/spacing.css";
-import "../public/assets/css/swiper-bundle.css";
+import '../public/assets/css/animate.min.css';
+import '../public/assets/css/bootstrap.min.css';
+import '../public/assets/css/flaticon.css';
+import '../public/assets/css/fontawesome-all.min.css';
+import '../public/assets/css/imageRevealHover.css';
+import '../public/assets/css/magnific-popup.css';
+import '../public/assets/css/main.css';
+import '../public/assets/css/slick.css';
+import '../public/assets/css/spacing.css';
+import '../public/assets/css/swiper-bundle.css';
+import ReactGA from "react-ga4";
+import { LazyMotion, domAnimation, m } from "framer-motion"
 
-import Script from "next/script";
+
 
 function MyApp({ Component, pageProps }) {
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+    const [loading, setLoading] = useState(true);
 
-  return (
-    <>
-      <Head>
-      
+    useEffect(() => {
+        ReactGA.initialize("G-J8HLPZVV8W");
+        ReactGA.set({ title: 'Home' });
+        ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });        
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }, []);
 
-
-
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap"
-        />
-        <style>{`
+    return (
+        <>
+            <Head>
+                <link
+                    rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap"
+                />
+                 <link
+                    rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400&display=swap"
+                />
+                         <link
+                    rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap"
+                />
+                <style>{`
                  @font-face {
                     font-family: 'Josefin Sans';
                     font-style: bold;
@@ -81,19 +83,18 @@ function MyApp({ Component, pageProps }) {
                         font-family: 'Josefin Sans', sans-serif;
                     }
                 `}</style>
-      </Head>
-      <main><div><Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-J8HLPZVV8W" />
-
-<Script id="google-analytics" strategy="afterInteractive">
-  {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-J8HLPZVV8W');
-  `}
-</Script></div>{!loading ? <Component {...pageProps} /> : <Preloader />}</main>
-    </>
-  );
+            </Head>
+            <main>
+                {!loading ? (
+                     <LazyMotion features={domAnimation}>
+                    <Component {...pageProps} />
+                    </LazyMotion>
+                ) : (
+                    <Preloader />
+                )}
+            </main>
+        </>
+    );
 }
 
 export default MyApp;

@@ -2,21 +2,23 @@ import Layout from "@/components/layout/Layout";
 import TrendingSlider from "@/components/slider/TrendingSlider";
 import data from "@/util/blogData";
 import Link from "next/link";
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import ModalVideo from "react-modal-video";
-import {createClient} from 'contentful';
-import { CoinGeckoClient } from 'coingecko-api-v3';
+import { createClient } from "contentful";
+import { CoinGeckoClient } from "coingecko-api-v3";
+import AdSense from "react-adsense";
+import Image from "next/image";
 
 export default function Home1() {
   const [isOpen, setOpen] = useState(false);
-  const [Herodata, setHerodata] = useState([])
-  const [featured, setfeatured] = useState([])
-  const [popular, setPopular] = useState([])
-  const [cyptocoin, setcyptocoin] = useState([])
-  const client =  createClient({
-    space:'t0pszie0jiqu',
-    accessToken:'bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM',
+  const [Herodata, setHerodata] = useState([]);
+  const [featured, setfeatured] = useState([]);
+  const [popular, setPopular] = useState([]);
+  const [cyptocoin, setcyptocoin] = useState([]);
+  const client = createClient({
+    space: "t0pszie0jiqu",
+    accessToken: "bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM",
   });
 
   const coin = new CoinGeckoClient({
@@ -24,216 +26,314 @@ export default function Home1() {
     autoRetry: true,
   });
 
-  useEffect(()=>{
-  
-    const HeroAPi = async()=>{
+  useEffect(() => {
+    const HeroAPi = async () => {
       // Hero Stories
-      let top = await client.getEntries({content_type:"topstories",
-      select:'fields'})
-     // top?.items
-     console.log("doosh", top?.items)
+      let top = await client.getEntries({
+        content_type: "topstories",
+        select: "fields",
+      });
+      // top?.items
+      console.log("doosh", top?.items);
 
-     const newData = await Promise.all(
-      top?.items.map(async (item) => {
-       
-        // console.log(item.fields.storyId.fields.preSummary)
-        let timez = new Date(item.fields.storyId.sys.updatedAt)
-        const monthNames = [
-         "Jan", "Feb", "Mar",
-         "Apr", "May", "Jun", "Jul",
-         "Aug", "Sept", "Oct",
-         "Nov", "Dec"
-       ];
-       const day = timez.getDate();
-        const monthIndex = timez.getMonth();
-        const year = timez.getFullYear();
-        const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-        let getid = await client.getEntry(item.sys.id)
-        let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-        let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
-        let answer = data.fields.category;
-        return {
-          heading: item.fields.storyId.fields.heading,
-          // summary: item.fields.storyId.fields.summary,
-          summary:item.fields.storyId.fields.preSummary,
-          thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-          subcategories: answer,
-          id:getid.sys.id,
-          writername:writer.fields.name,
-          timez:formattedDate
-        };
-      })
-    );
+      const newData = await Promise.all(
+        top?.items.map(async (item) => {
+          // console.log(item.fields.storyId.fields.preSummary)
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
+          const monthNames = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sept",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const day = timez.getDate();
+          const monthIndex = timez.getMonth();
+          const year = timez.getFullYear();
+          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+          let getid = await client.getEntry(item.sys.id);
+          let data = await client.getEntry(
+            item.fields.storyId.fields.categoryId.sys.id
+          );
+          let writer = await client.getEntry(
+            item.fields.storyId.fields.writerId.sys.id
+          );
+          let answer = data.fields.category;
+          return {
+            heading: item.fields.storyId.fields.heading,
+            // summary: item.fields.storyId.fields.summary,
+            summary: item.fields.storyId.fields.preSummary,
+            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+            subcategories: answer,
+            id: getid.sys.id,
+            writername: writer.fields.name,
+            timez: formattedDate,
+          };
+        })
+      );
+      const homePageData = {
+        heading:
+          "Dabar | Business Insights, Technology trends and conversations across the Globe.",
+        summary:
+          "Dabar - Your go-to destination for expert insights on Business, Technology, Trends, and Marketing. Dive deep into our enriching content, featuring in-depth analysis, innovative businesses, expert opinions, industry trends that resonate in today's fast-paced landscape.",
+        thumbnail: {
+          fields: {
+            file: {
+              url: "public/assets/img/main.jpg", // Replace with the actual URL
+            },
+          },
+        },
+      };
 
-    // const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
-    let arrx =  newData.slice(0, 4); 
-    setHerodata(arrx)
-    }
+      {
+        /* SEO Metadata */
+      }
+      <NextSeo
+        title={homePageData.heading}
+        description={homePageData.summary}
+        openGraph={{
+          type: "website",
+          locale: "en_us",
+          url: "https://thedabar.com",
+          title:
+            "Dabar | Business Insights, Technology trends and conversations across the Globe.",
+          siteName: "Dabar",
+          description:
+            "Dabar - Your go-to destination for expert insights on Business, Technology, Trends, and Marketing.",
+          images: [
+            {
+              url: homePageData.thumbnail?.fields.file.url,
+              alt: "Dabar",
+              type: "image/jpeg", // Update with the actual image type
+              secureUrl: homePageData.thumbnail?.fields.file.url,
+            },
+          ],
+        }}
+      />;
 
-    HeroAPi()
+      // const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
+      let arrx = newData.slice(0, 4);
+      setHerodata(arrx);
+    };
 
+    HeroAPi();
 
-
-    const Feature = async()=>{
-      let features = await client.getEntries({content_type:"feature", select:'fields'})
-
+    const Feature = async () => {
+      let features = await client.getEntries({
+        content_type: "feature",
+        select: "fields",
+      });
 
       const newData = await Promise.all(
         features?.items.map(async (item) => {
-
-          let timez = new Date(item.fields.storyId.sys.updatedAt)
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
           const monthNames = [
-           "Jan", "Feb", "Mar",
-           "Apr", "May", "Jun", "Jul",
-           "Aug", "Sept", "Oct",
-           "Nov", "Dec"
-         ];
-         const day = timez.getDate();
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sept",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const day = timez.getDate();
           const monthIndex = timez.getMonth();
           const year = timez.getFullYear();
           const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-           // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
+          // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
           // console.log(item.fields.storyId.fields.categoryId.sys.id)
-         let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-         let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
-         let getid = await client.getEntry(item.sys.id)
-        //  console.log(data)
-         let answer = data.fields.category;
+          let data = await client.getEntry(
+            item.fields.storyId.fields.categoryId.sys.id
+          );
+          let writer = await client.getEntry(
+            item.fields.storyId.fields.writerId.sys.id
+          );
+          let getid = await client.getEntry(item.sys.id);
+          //  console.log(data)
+          let answer = data.fields.category;
 
-         return {
-           heading: item.fields.storyId.fields.heading,
-          //  summary: item.fields.storyId.fields.summary,
-          summary:item.fields.storyId.fields.preSummary,
-           category: answer,
-           thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
-           writername:writer.fields.name,
-           timez:formattedDate,
-           id:getid.sys.id,
-         };
-       })
-     );
-     setfeatured(newData)
-             
-    }
+          return {
+            heading: item.fields.storyId.fields.heading,
+            //  summary: item.fields.storyId.fields.summary,
+            summary: item.fields.storyId.fields.preSummary,
+            category: answer,
+            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+            writername: writer.fields.name,
+            timez: formattedDate,
+            id: getid.sys.id,
+          };
+        })
+      );
+      setfeatured(newData);
+    };
 
-    Feature()
+    Feature();
 
-  
-
-
-    const Popular = async()=>{
-      let popularstories = await client.getEntries({content_type:"popularstories", select:'fields'})
+    const Popular = async () => {
+      let popularstories = await client.getEntries({
+        content_type: "popularstories",
+        select: "fields",
+      });
       const newData = await Promise.all(
         popularstories?.items.map(async (item) => {
-
-          let timez = new Date(item.fields.storyId.sys.updatedAt)
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
           const monthNames = [
-           "Jan", "Feb", "Mar",
-           "Apr", "May", "Jun", "Jul",
-           "Aug", "Sept", "Oct",
-           "Nov", "Dec"
-         ];
-         const day = timez.getDate();
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sept",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const day = timez.getDate();
           const monthIndex = timez.getMonth();
           const year = timez.getFullYear();
           const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-           // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
+          // console.log(item.fields.storyId.fields.thumbnail.fields.file.url)
           // console.log(item.fields.storyId.fields.categoryId.sys.id)
-         let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-         let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
-         let getid = await client.getEntry(item.sys.id)
-        //  console.log(data)
-         let answer = data.fields.category;
+          let data = await client.getEntry(
+            item.fields.storyId.fields.categoryId.sys.id
+          );
+          let writer = await client.getEntry(
+            item.fields.storyId.fields.writerId.sys.id
+          );
+          let getid = await client.getEntry(item.sys.id);
+          //  console.log(data)
+          let answer = data.fields.category;
 
-         return {
-           heading: item.fields.storyId.fields.heading,
-          //  summary: item.fields.storyId.fields.summary,
-          summary:item.fields.storyId.fields.preSummary,
-           category: answer,
-           thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
-           writername:writer.fields.name,
-           timez:formattedDate,
-           id:getid.sys.id,
-         };
-       })
-     );
+          return {
+            heading: item.fields.storyId.fields.heading,
+            //  summary: item.fields.storyId.fields.summary,
+            summary: item.fields.storyId.fields.preSummary,
+            category: answer,
+            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+            writername: writer.fields.name,
+            timez: formattedDate,
+            id: getid.sys.id,
+          };
+        })
+      );
 
-     setPopular(newData)
+      setPopular(newData);
+    };
 
-    }
+    Popular();
 
-    Popular()
-
- 
-    const Local = async()=>{
-      let story = await client.getEntries({content_type:"currentstories",select:'fields', })
+    const Local = async () => {
+      let story = await client.getEntries({
+        content_type: "currentstories",
+        select: "fields",
+      });
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt)
-            const monthNames = [
-              "Jan", "Feb", "Mar",
-              "Apr", "May", "Jun", "Jul",
-              "Aug", "Sept", "Oct",
-              "Nov", "Dec"
-            ];   
-            const day = timez.getDate();
-            const monthIndex = timez.getMonth();
-            const year = timez.getFullYear();
-            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-            
-           
-          let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-          let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id)
+          let timez = new Date(item.fields.storyId.sys.updatedAt);
+          const monthNames = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sept",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+          const day = timez.getDate();
+          const monthIndex = timez.getMonth();
+          const year = timez.getFullYear();
+          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+
+          let data = await client.getEntry(
+            item.fields.storyId.fields.categoryId.sys.id
+          );
+          let writer = await client.getEntry(
+            item.fields.storyId.fields.writerId.sys.id
+          );
           let answer = data.fields.category;
-           let answriter = writer.fields.name
-           return {
+          let answriter = writer.fields.name;
+          return {
             heading: item.fields.storyId.fields.heading,
             summary: item.fields.storyId.fields.summary,
-            presummary:item.fields.storyId.fields.preSummary,
-            thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
+            presummary: item.fields.storyId.fields.preSummary,
+            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
             category: answer,
-            writer:answriter,
-            id:item.sys.id,
-            timez:formattedDate
-           };
-         })
-       );
-     localStorage.setItem("stories", JSON.stringify(newData))
-    }
-    Local()
+            writer: answriter,
+            id: item.sys.id,
+            timez: formattedDate,
+          };
+        })
+      );
+      localStorage.setItem("stories", JSON.stringify(newData));
+    };
+    Local();
 
     var myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
-    myHeaders.append("Cookie", "__cf_bm=i9nmscfUnJa3HYnpNFfHx9p5E_dZSH9Xt.gikiporXM-1702413803-1-AfR+pfSKU0ClDff2SKh3SCBVExJTfqw82Oag2ZBY1WPjslTJIt02r58noo7UKDFffru20dEAvEBqxh0/lR+kS4k=");
-    
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow'
-    };
-    
-    fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&vs_currency=eur&vs_currency=jpy", requestOptions)
-      .then(response => response.json())
-      .then(result =>{
-      let info =  result.map((item)=>{
-          const roundedNumber = parseFloat(item.atl.toFixed(2));
-          return {symbol:item.symbol, atl:roundedNumber, current_price:item.current_price}
-        }).slice(0,14)
+    myHeaders.append(
+      "Cookie",
+      "__cf_bm=i9nmscfUnJa3HYnpNFfHx9p5E_dZSH9Xt.gikiporXM-1702413803-1-AfR+pfSKU0ClDff2SKh3SCBVExJTfqw82Oag2ZBY1WPjslTJIt02r58noo7UKDFffru20dEAvEBqxh0/lR+kS4k="
+    );
 
-        setcyptocoin(cyptocoin=>info)
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&vs_currency=eur&vs_currency=jpy",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        let info = result
+          .map((item) => {
+            const roundedNumber = parseFloat(item.atl.toFixed(2));
+            return {
+              symbol: item.symbol,
+              atl: roundedNumber,
+              current_price: item.current_price,
+            };
+          })
+          .slice(0, 14);
+
+        setcyptocoin((cyptocoin) => info);
       })
-      .catch(error => console.log('error', error))
-  },[])
+      .catch((error) => console.log("error", error));
+  }, []);
   return (
     <>
       <Layout headerStyle={6} footerStyle={3} footerClass="black-bg" logoWhite>
         <div className="slider__marquee clearfix">
           <div className="marquee_mode">
             <Marquee className="js-marquee" pauseOnHover={true}>
-              {cyptocoin.map((item)=>{
-                return   <h6 className="item">
-                {item.symbol} ${item.current_price} <span>+{item.atl}</span>
-              </h6>
+              {cyptocoin.map((item) => {
+                return (
+                  <h6 className="item">
+                    {item.symbol} ${item.current_price} <span>+{item.atl}</span>
+                  </h6>
+                );
               })}
             </Marquee>
           </div>
@@ -247,6 +347,15 @@ export default function Home1() {
                     <div className="tgbanner__five-thumb tgImage__hover   ">
                       <Link href={`/blog/${Herodata[0].id}`}>
                         <img src={Herodata[0].thumbnail} alt="img" />
+                        {/* <Image
+                            src={'https:' + Herodata[0].thumbnail}
+                            alt="img"
+                            loading="eager"
+                            layout="responsive"
+                            width={1200}
+                            height={1200}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        /> */}
                       </Link>
                     </div>
                     <div className="tgbanner__five-content">
@@ -275,7 +384,7 @@ export default function Home1() {
                       <ul className="tgbanner__content-meta list-wrap">
                         <li>
                           <Link href={`/blog/${Herodata[0].id}`}>
-                          {Herodata[0].writername}
+                            {Herodata[0].writername}
                           </Link>
                         </li>
                         <li>{Herodata[0].timez}</li>
@@ -292,7 +401,20 @@ export default function Home1() {
                   <div className="tgbanner__five-item small-post">
                     <div className="tgbanner__five-thumb tgImage__hover   ">
                       <Link href={`/blog/${Herodata[1].id}`}>
-                        <img src={Herodata[1].thumbnail} alt="img" />
+                        {/* <img src={Herodata[1].thumbnail} alt="img" /> */}
+                        <Image
+                          src={"https:" + Herodata[1].thumbnail}
+                          alt="img"
+                          loading="eager"
+                          layout="responsive"
+                          width={1200}
+                          height={1200}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
                       </Link>
                     </div>
                     <div className="tgbanner__five-content">
@@ -365,7 +487,7 @@ export default function Home1() {
             </div>
           </div>
         </section>
-        
+
         <section className="trending-post-area section__hover-line pt-25">
           <div className="container">
             <div className="section__title-wrap mb-40">
@@ -396,12 +518,22 @@ export default function Home1() {
           <div className="container">
             <div className="col-12">
               <div className="advertisement__image text-center">
-                <Link href="/#">
+                {/* <Link href="/#">
                   <img
                     src="/assets/img/others/advertisement.png"
                     alt="advertisement"
                   />
-                </Link>
+                </Link> */}
+
+                <a>
+                  <AdSense.Google
+                    client="ca-pub-9082964821197319"
+                    slot="2185107768"
+                    style={{ display: "block" }}
+                    format="auto"
+                    responsive={true}
+                  />
+                </a>
               </div>
             </div>
           </div>
@@ -436,9 +568,7 @@ export default function Home1() {
                           style={{
                             backgroundImage: `url(${item.thumbnail})`,
                           }}
-                        >
-                        
-                        </div>
+                        ></div>
                         <div className="featured__content">
                           <ul className="tgbanner__content-meta list-wrap">
                             <li className="category">
@@ -450,10 +580,14 @@ export default function Home1() {
                                 {item.category}
                               </Link>
                             </li>
-                           
-                            
                           </ul>
-                          <ul className="tgbanner__content-meta list-wrap"><li className="text-black"><Link href={`/blog/${item.id}`}>By {item.writername}</Link></li></ul>
+                          <ul className="tgbanner__content-meta list-wrap">
+                            <li className="text-black">
+                              <Link href={`/blog/${item.id}`}>
+                                By {item.writername}
+                              </Link>
+                            </li>
+                          </ul>
                           <h4 className="title tgcommon__hover">
                             <Link href={`/blog/${item.id}`}>
                               {item.heading}
@@ -471,12 +605,22 @@ export default function Home1() {
           <div className="container">
             <div className="col-12">
               <div className="advertisement__image text-center">
-                <Link href="/#">
+                {/* <Link href="/#">
                   <img
                     src="/assets/img/others/advertisement.png"
                     alt="advertisement"
                   />
-                </Link>
+                </Link> */}
+
+                <a>
+                  <AdSense.Google
+                    client="ca-pub-9082964821197319"
+                    slot="2185107768"
+                    style={{ display: "block" }}
+                    format="auto"
+                    responsive={true}
+                  />
+                </a>
               </div>
             </div>
           </div>
@@ -622,7 +766,20 @@ export default function Home1() {
                   <div className="stories-post__item">
                     <div className="stories-post__thumb tgImage__hover">
                       <Link href={`/blog/${item.id}`}>
-                        <img src={item.thumbnail} alt="img" />
+                        {/* <img src={item.thumbnail} alt="img" /> */}
+                        <Image
+                          src={"https:" + item.thumbnail}
+                          alt="img"
+                          loading="eager"
+                          layout="responsive"
+                          width={1200}
+                          height={800}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
                       </Link>
                     </div>
                     <div className="stories-post__content video__post-content">
@@ -649,7 +806,20 @@ export default function Home1() {
                   <div className="trending__post stories-small-post__item">
                     <div className="trending__post-thumb tgImage__hover">
                       <Link href={`/blog/${item.id}`}>
-                        <img src={item.thumbnail} alt="img" />
+                        {/* <img src={item.thumbnail} alt="img" /> */}
+                        <Image
+                          src={"https:" + item.thumbnail}
+                          alt="img"
+                          loading="eager"
+                          layout="responsive"
+                          width={1200}
+                          height={800}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
                       </Link>
                     </div>
                     <div className="trending__post-content">
@@ -664,8 +834,14 @@ export default function Home1() {
                           </Link>
                         </li>
                       </ul>
-                     
-                      <ul className="tgbanner__content-meta list-wrap"><li className="text-black"><Link href={`/blog/${item.id}`}>By {item.writername}</Link></li></ul>
+
+                      <ul className="tgbanner__content-meta list-wrap">
+                        <li className="text-black">
+                          <Link href={`/blog/${item.id}`}>
+                            By {item.writername}
+                          </Link>
+                        </li>
+                      </ul>
                       <h4 className="title tgcommon__hover">
                         <Link href={`/blog/${item.id}`}>{item.heading}</Link>
                       </h4>

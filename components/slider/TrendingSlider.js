@@ -4,6 +4,7 @@ import data from "@/util/blogData"
 import Link from "next/link"
 import { Autoplay, Navigation, Pagination } from "swiper"
 import {createClient} from 'contentful';
+import Image from "next/image";
 
 export default function TrendingSlider({ showItem }) {
 
@@ -112,7 +113,18 @@ export default function TrendingSlider({ showItem }) {
                         <div className="trending__post">
                             <div className="trending__post-thumb tgImage__hover">
                                 
-                                <Link href={`/blog/${item.id}`}><img src={item.thumbnail} alt="img" /></Link>
+                                <Link href={`/blog/${item.id}`}>
+                                    {/* <img src={item.thumbnail} alt="img" /> */}
+                                    <Image
+                            src={'https:' + item.thumbnail}
+                            alt="img"
+                            loading="eager"
+                            layout="responsive"
+                            width={1200}
+                            height={800}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                              />
+                                    </Link>
                                 {/* {item.trending && <span className="is_trend"><i className="fas fa-bolt" /></span>} */}
                             </div>
                             <div className="trending__post-content">
