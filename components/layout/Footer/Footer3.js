@@ -166,10 +166,10 @@ export default function Footer3({ footerClass, logoWhite }) {
                     <li>
                       <Link href="/contact">Contact Us</Link>
                     </li>
-                    {/* <li>
-                    <a href="#" target="_blank">Privacy Policy</a>
+                    <li>
+                    <a href="/privacy" target="_blank">Privacy Policy</a>
 
-                    </li> */}
+                    </li>
                   </ul>
                 </div>
               </div>

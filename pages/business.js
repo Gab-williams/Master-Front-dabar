@@ -9,8 +9,6 @@ import { useEffect, useState } from "react";
 import { createClient } from "contentful";
 import ReactPaginate from "react-paginate";
 import { FaXTwitter } from "react-icons/fa6";
-import Image from "next/image";
-
 import {
   
   FacebookShareButton,
@@ -51,8 +49,7 @@ export default function Business() {
   useEffect(() => {
     ReactGA.initialize("G-J8HLPZVV8W");
     ReactGA.set({ title: 'Business' });
-    ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });        
-
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
     const fetchStories = async () => {
       let story = await client.getEntries({
         content_type: "currentstories",
@@ -242,7 +239,6 @@ export default function Business() {
               </div>
               <div className="col-xl-8 col-lg-7">
                 {Data && Data.length > 0 ? (
-                  
                   <div className="blog-post-wrapper">
                     {Data && Data.length > 0 ? (
                       <div className="latest__post-item" key={Data[0].id}>
@@ -250,28 +246,14 @@ export default function Business() {
                           <Link
                             href={`/blog/${encodeURIComponent(Data[0].id)}`}
                           >
-                            {/* <img
+                            <img
                               src={
                                 Object.keys(Data[0]).length > 0
                                   ? Data[0].thumbnail
                                   : ""
                               }
                               alt="img"
-                            /> */}
-                         
-                          <Image
-                          src={'https:' +(Object.keys(Data[0]).length > 0
-                          ? Data[0].thumbnail
-                          : "") }
-                          alt="img"
-                          loading="eager"
-                          layout="responsive"
-                          width={1200}
-                          height={800}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             />
-                        
-                           
                           </Link>
                         </div>
                         <div className="latest__post-content">
@@ -353,16 +335,7 @@ export default function Business() {
                                         item.id
                                       )}`}
                                     >
-                                      {/* <img src={item.thumbnail} alt="img" /> */}
-                                                    <Image
-                                        src={'https:' + item.thumbnail}
-                                        alt="img"
-                                        loading="eager"
-                                        layout="responsive"
-                                        width={1200}
-                                        height={800}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                          />
+                                      <img src={item.thumbnail} alt="img" />
                                     </Link>
                                   </div>
                                   <div className="latest__post-content">
@@ -424,8 +397,7 @@ export default function Business() {
                                         item.id
                                       )}`}
                                     >
-                                      {/* <img src={item.thumbnail} alt="img" /> */}
-                                      
+                                      <img src={item.thumbnail} alt="img" />
                                     </Link>
                                   </div>
                                   <div className="latest__post-content">
@@ -486,33 +458,16 @@ export default function Business() {
                             {Data[5] &&
                             Object.keys(Data[5]).length > 0 &&
                             Data[5].thumbnail ? (
-                              // <img
-                              //   src={
-                              //     Data[5] &&
-                              //     Object.keys(Data[5]).length > 0 &&
-                              //     Data[5].thumbnail
-                              //       ? Data[5].thumbnail
-                              //       : ""
-                              //   }
-                                
-                              //   alt="img"
-                              // />
-
-
-                              <Image
-                              src={'https:' +(    Data[5] &&
-                                Object.keys(Data[5]).length > 0 &&
-                                Data[5].thumbnail
-                                  ? Data[5].thumbnail
-                                  : "") }
-                              alt="img"
-                              loading="eager"
-                              layout="responsive"
-                              width={1200}
-                              height={800}
-                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                />
-
+                              <img
+                                src={
+                                  Data[5] &&
+                                  Object.keys(Data[5]).length > 0 &&
+                                  Data[5].thumbnail
+                                    ? Data[5].thumbnail
+                                    : ""
+                                }
+                                alt="img"
+                              />
                             ) : (
                               ""
                             )}
@@ -619,19 +574,10 @@ export default function Business() {
     
                      <div className="latest__post-thumb tgImage__hover">
                        <Link href={`/blog/${encodeURIComponent(randomx[0].id)}`} >
-                         {/* <img
+                         <img
                            src={Object.keys(randomx[0]).length > 0?randomx[0].thumbnail:""}
                            alt="img"
-                         /> */}
-                            <Image
-                              src={'https:' +(Object.keys(randomx[0]).length > 0?randomx[0].thumbnail:"") }
-                              alt="img"
-                              loading="eager"
-                              layout="responsive"
-                              width={1200}
-                              height={800}
-                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                />
+                         />
                        </Link>
                      </div>
                      <div className="latest__post-content">
@@ -673,22 +619,10 @@ export default function Business() {
                     <Link  href={`/blog/${encodeURIComponent(randomx.length >= 4 && Object.keys(randomx[3]).length > 0 ? randomx[3].id : "")}`}>
                     {randomx[3] && Object.keys(randomx[3]).length > 0 && randomx[3].thumbnail ?
                     
-                  //   <img
-                  //   src={randomx[3] && Object.keys(randomx[3]).length > 0 && randomx[3].thumbnail ? randomx[3].thumbnail : ""}
-                  //   alt="img"
-                  // />
-
-                  <Image
-                  src={'https:' +(randomx[3] && Object.keys(randomx[3]).length > 0 && randomx[3].thumbnail ? randomx[3].thumbnail : "") }
-                  alt="img"
-                  loading="eager"
-                  layout="responsive"
-                  width={1200}
-                  height={800}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-
-
+                    <img
+                    src={randomx[3] && Object.keys(randomx[3]).length > 0 && randomx[3].thumbnail ? randomx[3].thumbnail : ""}
+                    alt="img"
+                  />
                     : ""}
                      
                     </Link>
