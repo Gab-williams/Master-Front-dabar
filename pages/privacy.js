@@ -103,7 +103,7 @@ export default function Privacy() {
                     you may contact us using the information below:
                     
                   </p>
-                  <p>hello@thedabar.com</p>
+                  <h6>hello@thedabar.com</h6>
                   <p>Effective Date: This policy is effective
                     as of 12/01/2023</p>
                 </div>
