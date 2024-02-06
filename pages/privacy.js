@@ -101,9 +101,11 @@ export default function Privacy() {
                   <p>
                     If there are any questions regarding this privacy policy,
                     you may contact us using the information below:
-                    hello@thedabar.com Effective Date: This policy is effective
-                    as of 12/01/2023
+                    
                   </p>
+                  <p>hello@thedabar.com</p>
+                  <p>Effective Date: This policy is effective
+                    as of 12/01/2023</p>
                 </div>
               </div>
             </div>
