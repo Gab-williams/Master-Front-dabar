@@ -83,6 +83,13 @@ function MyApp({ Component, pageProps }) {
                 `}</style>
       </Head>
       <main><div><Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-J8HLPZVV8W" />
+      <Script
+   id="Adsense-id"
+   data-ad-client="ca-pub-9082964821197319"
+   async="true"
+   strategy="beforeInteractive"
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+/>
 
 <Script id="google-analytics" strategy="afterInteractive">
   {`
