@@ -35,7 +35,18 @@ export default function Home1() {
 
 const [dataall, Setdataall] = useState([])
 
-  useEffect(()=>{
+  useEffect( ()=>{
+    // updatestories
+  const checkupdatex = async()=>{
+        let urlzxs = '/api/updatestories';
+        await  apiClient.get('/sanctum/csrf-cookie')
+          let headers = new Headers();
+         headers.append('Content-Type', 'application/json')
+         let checkupdate =  await  apiClient.get(urlzxs,headers)
+  }
+
+  checkupdatex()
+ 
   
     const HeroAPi = async()=>{
       // Hero Stories
