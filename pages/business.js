@@ -96,24 +96,6 @@ export default function Business() {
           const encryptedString = CryptoJS.AES.encrypt(originalString, 'TheDabar').toString();
           const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
           
-          // let data;
-
-          // try {
-          //   // Check if item, storyId, and categoryId are defined before accessing properties
-          //   if (item && item.fields && item.fields.storyId && item.fields.storyId.fields.categoryId) {
-          //     data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-          //   } else {
-          //     // Handle the case where some properties are undefined
-          //     console.error('Error: Some properties are undefined.');
-          //     // You might want to throw an error, log a message, or handle this case in an appropriate way.
-          //   }
-          // } catch (error) {
-          //   console.error('Error fetching entry:', error);
-          // }
-          
-          // let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
-          // let answer = data.fields.category;
-          // let answriter = writer.fields.name;
           return {
             // heading: item.fields.storyId.fields.heading,
             // summary: item.fields.storyId.fields.summary,
@@ -128,9 +110,9 @@ export default function Business() {
             // summary: item.fields.storyId.fields.summary,
             summary:item.presummary,
             thumbnail: item.main_image,
-            subcategories: item.category,
+            category: item.category,
             id: item.id,
-            writername:item.writer,
+            writer:item.writer,
             timez:formattedDate
           };
         })
@@ -219,7 +201,56 @@ export default function Business() {
           let headers = new Headers();
          headers.append('Content-Type', 'application/json')
           let category =  await  apiClient.get(urlz,headers)
-         SetData(category.data.success.data);
+        //  SetData(category.data.success.data);
+
+
+        const newData = await Promise.all(
+          category.data.success.data.map(async (item) => {
+            let timez = new Date(item.created_at);
+            const monthNames = [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sept",
+              "Oct",
+              "Nov",
+              "Dec",
+            ];
+            const day = timez.getDate();
+            const monthIndex = timez.getMonth();
+            const year = timez.getFullYear();
+            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+            const originalString = JSON.stringify(item.id);
+            const encryptedString = CryptoJS.AES.encrypt(originalString, 'TheDabar').toString();
+            const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
+            
+            return {
+              // heading: item.fields.storyId.fields.heading,
+              // summary: item.fields.storyId.fields.summary,
+              // presummary: item.fields.storyId.fields.preSummary,
+              // thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+              // category: answer,
+              // writer: answriter,
+              // id: item.sys.id,
+              // timez: formattedDate,
+  
+              heading: item.heading,
+              // summary: item.fields.storyId.fields.summary,
+              summary:item.presummary,
+              thumbnail: item.main_image,
+              category: item.category,
+              id: item.id,
+              writer:item.writer,
+              timez:formattedDate
+            };
+          })
+        );
+        SetData(newData)
   };
 
   return (
