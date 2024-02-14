@@ -18,6 +18,7 @@ export default function Home1() {
   const [featured, setfeatured] = useState([])
   const [popular, setPopular] = useState([])
   const [cyptocoin, setcyptocoin] = useState([])
+  const [lastpopular, setlastpopular] = useState([])
   const client =  createClient({
     space:'t0pszie0jiqu',
     accessToken:'bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM',
@@ -223,14 +224,14 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
     const Popular = async()=>{
       let popularstories = await client.getEntries({content_type:"popularstories", select:'fields'})
 
-      let urlz = '/api/popular';
+      let urlz = '/api/popular?page='+1;
       await  apiClient.get('/sanctum/csrf-cookie')
             let headers = new Headers();
            headers.append('Content-Type', 'application/json')
             let popularx =  await  apiClient.get(urlz,headers)
-
+            setlastpopular(popularx.data.success.last_page)
       const newData = await Promise.all(
-        popularx.data.success.map(async (item) => {
+        popularx.data.success.data.map(async (item) => {
 
           let timez = new Date(item.created_at)
           const monthNames = [
@@ -250,9 +251,9 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
         //  let getid = await client.getEntry(item.sys.id)
         // //  console.log(data)
         //  let answer = data.fields.category;
-             const originalString = JSON.stringify(item.id);
-const encryptedString = CryptoJS.AES.encrypt(originalString, 'TheDabar').toString();
-const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
+//              const originalString = JSON.stringify(item.id);
+// const encryptedString = CryptoJS.AES.encrypt(originalString, 'TheDabar').toString();
+// const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
 
          return {
           //  heading: item.fields.storyId.fields.heading,
@@ -458,6 +459,94 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
     Feature()
 
   },[])
+const [currentpopular, setcurrentpopular] = useState(1)
+  const handleviewmore = async(e)=>{
+    e.preventDefault();
+    if(currentpopular <  lastpopular){
+      let answerxs =   currentpopular + 1
+  
+      setcurrentpopular(answerxs)
+       let urlz = '/api/popular?page='+answerxs;
+        await  apiClient.get('/sanctum/csrf-cookie')
+              let headers = new Headers();
+             headers.append('Content-Type', 'application/json')
+              let popularx =  await  apiClient.get(urlz,headers)
+         console.log(popularx.data.success.data)
+        const newData = await Promise.all(
+          popularx.data.success.data.map(async (item) => {
+    
+            let timez = new Date(item.created_at)
+            const monthNames = [
+             "Jan", "Feb", "Mar",
+             "Apr", "May", "Jun", "Jul",
+             "Aug", "Sept", "Oct",
+             "Nov", "Dec"
+           ];
+           const day = timez.getDate();
+            const monthIndex = timez.getMonth();
+            const year = timez.getFullYear();
+            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+    
+           return {
+            heading: item.heading,
+            summary:item.presummary,
+            thumbnail: item.main_image,
+            subcategories: item.category,
+            id: item.id,
+            writername:item.writer,
+            timez:formattedDate
+           };
+         })
+       );
+
+       let newDataCopy = [...newData];
+       let dataz = [...popular, ...newDataCopy];
+       setPopular(dataz);
+
+    }else if (currentpopular ==  lastpopular){
+      
+        setcurrentpopular(1)
+        let urlz = '/api/popular?page='+1;
+        await  apiClient.get('/sanctum/csrf-cookie')
+              let headers = new Headers();
+             headers.append('Content-Type', 'application/json')
+              let popularx =  await  apiClient.get(urlz,headers)
+    
+        const newData = await Promise.all(
+          popularx.data.success.data.map(async (item) => {
+    
+            let timez = new Date(item.created_at)
+            const monthNames = [
+             "Jan", "Feb", "Mar",
+             "Apr", "May", "Jun", "Jul",
+             "Aug", "Sept", "Oct",
+             "Nov", "Dec"
+           ];
+           const day = timez.getDate();
+            const monthIndex = timez.getMonth();
+            const year = timez.getFullYear();
+            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+    
+           return {
+            heading: item.heading,
+            summary:item.presummary,
+            thumbnail: item.main_image,
+            subcategories: item.category,
+            id: item.id,
+            writername:item.writer,
+            timez:formattedDate
+           };
+         })
+       );
+
+
+        setPopular(newData);
+    }
+  
+
+
+    
+  }
   return (
     <>
       <Layout headerStyle={6} footerStyle={3} footerClass="black-bg" logoWhite>
@@ -907,6 +996,19 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
                   </div>
                 </div>
               ))}
+
+              <div style={{ width:'100%', display:"flex", justifyContent:"center", alignItems:'center' }}>
+                 
+                        <button className="btn"  onClick={(e)=>handleviewmore(e)}>
+                          {currentpopular ==  lastpopular?
+                           <span className="text">Less</span>
+                          :
+                          <span className="text">View More</span>
+                          }
+                       
+                      </button>
+
+              </div>
             </div>
           </div>
         </section>
