@@ -112,7 +112,7 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
         };
       })
     );
-
+    setHerodata(newData)
     const homePageData = {
       heading:
         "Dabar | Business Insights, Technology trends and conversations across the Globe.",
@@ -154,8 +154,8 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
     />
 
     // const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
-    let arrx =  newData.slice(0, 4); 
-    setHerodata(arrx)
+    
+ 
     }
 
     HeroAPi()
@@ -558,8 +558,8 @@ const [currentpopular, setcurrentpopular] = useState(1)
         <div className="slider__marquee clearfix">
           <div className="marquee_mode">
             <Marquee className="js-marquee" pauseOnHover={true}>
-              {cyptocoin.map((item)=>{
-                return   <h6 className="item">
+              {cyptocoin.map((item, index)=>{
+                return   <h6 className="item" key={index}>
                 {item.symbol} ${item.current_price} <span>+{item.atl}</span>
               </h6>
               })}

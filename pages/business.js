@@ -69,7 +69,7 @@ export default function Business() {
             let headers = new Headers();
            headers.append('Content-Type', 'application/json')
             let category =  await  apiClient.get(urlz,headers)
-             console.log(category.data.success.data)
+             console.log(category.data.success)
              setlastpage(category.data.success.last_page)
       const newData = await Promise.all(
         category.data.success.data.map(async (item) => {
@@ -196,7 +196,7 @@ export default function Business() {
 
   const handleNext = async(ans) => {
     let number = ans.selected + 1;
-    let urlz = `/api/categoryfilter?category=${hello}&number=${number}`;
+    let urlz = `/api/categoryfilter?category=${encodeURIComponent(hello)}&number=${parseInt(number)}`;
     await  apiClient.get('/sanctum/csrf-cookie')
           let headers = new Headers();
          headers.append('Content-Type', 'application/json')
@@ -723,9 +723,7 @@ export default function Business() {
                 </div>
                 )}
 
-                {Data.length < 6 ? (
-                  ""
-                ) : (
+              
                   <div className="pagination__wrap">
                     <ReactPaginate
                       previousLabel={"<"}
@@ -742,7 +740,7 @@ export default function Business() {
                       // nextClassName={'bg-gray-400 px-2 py-1 text-lg justify-center items-center text-white rounded-lg '}
                     />
                   </div>
-                )}
+               
               </div>
 
               <div className="col-xl-3 col-lg-4 col-md-6">
