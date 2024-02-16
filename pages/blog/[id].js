@@ -33,7 +33,7 @@ export default function BlogDetails() {
     accessToken: "bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM",
   });
   const apiClient = axios.create({
-    baseURL: "http://127.0.0.1:8000/",
+    baseURL: "https://dabarmedia.com/",
     withCredentials: true
   });
  
@@ -131,6 +131,7 @@ export default function BlogDetails() {
   //     });
   //     const newData = await Promise.all(
   //       story?.items.map(async (item) => {
+              // console.log(item.fields.storyId)
   //         let timez = new Date(item.fields.storyId.sys.updatedAt);
   //         const monthNames = [
   //           "Jan",

@@ -16,7 +16,7 @@ export default function TrendingSlider({ showItem }) {
       });
 
       const apiClient = axios.create({
-        baseURL: "http://127.0.0.1:8000/",
+        baseURL: "https://dabarmedia.com/",
         withCredentials: true
       });
 
@@ -145,7 +145,7 @@ export default function TrendingSlider({ showItem }) {
                                      
                                    
                                 </ul>
-                                <ul className="tgbanner__content-meta list-wrap"><li className="text-black"><Link href={`/blog/${item.id}`}>By {item.writer}</Link></li></ul>
+                                <ul className="tgbanner__content-meta list-wrap"><li className="text-black"><Link href={`/blog/${item.id}`}>By {item.writername}</Link></li></ul>
                                 <h4 className="title tgcommon__hover"><Link href={`/blog/${item.id}`}>{item.heading}</Link></h4>
                                 
                                 

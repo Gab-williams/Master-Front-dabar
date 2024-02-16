@@ -34,7 +34,7 @@ export default function Business() {
   };
 
   const apiClient = axios.create({
-    baseURL: "http://127.0.0.1:8000/",
+    baseURL: "https://dabarmedia.com/",
     withCredentials: true
   });
  
@@ -142,56 +142,56 @@ export default function Business() {
     };
 
     fetchStories();
-    const Local = async () => {
-      let story = await client.getEntries({
-        content_type: "currentstories",
-        select: "fields",
-      });
-      const newData = await Promise.all(
-        story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
-          const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sept",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = timez.getDate();
-          const monthIndex = timez.getMonth();
-          const year = timez.getFullYear();
-          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+    // const Local = async () => {
+    //   let story = await client.getEntries({
+    //     content_type: "currentstories",
+    //     select: "fields",
+    //   });
+    //   const newData = await Promise.all(
+    //     story?.items.map(async (item) => {
+    //       let timez = new Date(item.fields.storyId.sys.updatedAt);
+    //       const monthNames = [
+    //         "Jan",
+    //         "Feb",
+    //         "Mar",
+    //         "Apr",
+    //         "May",
+    //         "Jun",
+    //         "Jul",
+    //         "Aug",
+    //         "Sept",
+    //         "Oct",
+    //         "Nov",
+    //         "Dec",
+    //       ];
+    //       const day = timez.getDate();
+    //       const monthIndex = timez.getMonth();
+    //       const year = timez.getFullYear();
+    //       const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
 
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let answer = data.fields.category;
-          let answriter = writer.fields.name;
-          return {
-            heading: item.fields.storyId.fields.heading,
-            summary: item.fields.storyId.fields.summary,
-            presummary: item.fields.storyId.fields.preSummary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            category: answer,
-            writer: answriter,
-            id: item.sys.id,
-            timez: formattedDate,
-          };
-        })
-      );
-      localStorage.setItem("stories", JSON.stringify(newData));
-    };
-    Local();
+    //       let data = await client.getEntry(
+    //         item.fields.storyId.fields.categoryId.sys.id
+    //       );
+    //       let writer = await client.getEntry(
+    //         item.fields.storyId.fields.writerId.sys.id
+    //       );
+    //       let answer = data.fields.category;
+    //       let answriter = writer.fields.name;
+    //       return {
+    //         heading: item.fields.storyId.fields.heading,
+    //         summary: item.fields.storyId.fields.summary,
+    //         presummary: item.fields.storyId.fields.preSummary,
+    //         thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+    //         category: answer,
+    //         writer: answriter,
+    //         id: item.sys.id,
+    //         timez: formattedDate,
+    //       };
+    //     })
+    //   );
+    //   localStorage.setItem("stories", JSON.stringify(newData));
+    // };
+    // Local();
   }, [hello]);
 
   const handleNext = async(ans) => {
