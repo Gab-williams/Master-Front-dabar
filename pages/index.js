@@ -30,7 +30,8 @@ export default function Home1() {
   });
 const arrxz = ['Editor'];
 let son = JSON.stringify(arrxz)
-console.log(son)
+// console.log(son)
+//https://dabarmedia.com
   const apiClient = axios.create({
     baseURL: "https://dabarmedia.com/",
     withCredentials: true
@@ -777,10 +778,10 @@ const [currentpopular, setcurrentpopular] = useState(1)
                             <li className="category">
                               <Link
                                 href={`/business?hello=${encodeURIComponent(
-                                  item.category
+                                  item.subcategories
                                 )}`}
                               >
-                                {item.category}
+                                {item.subcategories}
                               </Link>
                             </li>
                            
@@ -961,7 +962,7 @@ const [currentpopular, setcurrentpopular] = useState(1)
                     <div className="stories-post__content video__post-content">
                       <ul className="tgbanner__content-meta list-wrap">
                         <li className="category">
-                          <Link href="/blog">{item.category}</Link>
+                          <Link href="/blog">{item.subcategories}</Link>
                         </li>
                         <li>
                           <Link href="/blog">{item.writername}</Link>
@@ -990,10 +991,10 @@ const [currentpopular, setcurrentpopular] = useState(1)
                         <li className="category">
                           <Link
                             href={`/business?hello=${encodeURIComponent(
-                              item.category
+                              item.subcategories
                             )}`}
                           >
-                            {item.category}
+                            {item.subcategories}
                           </Link>
                         </li>
                       </ul>

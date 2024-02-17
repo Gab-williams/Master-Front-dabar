@@ -140,8 +140,8 @@ export default function TrendingSlider({ showItem }) {
                             <div className="trending__post-content">
                                 <ul className="tgbanner__content-meta list-wrap">
                                     <li className="category"><Link
-                                       href={`/business?hello=${encodeURIComponent(item.category)}`}
-                                     >{item.category}</Link></li>
+                                       href={`/business?hello=${encodeURIComponent(item.subcategories)}`}
+                                     >{item.subcategories}</Link></li>
                                      
                                    
                                 </ul>

@@ -32,6 +32,7 @@ export default function BlogDetails() {
     space: "t0pszie0jiqu",
     accessToken: "bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM",
   });
+
   const apiClient = axios.create({
     baseURL: "https://dabarmedia.com/",
     withCredentials: true
@@ -194,6 +195,18 @@ export default function BlogDetails() {
 
       const newData = await Promise.all(
         randomstory.data.success.map(async (item) => {
+          let timez = new Date(item.created_at)
+          const monthNames = [
+           "Jan", "Feb", "Mar",
+           "Apr", "May", "Jun", "Jul",
+           "Aug", "Sept", "Oct",
+           "Nov", "Dec"
+         ];
+               
+         const day = timez.getDate();
+         const monthIndex = timez.getMonth();
+         const year = timez.getFullYear();
+         const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
           
           return {
             heading: item.heading,
@@ -203,6 +216,7 @@ export default function BlogDetails() {
             subcategories: item.category,
             id: item.id,
             writername:item.writer,
+            timez:formattedDate
           };
         })
       );
@@ -270,6 +284,19 @@ export default function BlogDetails() {
     // Handle the absence of fieldsdata.body as needed
   }
 
+
+  let timez = new Date(fieldsdata.created_at)
+  const monthNames = [
+   "Jan", "Feb", "Mar",
+   "Apr", "May", "Jun", "Jul",
+   "Aug", "Sept", "Oct",
+   "Nov", "Dec"
+ ];
+       
+ const day = timez.getDate();
+ const monthIndex = timez.getMonth();
+ const year = timez.getFullYear();
+ const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
 
 
   const convertdata = (bodyx)=>{
@@ -356,7 +383,7 @@ if (htmlTagRegex.test(fieldsdata.body)) {
                         <li>
                           <Link href="/blog">{dataLocial?.writer?dataLocial?.writer:fieldsdata.writer}.</Link>
                         </li>
-                        <li>{dataLocial?.timez}</li>
+                        <li>{formattedDate}</li>
                         <li>{readtime}</li>
                       </ul>
                       <h2 className="title">{fieldsdata.heading}</h2>
