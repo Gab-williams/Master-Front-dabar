@@ -102,24 +102,24 @@ export default function BlogDetails() {
     fetchData();
   }, [id]);
 
-  let localinfo = localStorage.getItem("stories");
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (localinfo) {
-        let story = JSON.parse(localStorage.getItem("stories"));
-        let ans = story.find(
-          (item) =>
-            item.heading?.toLowerCase() == fieldsdata.heading?.toLowerCase()
-        );
+  // let localinfo = localStorage.getItem("stories");
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (localinfo) {
+  //       let story = JSON.parse(localStorage.getItem("stories"));
+  //       let ans = story.find(
+  //         (item) =>
+  //           item.heading?.toLowerCase() == fieldsdata.heading?.toLowerCase()
+  //       );
 
-        setdataLocial((dataLocial) => ans);
-      }
-    }, 2000);
+  //       setdataLocial((dataLocial) => ans);
+  //     }
+  //   }, 2000);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [fieldsdata.heading]);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, [fieldsdata.heading]);
 
   const [random, setrandom] = useState([]);
   // useEffect(() => {
@@ -186,7 +186,7 @@ export default function BlogDetails() {
       // });
     //  randomstories
 
-    let urlz = `/api/randomstories`;
+    let urlz = `/api/randomstories?id=${parseInt(id)}`;
     await  apiClient.get('/sanctum/csrf-cookie')
           let headers = new Headers();
          headers.append('Content-Type', 'application/json')

@@ -16,7 +16,7 @@ export default function TrendingSlider({ showItem }) {
       });
 
       const apiClient = axios.create({
-        baseURL: "https://dabarmedia.com/",
+        baseURL: "http://127.0.0.1:8000/",
         withCredentials: true
       });
 

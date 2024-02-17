@@ -28,9 +28,11 @@ export default function Home1() {
     timeout: 10000,
     autoRetry: true,
   });
-
+const arrxz = ['Editor'];
+let son = JSON.stringify(arrxz)
+console.log(son)
   const apiClient = axios.create({
-    baseURL: "https://dabarmedia.com/",
+    baseURL: "http://127.0.0.1:8000/",
     withCredentials: true
   });
 
@@ -352,7 +354,8 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
 
   useEffect(()=>{
     const Feature = async()=>{
-      let stories = await client.getEntries({content_type:"stories", select:'fields'})
+      // select:'fields'
+      let stories = await client.getEntries({content_type:"stories"})
       // console.log(stories)
       const options = {
         renderNode: {
@@ -366,9 +369,9 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
           },
         },
       };
-
+      console.log(stories)
       const newData = await Promise.all(
-   
+          
         stories?.items.map(async (item) => {
               // console.log(item)
           // const contentbody = documentToReactComponents(item.fields.body, options);
@@ -382,7 +385,8 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
              mainImage:item.fields.mainImage?.fields.file.url,
             writer:item.fields.writerId.fields.name,
             readTime:item.fields.readTime,
-            category:item.fields.categoryId.fields.category
+            category:item.fields.categoryId.fields.category,
+            date:item.sys.createdAt
 
            }
 
@@ -391,10 +395,10 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
         })
       )
       // console.log(newData)
-      const apiClient = axios.create({
-        baseURL: "http://127.0.0.1:8000/",
-        withCredentials: true
-      });
+      // const apiClient = axios.create({
+      //   baseURL: "http://127.0.0.1:8000/",
+      //   withCredentials: true
+      // });
 
       // for (let i = 0; i < newData.length; i++) {
       //   let item = newData[i];
@@ -408,7 +412,8 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
       //   formData.append('body', item.body)
       //   formData.append('presummary', item.summary)
       //   formData.append("heading", item.heading)
-      
+      //   formData.append("date", item.date)
+
       //   let url = 'api/stories_from_client';
       
       //   apiClient.get('/sanctum/csrf-cookie').then(() => {
