@@ -58,7 +58,8 @@ export default function Business() {
 
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
+          let timez = new Date(item.fields.storyId?.sys.updatedAt);
+          console.log(item.fields.storyId?.sys)
           const monthNames = [
             "Jan",
             "Feb",
@@ -93,19 +94,27 @@ export default function Business() {
             console.error('Error fetching entry:', error);
           }
           
-          let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
-          let answer = data.fields.category;
-          let answriter = writer.fields.name;
-          return {
-            heading: item.fields.storyId.fields.heading,
-            summary: item.fields.storyId.fields.summary,
-            presummary: item.fields.storyId.fields.preSummary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            category: answer,
-            writer: answriter,
-            id: item.sys.id,
-            timez: formattedDate,
-          };
+          let writerId = item.fields.storyId?.fields?.writerId?.sys?.id;
+
+          if (writerId) {
+            let writer = await client.getEntry(writerId);
+            let answer = data.fields.category;
+            let answriter = writer.fields.name;
+            return {
+              heading: item.fields.storyId.fields.heading,
+              summary: item.fields.storyId.fields.summary,
+              presummary: item.fields.storyId.fields.preSummary,
+              thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+              category: answer,
+              writer: answriter,
+              id: item.sys.id,
+              timez: formattedDate,
+            };
+          } else {
+            console.warn('Missing writerId for item:', item);
+            // Handle the case where writerId is missing
+            return null; // Or provide a default value
+          }
         })
       );
       // setorignalarr(n)
@@ -113,10 +122,16 @@ export default function Business() {
       let arrrandom =  shuffledArray.slice(0, 4); 
       setRandomx(arrrandom)
 
-      let filterdata = newData.filter(
-        (item) => item.category.toLowerCase() == hello.toLowerCase()
-      );
+      let filterdata = newData.filter((item) => {
+        const itemCategory = item?.category?.toLowerCase();
+        const helloLowerCase = hello?.toLowerCase();
+      
+        // Check if both itemCategory and helloLowerCase are defined before comparison
+        return itemCategory && helloLowerCase && itemCategory === helloLowerCase;
+      });
+      
       setorignalarr(filterdata);
+      
 
       ReactGA.event({
         category: hello,
@@ -140,46 +155,50 @@ export default function Business() {
       });
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
-          const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sept",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = timez.getDate();
-          const monthIndex = timez.getMonth();
-          const year = timez.getFullYear();
-          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let answer = data.fields.category;
-          let answriter = writer.fields.name;
-          return {
-            heading: item.fields.storyId.fields.heading,
-            summary: item.fields.storyId.fields.summary,
-            presummary: item.fields.storyId.fields.preSummary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            category: answer,
-            writer: answriter,
-            id: item.sys.id,
-            timez: formattedDate,
-          };
+          if (item.fields.storyId && item.fields.storyId.sys) {
+            let timez = new Date(item.fields.storyId.sys.updatedAt);
+            const monthNames = [
+              "Jan", "Feb", "Mar",
+              "Apr", "May", "Jun", "Jul",
+              "Aug", "Sept", "Oct",
+              "Nov", "Dec"
+            ];   
+            const day = timez.getDate();
+            const monthIndex = timez.getMonth();
+            const year = timez.getFullYear();
+            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+            
+            let writerId = item.fields.storyId?.fields?.writerId?.sys?.id;
+      
+            if (writerId) {
+              let writer = await client.getEntry(writerId);
+              let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+              let answer = data.fields.category;
+              let answriter = writer.fields.name;
+      
+              return {
+                heading: item.fields.storyId.fields.heading,
+                summary: item.fields.storyId.fields.summary,
+                presummary: item.fields.storyId.fields.preSummary,
+                thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+                category: answer,
+                writer: answriter,
+                id: item.sys.id,
+                timez: formattedDate,
+              };
+            } else {
+              console.warn('Missing writerId for item:', item);
+              // Handle the case where writerId is missing
+              return null; // Or provide a default value
+            }
+          } else {
+            console.warn('Missing required properties for item:', item);
+            // Handle the case where required properties are missing
+            return null; // Or provide a default value
+          }
         })
       );
+      
       localStorage.setItem("stories", JSON.stringify(newData));
     };
     Local();

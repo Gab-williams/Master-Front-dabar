@@ -207,42 +207,54 @@ export default function Home1() {
     Popular()
 
  
-    const Local = async()=>{
-      let story = await client.getEntries({content_type:"currentstories",select:'fields', })
+    const Local = async () => {
+      let story = await client.getEntries({ content_type: "currentstories", select: 'fields' });
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt)
-            const monthNames = [
-              "Jan", "Feb", "Mar",
-              "Apr", "May", "Jun", "Jul",
-              "Aug", "Sept", "Oct",
-              "Nov", "Dec"
-            ];   
-            const day = timez.getDate();
-            const monthIndex = timez.getMonth();
-            const year = timez.getFullYear();
-            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-            
-           
+          let timez; // Declare timez outside the if block
+    
+          if (item.fields.storyId && item.fields.storyId.sys) {
+            timez = new Date(item.fields.storyId.sys.updatedAt);
+          } else {
+            console.warn('Missing required properties for item:', item);
+            // Handle the case where required properties are missing
+            return null; // Or provide a default value
+          }
+    
+          const monthNames = [
+            "Jan", "Feb", "Mar",
+            "Apr", "May", "Jun", "Jul",
+            "Aug", "Sept", "Oct",
+            "Nov", "Dec"
+          ];
+          const day = timez.getDate();
+          const monthIndex = timez.getMonth();
+          const year = timez.getFullYear();
+          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+    
           let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-          let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id)
+          let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
           let answer = data.fields.category;
-           let answriter = writer.fields.name
-           return {
+          let answriter = writer.fields.name;
+    
+          return {
             heading: item.fields.storyId.fields.heading,
             summary: item.fields.storyId.fields.summary,
-            presummary:item.fields.storyId.fields.preSummary,
-            thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
+            presummary: item.fields.storyId.fields.preSummary,
+            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
             category: answer,
-            writer:answriter,
-            id:item.sys.id,
-            timez:formattedDate
-           };
-         })
-       );
-     localStorage.setItem("stories", JSON.stringify(newData))
-    }
-    Local()
+            writer: answriter,
+            id: item.sys.id,
+            timez: formattedDate
+          };
+        })
+      );
+    
+      localStorage.setItem("stories", JSON.stringify(newData));
+    };
+    
+    Local();
+    
 
     var myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
@@ -686,7 +698,7 @@ export default function Home1() {
               ))}
             </div>
             <div className="row">
-              {popular.slice(2, 22)?.map((item, i) => (
+              {popular.slice(2, 14)?.map((item, i) => (
                 <div className="col-xl-3 col-lg-4 col-md-6" key={i}>
                   <div className="trending__post stories-small-post__item">
                     <div className="trending__post-thumb tgImage__hover">
