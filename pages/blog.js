@@ -11,7 +11,7 @@ import {
     TwitterShareButton,
     
   } from "react-share";
-
+  import axios from 'axios';
 import { useEffect, useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -27,18 +27,29 @@ export default function Blog() {
     const [numberofpage, setnumberofpage] = useState(1)
     const [pageSize, setpageSize] = useState(6)
     const [currentPage, setcurrentPage] = useState(1);
-    const client =  createClient({
-        space:'t0pszie0jiqu',
-        accessToken:'bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM',
+    const [lastpage, setlastpage] = useState(1)
+
+ 
+
+      const apiClient = axios.create({
+        baseURL: "https://dabarmedia.com/",
+        withCredentials: true
       });
   
     useEffect(()=>{
 
         const Local = async()=>{
-            let story = await client.getEntries({content_type:"currentstories",select:'fields', })
+         
+      let urlz = `/api/randomcategorystrories`;
+      await  apiClient.get('/sanctum/csrf-cookie')
+            let headers = new Headers();
+           headers.append('Content-Type', 'application/json')
+            let single =  await  apiClient.get(urlz,headers)
+          
+            setlastpage(single.data.success.last_page)
             const newData = await Promise.all(
-              story?.items.map(async (item) => {
-                let timez = new Date(item.fields.storyId.sys.updatedAt)
+              single.data.success.data.map(async (item) => {
+                let timez = new Date(item.created_at)
                   const monthNames = [
                     "Jan", "Feb", "Mar",
                     "Apr", "May", "Jun", "Jul",
@@ -51,40 +62,66 @@ export default function Blog() {
                   const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
                   
                  
-                let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-                let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id)
-                let answer = data.fields.category;
-                 let answriter = writer.fields.name
+            
                  return {
-                  heading: item.fields.storyId.fields.heading,
-                  summary: item.fields.storyId.fields.summary,
-                  presummary:item.fields.storyId.fields.preSummary,
-                  thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
-                  category: answer,
-                  writer:answriter,
-                  id:item.sys.id,
+                  heading: item.heading,
+                  summary: item.presummary,
+                  presummary:item.presummary,
+                  thumbnail:item.main_image,
+                  category: item.category,
+                  writer:item.writer,
+                  id:item.id,
                   timez:formattedDate
                  };
                })
              );
              setorignalarr(newData)
-             let page = Math.ceil(newData.length / 6);
-             const indexofLastPost =  currentPage * pageSize;
-             const indexofFirstPost = indexofLastPost - pageSize;
-             let ansdata = newData?.slice(indexofFirstPost, indexofLastPost);
-             setData(ansdata)
-             setnumberofpage(page)
+          
+             setData(newData)
+             
           }
           Local()
     },[])
 
-    const handleNext =(ans)=>{
+    const handleNext = async(ans)=>{
       let number = ans.selected + 1;  
-      const indexofLastPost =  number * pageSize;
-      const indexofFirstPost = indexofLastPost - pageSize;
-      let ansdata = orignalarr.slice(indexofFirstPost, indexofLastPost);
-      console.log(ansdata)
-      setData(ansdata)
+      let urlz = `/api/randomcategorystrories?number=${parseInt(number)}`;
+      await  apiClient.get('/sanctum/csrf-cookie')
+            let headers = new Headers();
+           headers.append('Content-Type', 'application/json')
+            let single =  await  apiClient.get(urlz,headers)
+          
+            setlastpage(single.data.success.last_page)
+            const newData = await Promise.all(
+              single.data.success.data.map(async (item) => {
+                let timez = new Date(item.created_at)
+                  const monthNames = [
+                    "Jan", "Feb", "Mar",
+                    "Apr", "May", "Jun", "Jul",
+                    "Aug", "Sept", "Oct",
+                    "Nov", "Dec"
+                  ];   
+                  const day = timez.getDate();
+                  const monthIndex = timez.getMonth();
+                  const year = timez.getFullYear();
+                  const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+                  
+                 
+            
+                 return {
+                  heading: item.heading,
+                  summary: item.presummary,
+                  presummary:item.presummary,
+                  thumbnail:item.main_image,
+                  category: item.category,
+                  writer:item.writer,
+                  id:item.id,
+                  timez:formattedDate
+                 };
+               })
+             );
+
+      setData(newData)
       }
 
     return (
@@ -166,17 +203,21 @@ export default function Blog() {
                                             <li><Link href="#">06</Link></li>
                                             <li><Link href="#"><i className="fas fa-angle-double-right" /></Link></li>
                                         </ul> */}
-                                   <ReactPaginate
-  previousLabel={'<'}
-  nextLabel={'>'}
-  pageCount={numberofpage}
-  breakLabel={"..."}
-  marginPagesDisplayed={0}
-  pageRangeDisplayed={0}
-  onPageChange={handleNext}
-  containerClassName={'list-wrap'}
-  pageLinkClassName={''}
-/>
+                                          <ReactPaginate
+                                      previousLabel={"<"}
+                                      nextLabel={">"}
+                                      pageCount={lastpage}
+                                      breakLabel={"..."}
+                                      marginPagesDisplayed={1}
+                                      pageRangeDisplayed={1}
+                                      onPageChange={handleNext}
+                                      containerClassName={"list-wrap"}
+                                      // pageclassNameName={' '}
+                                      pageLinkClassName={""}
+                                      // previousClassName={'bg-gray-400 rounded-lg px-2 py-1 text-lg justify-center items-center text-white'}
+                                      // nextClassName={'bg-gray-400 px-2 py-1 text-lg justify-center items-center text-white rounded-lg '}
+                                    />
+
                                     </div>
                                 </div>
                             </div>
