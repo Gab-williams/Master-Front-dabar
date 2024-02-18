@@ -90,12 +90,14 @@ export default function BlogDetails() {
     const intervalId = setInterval(() => {
       if (localinfo) {
         let story = JSON.parse(localStorage.getItem("stories"));
-        let ans = story.find(
-          (item) =>
-            item.heading?.toLowerCase() == fieldsdata.heading?.toLowerCase()
-        );
-
+        let ans = story?.find((item) => {
+          return (
+            item?.heading?.toLowerCase() === fieldsdata?.heading?.toLowerCase()
+          );
+        });
+        
         setdataLocial((dataLocial) => ans);
+        
       }
     }, 2000);
 
@@ -114,46 +116,42 @@ export default function BlogDetails() {
       });
       const newData = await Promise.all(
         story?.items.map(async (item) => {
-          let timez = new Date(item.fields.storyId.sys.updatedAt);
-          const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sept",
-            "Oct",
-            "Nov",
-            "Dec",
-          ];
-          const day = timez.getDate();
-          const monthIndex = timez.getMonth();
-          const year = timez.getFullYear();
-          const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let answer = data.fields.category;
-          let answriter = writer.fields.name;
-          return {
-            heading: item.fields.storyId.fields.heading,
-            summary: item.fields.storyId.fields.summary,
-            presummary: item.fields.storyId.fields.preSummary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            category: answer,
-            writer: answriter,
-            id: item.sys.id,
-            timez: formattedDate,
-          };
+          if (item.fields.storyId && item.fields.storyId.sys) {
+            let timez = new Date(item.fields.storyId.sys.updatedAt);
+            const monthNames = [
+              "Jan", "Feb", "Mar",
+              "Apr", "May", "Jun", "Jul",
+              "Aug", "Sept", "Oct",
+              "Nov", "Dec"
+            ];
+      
+            const day = timez.getDate();
+            const monthIndex = timez.getMonth();
+            const year = timez.getFullYear();
+            const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+      
+            let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+            let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
+            let answer = data.fields.category;
+            let answriter = writer.fields.name;
+      
+            return {
+              heading: item.fields.storyId.fields.heading,
+              summary: item.fields.storyId.fields.summary,
+              presummary: item.fields.storyId.fields.preSummary,
+              thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+              category: answer,
+              writer: answriter,
+              id: item.sys.id,
+              timez: formattedDate
+            };
+          } else {
+            console.warn('Missing required properties for item:', item);
+            return null;
+          }
         })
       );
+      
       localStorage.setItem("stories", JSON.stringify(newData));
     };
     Local();
@@ -169,25 +167,62 @@ export default function BlogDetails() {
 
       const newData = await Promise.all(
         newstories?.items.map(async (item) => {
-          let data = await client.getEntry(
-            item.fields.storyId.fields.categoryId.sys.id
-          );
-          let writer = await client.getEntry(
-            item.fields.storyId.fields.writerId.sys.id
-          );
-          let answer = data.fields.category;
-          let answriter = writer.fields.name;
-          return {
-            heading: item.fields.storyId.fields.heading,
-            summary: item.fields.storyId.fields.summary,
-            thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
-            category: answer,
-            writer: answriter,
-            id: item.sys.id,
-          };
+          if (
+            item.fields.storyId &&
+            item.fields.storyId.fields &&
+            item.fields.storyId.fields.categoryId &&
+            item.fields.storyId.fields.writerId &&
+            item.fields.storyId.fields.heading &&
+            item.fields.storyId.fields.summary &&
+            item.fields.storyId.fields.thumbnail &&
+            item.fields.storyId.fields.thumbnail.fields &&
+            item.fields.storyId.fields.thumbnail.fields.file &&
+            item.fields.storyId.fields.thumbnail.fields.file.url
+          ) {
+            let data = await client.getEntry(
+              item.fields.storyId.fields.categoryId.sys.id
+            );
+            let writer = await client.getEntry(
+              item.fields.storyId.fields.writerId.sys.id
+            );
+      
+            if (data && writer) {
+              let answer = data.fields.category;
+              let answriter = writer.fields.name;
+      
+              return {
+                heading: item.fields.storyId.fields.heading,
+                summary: item.fields.storyId.fields.summary,
+                thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+                category: answer,
+                writer: answriter,
+                id: item.sys.id,
+              };
+            } else {
+              console.warn('Missing data or writer for item:', item);
+              return null;
+            }
+          } else {
+            console.warn('Missing required properties for item:', item);
+            return null;
+          }
         })
       );
-      let filterdata =  newData.filter((item)=>item.id != id)
+      
+      let filterdata = newData ? newData.filter((item) => {
+        if (item && item.id !== null) {
+          console.log("Item:", item);
+          console.log("Item ID:", item.id);
+          console.log("Target ID:", id);
+          return item.id !== id;
+        } else {
+          console.warn("Item is null or missing ID:", item);
+          return false;
+        }
+      }) : [];
+      
+
+
       const shuffledArray = [...filterdata];
       for (let i = shuffledArray.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));

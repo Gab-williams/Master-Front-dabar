@@ -38,35 +38,45 @@ export default function Blog() {
             let story = await client.getEntries({content_type:"currentstories",select:'fields', })
             const newData = await Promise.all(
               story?.items.map(async (item) => {
-                let timez = new Date(item.fields.storyId.sys.updatedAt)
+                // Check if item.fields.storyId and item.fields.storyId.sys are defined
+                if (item.fields.storyId && item.fields.storyId.sys) {
+                  let timez = new Date(item.fields.storyId.sys.updatedAt);
+            
                   const monthNames = [
                     "Jan", "Feb", "Mar",
                     "Apr", "May", "Jun", "Jul",
                     "Aug", "Sept", "Oct",
                     "Nov", "Dec"
-                  ];   
+                  ];
+            
                   const day = timez.getDate();
                   const monthIndex = timez.getMonth();
                   const year = timez.getFullYear();
                   const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
-                  
-                 
-                let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
-                let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id)
-                let answer = data.fields.category;
-                 let answriter = writer.fields.name
-                 return {
-                  heading: item.fields.storyId.fields.heading,
-                  summary: item.fields.storyId.fields.summary,
-                  presummary:item.fields.storyId.fields.preSummary,
-                  thumbnail:item.fields.storyId.fields.thumbnail.fields.file.url,
-                  category: answer,
-                  writer:answriter,
-                  id:item.sys.id,
-                  timez:formattedDate
-                 };
-               })
-             );
+            
+                  let data = await client.getEntry(item.fields.storyId.fields.categoryId.sys.id);
+                  let writer = await client.getEntry(item.fields.storyId.fields.writerId.sys.id);
+                  let answer = data.fields.category;
+                  let answriter = writer.fields.name;
+            
+                  return {
+                    heading: item.fields.storyId.fields.heading,
+                    summary: item.fields.storyId.fields.summary,
+                    presummary: item.fields.storyId.fields.preSummary,
+                    thumbnail: item.fields.storyId.fields.thumbnail.fields.file.url,
+                    category: answer,
+                    writer: answriter,
+                    id: item.sys.id,
+                    timez: formattedDate
+                  };
+                } else {
+                  console.warn('Missing required properties for item:', item);
+                  // Handle the case where required properties are missing
+                  return null; // Or provide a default value
+                }
+              })
+            );
+            
              setorignalarr(newData)
              let page = Math.ceil(newData.length / 6);
              const indexofLastPost =  currentPage * pageSize;
