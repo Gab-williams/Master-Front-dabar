@@ -688,19 +688,16 @@ export default function Business() {
                 ) : (
                   <div className="pagination__wrap">
                     <ReactPaginate
-                      previousLabel={"<"}
-                      nextLabel={">"}
-                      pageCount={numberofpage}
-                      breakLabel={"..."}
-                      marginPagesDisplayed={1}
-                      pageRangeDisplayed={1}
-                      onPageChange={handleNext}
-                      containerClassName={"list-wrap"}
-                      // pageclassNameName={' '}
-                      pageLinkClassName={""}
-                      // previousClassName={'bg-gray-400 rounded-lg px-2 py-1 text-lg justify-center items-center text-white'}
-                      // nextClassName={'bg-gray-400 px-2 py-1 text-lg justify-center items-center text-white rounded-lg '}
-                    />
+  previousLabel={'<'}
+  nextLabel={'>'}
+  pageCount={numberofpage}
+  breakLabel={"..."}
+  marginPagesDisplayed={0}
+  pageRangeDisplayed={0}
+  onPageChange={handleNext}
+  containerClassName={'list-wrap'}
+  pageLinkClassName={''}
+/>
                   </div>
                 )}
               </div>
