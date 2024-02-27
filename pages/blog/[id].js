@@ -296,7 +296,7 @@ export default function BlogDetails() {
  const day = timez.getDate();
  const monthIndex = timez.getMonth();
  const year = timez.getFullYear();
- const formattedDate = `${day} ${monthNames[monthIndex]} ${year}`;
+ const formattedDate = `${day?day:""} ${monthNames[monthIndex?monthIndex:0]} ${year?year:""}`;
 
 
   const convertdata = (bodyx)=>{
@@ -305,7 +305,11 @@ export default function BlogDetails() {
     const htmlTagRegex = /<[a-z][\s\S]*>/;
 
 if (htmlTagRegex.test(fieldsdata.body)) {
-  return <Markup content={fieldsdata.body} />
+  var styleRegex = /style\s*=\s*"([^"]*)"/g;
+
+// Replace the matched style attribute with an empty string
+var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
+  return <Markup content={stringWithoutStyle} />
   }else{
 
     try {
@@ -332,8 +336,8 @@ if (htmlTagRegex.test(fieldsdata.body)) {
     <>
       {fieldsdata && (
         <Layout
-          breadcrumbCategory={category}
-          breadcrumbPostTitle={fieldsdata.heading}
+          breadcrumbCategory={category?category:''}
+          breadcrumbPostTitle={fieldsdata.heading?fieldsdata.heading:""}
         >
           <>
             <section className="blog-details-area pt-80 pb-100">
@@ -381,15 +385,15 @@ if (htmlTagRegex.test(fieldsdata.body)) {
                           </Link>
                         </li>
                         <li>
-                          <Link href="/blog">{dataLocial?.writer?dataLocial?.writer:fieldsdata.writer}.</Link>
+                          <Link href="/blog">{fieldsdata.writer?fieldsdata.writer:""}.</Link>
                         </li>
-                        <li>{formattedDate}</li>
-                        <li>{readtime}</li>
+                        <li>{formattedDate?formattedDate:""}</li>
+                        <li>{readtime?readtime:""}</li>
                       </ul>
-                      <h2 className="title">{fieldsdata.heading}</h2>
+                      <h2 className="title">{fieldsdata.heading?fieldsdata.heading:""}</h2>
                       <div className="blog-details-thumb">
                         <img
-                          src={fieldsdata.main_image}
+                          src={fieldsdata.main_image?fieldsdata.main_image:""}
                           alt=""
                           style={{ width: "100%" }}
                         />
