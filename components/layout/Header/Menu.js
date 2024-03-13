@@ -1,18 +1,23 @@
 import dynamic from 'next/dynamic'
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react";
-
+import { useState, useContext, useEffect } from "react";
+import { context } from "../../../components/context";
+import axios from 'axios';
 const ThemeSwitch = dynamic(() => import('@/components/elements/ThemeSwitch'), {
     ssr: false
 })
 
 export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanvasNav, logoAlt, white }) {
+  const created = useContext(context);
+  const {selectedx, setSelectedx} = created
     const router = useRouter()
     const {id, hello} = router.query
  
     const [searchToggle, setSearchToggle] = useState(false)
     const searchHandle = () => setSearchToggle(!searchToggle)
+    const [categoryMenux, SetcategoryMenux] = useState([])
+
     const categoryMenu = [
         {
           title: "Business Insights",
@@ -58,6 +63,59 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
         },
       ];
   
+
+      useEffect(()=>{
+
+        const changlang = async (selectedx, word) => {
+          const options = {
+              method: 'POST',
+              url: 'https://deepl-translator2.p.rapidapi.com/translate',
+              headers: {
+                  'content-type': 'application/json',
+                  'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+                  'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+              },
+              data: {
+                  source_lang: 'EN',
+                  target_lang: selectedx,
+                  text: word
+              }
+          };
+    
+          let res = await axios.request(options);
+          return res.data;
+      };
+
+        const whole = async()=>{
+          if (selectedx === 'GB') {
+      
+            SetcategoryMenux(categoryMenu);
+        } else if (selectedx !== "" && selectedx !== 'GB') {
+          console.log("here", selectedx)
+          const translatedData = await Promise.all(categoryMenu.map(async (item) => {
+            let title = await changlang(selectedx, item.title);
+    
+      
+            return {
+              title: title.data,
+              img: item.img,
+       
+            };
+        }));
+        SetcategoryMenux(translatedData);
+        
+  
+        }else {
+          SetcategoryMenux(categoryMenu);
+  
+            }
+
+        }
+
+        whole()
+      
+
+      },[selectedx])
     return (
         <>
             <div className="tgmenu__wrap">
@@ -83,7 +141,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
                     }
                     <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-lg-flex">
                         <ul className="navigation">
-                            {categoryMenu?.slice(0,3).map((item, i)=>{
+                            {categoryMenux?.slice(0,3).map((item, i)=>{
                               if(hello){
                                 return <li key={i} className={hello.toLowerCase() == item.title.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.title)}`}>{item.title}</Link></li>
 
@@ -99,7 +157,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
                             <li className="menu-item-has-children"><Link href="#">More</Link>
                                 <ul className="sub-menu">
 
-                                {categoryMenu?.slice(3,7).map((item, i)=>{
+                                {categoryMenux?.slice(3,7).map((item, i)=>{
                               if(hello){
                                 return <li key={i} className={hello.toLowerCase() == item.title.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.title)}`}>{item.title}</Link></li>
 

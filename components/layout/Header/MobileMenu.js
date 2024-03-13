@@ -1,11 +1,18 @@
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useContext, useEffect } from "react";
+import { context } from "../../../components/context";
 
 const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
+
+  const created = useContext(context);
+  const {selectedx, setSelectedx} = created
+
   const [isActive, setIsActive] = useState({
       status: false,
       key: "",
   })
+
+  const [categoryMenux, SetcategoryMenux] = useState([])
 
   const handleToggle = (key) => {
       if (isActive.key === key) {
@@ -75,6 +82,60 @@ const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
         },
       ];
 
+
+      useEffect(()=>{
+
+        const changlang = async (selectedx, word) => {
+          const options = {
+              method: 'POST',
+              url: 'https://deepl-translator2.p.rapidapi.com/translate',
+              headers: {
+                  'content-type': 'application/json',
+                  'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+                  'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+              },
+              data: {
+                  source_lang: 'EN',
+                  target_lang: selectedx,
+                  text: word
+              }
+          };
+    
+          let res = await axios.request(options);
+          return res.data;
+      };
+
+        const whole = async()=>{
+          if (selectedx === 'GB') {
+      
+            SetcategoryMenux(categoryMenu);
+        } else if (selectedx !== "" && selectedx !== 'GB') {
+          console.log("here", selectedx)
+          const translatedData = await Promise.all(categoryMenu.map(async (item) => {
+            let title = await changlang(selectedx, item.title);
+    
+      
+            return {
+              title: title.data,
+              img: item.img,
+       
+            };
+        }));
+        SetcategoryMenux(translatedData);
+        
+  
+        }else {
+          SetcategoryMenux(categoryMenu);
+  
+            }
+
+        }
+
+        whole()
+      
+
+      },[selectedx])
+
     return (
         <>
             <div className="tgmobile__menu">
@@ -92,7 +153,7 @@ const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
                     </div> */}
                     <div className="tgmobile__menu-outer">
                         <ul className="navigation">
-                            {categoryMenu.map((item,i)=>{
+                            {categoryMenux.map((item,i)=>{
                                 return <li className="active menu-item-has-children" key={i}> <Link href={`/business?hello=${encodeURIComponent(item.title)}`} onClick={handleCloseMenu}>{item.title}</Link> </li>
 
                             })}

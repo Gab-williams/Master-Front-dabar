@@ -9,7 +9,7 @@ import {
 } from "react-share";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef  } from "react";
 import data from "../../util/blogData";
 import { createClient } from "contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
@@ -169,6 +169,26 @@ export default function BlogDetails() {
 
 
   useEffect(()=>{
+    const changlang = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+
+      let res = await axios.request(options);
+      return res.data;
+  };
+
     const recentstories = async () => {
       // let newstories = await client.getEntries({
       //   content_type: "currentstories",
@@ -219,13 +239,40 @@ export default function BlogDetails() {
       // // Randomly select two objects
       // const ans = shuffledArray.slice(0, 2)
     
+      // setrandom(newData);
+
+      if (selectedx === 'GB') {
+     
+        setrandom(newData);
+    } else if (selectedx !== "" && selectedx !== 'GB') {
+      console.log("here", selectedx)
+      const translatedData = await Promise.all(newData.map(async (item) => {
+        let heading = await changlang(selectedx, item.heading);
+        let presummary = await changlang(selectedx, item.summary);
+        let category = await changlang(selectedx, item.subcategories);
+        let timez = await changlang(selectedx, item.timez);
+  
+        return {
+            heading: heading.data,
+            summary: presummary.data,
+            thumbnail: item.thumbnail,
+            subcategories: category.data,
+            id: item.id,
+            writername: item.writername,
+            timez: timez.data
+        };
+    }));
+    setrandom(translatedData);
+
+    }else {
       setrandom(newData);
-      // console.log(arrx)
-      // setData(Data=>arrx)
+
+        }
+     
     };
 
     recentstories();
-  },[id])
+  },[id, selectedx])
 
   useEffect(()=>{
     ReactGA.initialize("G-J8HLPZVV8W");
@@ -320,10 +367,14 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
 // console.log(body)
   }
 
-  const [contentx, setContextx] = useState("")
 
+  // const isStringArray = Array.isArray(JSON.parse(fieldsdata.body));
+  // console.log(isStringArray)
+
+  // console.log(body)
+  const contRef = useRef(null);
+  const titleRef = useRef(null)
   useEffect(()=>{
-
     
     const changlang = async (selectedx, word) => {
       const options = {
@@ -345,76 +396,48 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
       return res.data;
   };
 
+   const bodylang = async()=>{
+    const cont = contRef.current;
+     const titler =  titleRef.current
+    if (cont && fieldsdata.body && titler) {
+     // const nonEmptyNodes = Array.from(cont.childNodes).filter(node =>  node.textContent.trim() !== '');
+      // console.log( titler.childNodes)
+        let titlexs = document.querySelector(".headingxd")
+        let dateandtime = document.querySelector(".dateandtime")
+        let readtimexs = document.querySelector(".readtime")
+        if (selectedx === 'GB') {
+          titlexs.innerHTML = titlexs.innerText
+          dateandtime.innerHTML = dateandtime.innerText
+          readtimexs.innerHTML = readtimexs.innerText
+        }else if (selectedx !== "" && selectedx !== 'GB'){
+          let anstitlexs =  await changlang(selectedx, titlexs.innerText)
+         let ansdateandtime =  await changlang(selectedx, dateandtime.innerText)
+          let ansreadtimexs =   await changlang(selectedx, readtimexs.innerText)
+          titlexs.innerHTML = anstitlexs.data
+          dateandtime.innerHTML = ansdateandtime.data
+          readtimexs.innerHTML = ansreadtimexs.data
+        }else{
+          titlexs.innerHTML = titlexs.innerText
+          dateandtime.innerHTML = dateandtime.innerText
+        }
+      for (var i = 0; i < cont.childNodes.length; i++) {
+        if (selectedx === 'GB') {
+          cont.childNodes[i].innerHTML =  cont.childNodes[i].innerText
+        }else if (selectedx !== "" && selectedx !== 'GB' && cont.childNodes[i].innerText.trim() != "" ) {
+          // console.log(cont.childNodes[i].innerHTML)
+          let anslang = await changlang(selectedx, cont.childNodes[i].innerText)
+        // console.log(anslang.data)
+       cont.childNodes[i].innerHTML =  anslang.data
 
-
-  const bodylang = async()=>{
-
-    const htmlTagRegex = /<[a-z][\s\S]*>/;
-
-    if (htmlTagRegex.test(fieldsdata.body)) {
-      var styleRegex = /style\s*=\s*"([^"]*)"/g;
-    
-    // Replace the matched style attribute with an empty string
-    var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
-      let word = <Markup content={stringWithoutStyle} />
-       
-      if (selectedx === 'GB') {
-        
-        setContextx(word);
-    } else if (selectedx !== "" && selectedx !== 'GB') {
-   
-   let answord =  await changlang(selectedx, word).data
-    setContextx(answord)
-
-    }else {
-      setContextx(word)
+        }else{
+          cont.childNodes[i].innerHTML =  cont.childNodes[i].innerText
 
         }
-
-
-
-      }else{
-    
-        try {
-          const converted = JSON.parse(fieldsdata.body);
-          
-          if (typeof converted !== 'undefined' && Object.keys(converted).length > 0) {
-          
-            let word = documentToReactComponents(converted);
-            console.log(word)
-            if (selectedx === 'GB') {
-        
-              setContextx(word);
-          } else if (selectedx !== "" && selectedx !== 'GB') {
-         
-         let answord =  await changlang(selectedx, word).data
-          setContextx(answord)
-      
-          }else {
-            setContextx(word)
-      
-              }
-
-          } 
-        } catch (error) {
-          // Handle the error as needed
-        }
-      
-     
       }
-
-  }
-
-  bodylang()
-  
-
-  },[selectedx, id])
-console.log("hello", contentx)
-  
-  // const isStringArray = Array.isArray(JSON.parse(fieldsdata.body));
-  // console.log(isStringArray)
-
-  // console.log(body)
+    }
+   }
+   bodylang()
+  },[fieldsdata.body, selectedx])
   return (
     <>
       {fieldsdata && (
@@ -470,10 +493,10 @@ console.log("hello", contentx)
                         <li>
                           <Link href="/blog">{fieldsdata.writer?fieldsdata.writer:""}.</Link>
                         </li>
-                        <li>{formattedDate?formattedDate:""}</li>
-                        <li>{readtime?readtime:""}</li>
+                        <li className="dateandtime">{formattedDate?formattedDate:""}</li>
+                        <li className="readtime">{readtime?readtime:""}</li>
                       </ul>
-                      <h2 className="title">{fieldsdata.heading?fieldsdata.heading:""}</h2>
+                      <h2 className="title headingxd" ref={titleRef}>{fieldsdata.heading?fieldsdata.heading:""}</h2>
                       <div className="blog-details-thumb">
                         <img
                           src={fieldsdata.main_image?fieldsdata.main_image:""}
@@ -487,8 +510,8 @@ console.log("hello", contentx)
                                 <div className="blog-details-images ">
                                   <div className="row ">
                                     <div className="col-md-12 col-sm-6">
-                                      <div className="details-inner-image ">
-                                          {contentx}
+                                      <div className="details-inner-image" id="allbody" ref={contRef}>
+                                          {convertdata()}
                                       </div>
                                     </div>
                                   </div>
@@ -567,7 +590,7 @@ console.log("hello", contentx)
                     </div>
                   </div>
                   <div className="col-xl-3 col-lg-4 col-md-6">
-                    <BlogSidebar writer={dataLocial?.writer?dataLocial?.writer:fieldsdata.writer} />
+                    <BlogSidebar writer={dataLocial?.writer?dataLocial?.writer:fieldsdata.writer} selectedx={selectedx} />
                   </div>
                 </div>
               </div>

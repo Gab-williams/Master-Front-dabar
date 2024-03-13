@@ -2,9 +2,79 @@ import Link from "next/link";
 import InstagramSidebarSlider from "../slider/InstagramSidebarSlider";
 import SidePostSlider from "../slider/SidePostSlider";
 import Authorside from "@/components/elements/AuthorSidebar";
-
+import { useEffect } from "react";
+import axios from "axios";
 export default function BlogSidebar(props) {
-  const { writer } = props;
+  const { writer, selectedx } = props;
+  useEffect(()=>{
+    const changlangx = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+
+      let res = await axios.request(options);
+      return res.data;
+  };
+    let categx = document.querySelector(".categx")
+    let businessx = document.querySelector(".businessx")
+     let technologyx = document.querySelector(".technologyx")
+     let financex = document.querySelector(".financex")
+     let culture  = document.querySelector(".culture")
+     let productivityx = document.querySelector(".productivityx")
+     let eventsx = document.querySelector(".eventsx")
+     let opinions = document.querySelector(".opinions")
+   const changlang = async()=>{
+       
+      if (selectedx === 'GB') {
+        categx.innerHTML = categx.innerText
+        businessx.innerHTML = businessx.innerText
+        technologyx.innerHTML = technologyx.innerText
+        financex.innerHTML = financex.innerText
+        culture.innerHTML = culture.innerText
+        productivityx.innerHTML = productivityx.innerText
+        eventsx.innerHTML = eventsx.innerText
+        opinions.innerHTML = opinions.innerText
+      }else if (selectedx !== "" && selectedx !== 'GB') {
+        let anscategory = await changlangx(selectedx, categx.innerText)
+       let  ansbusinessx =   await changlangx(selectedx, businessx.innerText)
+        let anstechnologyx =    await changlangx(selectedx, technologyx.innerText)
+      let ansfinancex =  await changlangx(selectedx, financex.innerText)
+       let ansculture =  await changlangx(selectedx, culture.innerText)
+        let ansproductivityx =  await changlangx(selectedx, productivityx.innerText)
+         let anseventsx =   await changlangx(selectedx, eventsx.innerText)
+        let ansopinions = await changlangx(selectedx, opinions.innerText)
+        categx.innerHTML = anscategory.data
+        businessx.innerHTML = ansbusinessx.data
+        technologyx.innerHTML = anstechnologyx.data
+        financex.innerHTML =  ansfinancex.data
+        culture.innerHTML = ansculture.data
+        productivityx.innerHTML = ansproductivityx.data
+        eventsx.innerHTML = anseventsx.data
+        opinions.innerHTML = ansopinions.data
+      }else{
+        categx.innerHTML = categx.innerText
+        businessx.innerHTML = businessx.innerText
+        technologyx.innerHTML = technologyx.innerText
+        financex.innerHTML = financex.innerText
+        culture.innerHTML = culture.innerText
+        productivityx.innerHTML = productivityx.innerText
+        eventsx.innerHTML = eventsx.innerText
+        opinions.innerHTML = opinions.innerText
+      }
+    }
+    changlang()
+  },[selectedx])
   return (
     <>
       <aside className="blog-sidebar">
@@ -45,7 +115,7 @@ export default function BlogSidebar(props) {
           </div>
         </div>
         <div className="widget sidebar-widget widget_categories">
-          <h4 className="widget-title text-center">Trending Category</h4>
+          <h4 className="widget-title text-center categx" >Trending Category</h4>
           <ul className="list-wrap">
             <li>
               <div className="thumb">
@@ -56,7 +126,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog">Business Insights</Link>
+              <Link href="/blog" className="businessx">Business Insights</Link>
             </li>
             <li>
               <div className="thumb">
@@ -67,7 +137,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog">Technology Trends</Link>
+              <Link href="/blog" className="technologyx">Technology Trends</Link>
             </li>
             <li>
               <div className="thumb">
@@ -78,7 +148,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog">Marketing & Finance</Link>
+              <Link href="/blog" className="financex">Marketing & Finance</Link>
             </li>
             <li>
               <div className="thumb">
@@ -89,7 +159,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog">Workplace & Culture</Link>
+              <Link href="/blog" className="culture">Workplace & Culture</Link>
             </li>
             <li>
               <div className="thumb">
@@ -100,7 +170,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog">Productivity & Innovation</Link>
+              <Link href="/blog" className="productivityx">Productivity & Innovation</Link>
             </li>
             <li>
               <div className="thumb">
@@ -111,7 +181,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog">Multimedia & Events</Link>
+              <Link href="/blog" className="eventsx">Multimedia & Events</Link>
             </li>
             <li>
               <div className="thumb">
@@ -122,7 +192,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog">Opinions & Editorials</Link>
+              <Link href="/blog" className="opinions">Opinions & Editorials</Link>
             </li>
           </ul>
         </div>
