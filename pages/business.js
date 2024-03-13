@@ -5,10 +5,11 @@ import animationData from "public/assets/loading.json";
 import Link from "next/link";
 import { FaFacebookF } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { createClient } from "contentful";
 import ReactPaginate from "react-paginate";
 import { FaXTwitter } from "react-icons/fa6";
+import { context } from "@/components/context";
 import {
   
   FacebookShareButton,
@@ -23,6 +24,8 @@ import axios from 'axios';
 // import { AES, enc } from 'crypto-js';
 import CryptoJS from 'crypto-js';
 export default function Business() {
+  const created = useContext(context);
+  const {selectedx, setSelectedx} = created
   const router = useRouter();
   const defaultOptions = {
     loop: true,
@@ -54,6 +57,27 @@ export default function Business() {
   });
 
   useEffect(() => {
+    const changlang = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+
+      let res = await axios.request(options);
+      return res.data;
+  };
+
+
     ReactGA.initialize("G-J8HLPZVV8W");
     ReactGA.set({ title: 'Business' });
     ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
@@ -120,12 +144,12 @@ export default function Business() {
       // setorignalarr(n)
       // const shuffledArray = newData.slice().sort(() => Math.random() - 0.5);
       // let arrrandom =  shuffledArray.slice(0, 4); 
-      setRandomx(newData)
+     
 
       // let filterdata = newData.filter(
       //   (item) => item.category.toLowerCase() == hello.toLowerCase()
       // );
-      setorignalarr(newData);
+   
 
       ReactGA.event({
         category: hello,
@@ -137,7 +161,42 @@ export default function Business() {
       // const indexofLastPost = currentPage * pageSize;
       // const indexofFirstPost = indexofLastPost - pageSize;
       // let ansdata = filterdata?.slice(indexofFirstPost, indexofLastPost);
+      // SetData(newData);
+      
+      if (selectedx === 'GB') {
+        SetData(newData);
+        setRandomx(newData)
+        setorignalarr(newData);
+    } else if (selectedx !== "" && selectedx !== 'GB') {
+      console.log("here", selectedx)
+      const translatedData = await Promise.all(newData.map(async (item) => {
+        let heading = await changlang(selectedx, item.heading);
+        let summary = await changlang(selectedx, item.summary);
+        let category = await changlang(selectedx, item.category);
+        let timez = await changlang(selectedx, item.timez);
+
+        return {
+            heading: heading.data,
+            summary: summary.data,
+            thumbnail: item.thumbnail,
+            category: category.data,
+            id: item.id,
+            writer: item.writer,
+            timez: timez.data
+        };
+    }));
+    SetData(translatedData);
+    setRandomx(translatedData)
+    setorignalarr(translatedData);
+
+    }else {
       SetData(newData);
+      setRandomx(newData)
+      setorignalarr(newData)
+        }
+
+
+
       setnumberofpage(category.data.success.last_page);
     };
 
@@ -192,9 +251,28 @@ export default function Business() {
     //   localStorage.setItem("stories", JSON.stringify(newData));
     // };
     // Local();
-  }, [hello]);
+  }, [hello, selectedx]);
 
   const handleNext = async(ans) => {
+    const changlang = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+
+      let res = await axios.request(options);
+      return res.data;
+  };
     let number = ans.selected + 1;
     let urlz = `/api/categoryfilter?category=${encodeURIComponent(hello)}&number=${parseInt(number)}`;
     await  apiClient.get('/sanctum/csrf-cookie')
@@ -250,7 +328,34 @@ export default function Business() {
             };
           })
         );
-        SetData(newData)
+        // SetData(newData)
+
+        if (selectedx === 'GB') {
+          SetData(newData);
+      } else if (selectedx !== "" && selectedx !== 'GB') {
+        console.log("here", selectedx)
+        const translatedData = await Promise.all(newData.map(async (item) => {
+          let heading = await changlang(selectedx, item.heading);
+          let summary = await changlang(selectedx, item.summary);
+          let category = await changlang(selectedx, item.category);
+          let timez = await changlang(selectedx, item.timez);
+  
+          return {
+              heading: heading.data,
+              summary: summary.data,
+              thumbnail: item.thumbnail,
+              category: category.data,
+              id: item.id,
+              writer: item.writer,
+              timez: timez.data
+          };
+      }));
+      SetData(translatedData);
+  
+      }else {
+        SetData(newData);
+  
+          }
   };
 
   return (
@@ -744,7 +849,7 @@ export default function Business() {
               </div>
 
               <div className="col-xl-3 col-lg-4 col-md-6">
-                <BlogSidebar2 />
+                <BlogSidebar2 selectedx={selectedx} />
               </div>
             </div>
           </div>

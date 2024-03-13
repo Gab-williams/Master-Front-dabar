@@ -14,7 +14,7 @@ import "../public/assets/css/main.css";
 import "../public/assets/css/slick.css";
 import "../public/assets/css/spacing.css";
 import "../public/assets/css/swiper-bundle.css";
-
+import  { Provider } from "@/components/context";
 import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+    <Provider>
       <Head>
       
 
@@ -92,6 +93,7 @@ function MyApp({ Component, pageProps }) {
     gtag('config', 'G-J8HLPZVV8W');
   `}
 </Script></div>{!loading ? <Component {...pageProps} /> : <Preloader />}</main>
+</Provider>
     </>
   );
 }

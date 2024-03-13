@@ -12,13 +12,15 @@ import {
     
   } from "react-share";
   import axios from 'axios';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import {createClient} from 'contentful';
 import ReactPaginate from 'react-paginate';
+import { context } from "@/components/context";
 export default function Blog() {
-    
+  const created = useContext(context);
+  const {selectedx, setSelectedx} = created 
 
     // const {id} = router.query
     // console.log(id)
@@ -28,8 +30,7 @@ export default function Blog() {
     const [pageSize, setpageSize] = useState(6)
     const [currentPage, setcurrentPage] = useState(1);
     const [lastpage, setlastpage] = useState(1)
-
- 
+    // let [selectedx, setSelectedx] = useState('') 
 
       const apiClient = axios.create({
         baseURL: "https://dabarmedia.com/",
@@ -37,6 +38,26 @@ export default function Blog() {
       });
   
     useEffect(()=>{
+
+      const changlang = async (selectedx, word) => {
+        const options = {
+            method: 'POST',
+            url: 'https://deepl-translator2.p.rapidapi.com/translate',
+            headers: {
+                'content-type': 'application/json',
+                'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+                'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+            },
+            data: {
+                source_lang: 'EN',
+                target_lang: selectedx,
+                text: word
+            }
+        };
+  
+        let res = await axios.request(options);
+        return res.data;
+    };
 
         const Local = async()=>{
          
@@ -75,13 +96,43 @@ export default function Blog() {
                  };
                })
              );
-             setorignalarr(newData)
-          
-             setData(newData)
+            //  setorignalarr(newData)
+            //  setData(newData)
+
+
+            if (selectedx === 'GB') {
+              setorignalarr(newData)
+              setData(newData);
+          } else if (selectedx !== "" && selectedx !== 'GB') {
+            console.log("here", selectedx)
+            const translatedData = await Promise.all(newData.map(async (item) => {
+              let heading = await changlang(selectedx, item.heading);
+              let presummary = await changlang(selectedx, item.presummary);
+              let category = await changlang(selectedx, item.category);
+              let timez = await changlang(selectedx, item.timez);
+        
+              return {
+                  heading: heading.data,
+                  presummary: presummary.data,
+                  thumbnail: item.thumbnail,
+                  category: category.data,
+                  id: item.id,
+                  writer: item.writer,
+                  timez: timez.data
+              };
+          }));
+          setData(translatedData);
+          setorignalarr(translatedData)
+
+          }else {
+            setData(newData);
+            setorignalarr(newData)
+
+              }
              
           }
           Local()
-    },[])
+    },[selectedx])
 
     const handleNext = async(ans)=>{
       let number = ans.selected + 1;  
@@ -121,12 +172,40 @@ export default function Blog() {
                })
              );
 
-      setData(newData)
+      // setData(newData)
+      if (selectedx === 'GB') {
+        setData(newData);
+    } else if (selectedx !== "" && selectedx !== 'GB') {
+      console.log("here", selectedx)
+      const translatedData = await Promise.all(newData.map(async (item) => {
+        let heading = await changlang(selectedx, item.heading);
+        let presummary = await changlang(selectedx, item.presummary);
+        let category = await changlang(selectedx, item.category);
+        let timez = await changlang(selectedx, item.timez);
+  
+        return {
+            heading: heading.data,
+            presummary: presummary.data,
+            thumbnail: item.thumbnail,
+            category: category.data,
+            id: item.id,
+            writer: item.writer,
+            timez: timez.data
+        };
+    }));
+    setData(translatedData);
+
+    }else {
+      setData(newData);
+
+        }
+
+
       }
 
     return (
         <>
-            <Layout breadcrumbCategory="Category">
+            <Layout   selectedx={selectedx} setSelectedx={setSelectedx} breadcrumbCategory="Category">
                 <section className="blog-details-area pt-80 pb-100">
                     <div className="container">
                         <div className="row justify-content-center">

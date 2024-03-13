@@ -2,8 +2,9 @@ import Link from "next/link"
 import Menu from "./Menu"
 import MobileMenu from "./MobileMenu"
 import Sidebar from "./Sidebar"
-import { useState } from "react"
-
+import { useState, useEffect, useContext } from "react"
+import ReactFlagsSelect from "react-flags-select";
+import { context } from "../../../components/context";
 export default function Header6({ scroll,
     handleMobileMenuOpen,
     handleMobileMenuClose,
@@ -14,10 +15,30 @@ export default function Header6({ scroll,
     // handleSearch,
     // search,
     // setsearch
+ 
  }) {
-
+    
+    const created = useContext(context);
+    const {selectedx, setSelectedx} = created
+ 
+   console.log(setSelectedx)
     const [search, setsearch] = useState('');
-    console.log(search)
+     const [selected, setSelected] = useState('GB')
+     const handleCountry =(code)=>{
+        // if(code  == 'TZ'){
+        //     setSelectedx('SWA')
+        //     setSelected(code)  
+            
+        // }else 
+        if(code == 'SA'){
+            setSelectedx('AR')
+            setSelected(code) 
+        }
+        else{
+            setSelectedx(code)
+            setSelected(code)    
+        }
+     }
     return (
         <>
             <header className="header__style-six">
@@ -25,11 +46,21 @@ export default function Header6({ scroll,
                     <div className="container">
                         <div className="row align-items-center">
                             <div className="col-lg-4 col-md-6 col-sm-6 order-2 order-lg-0">
-                                {/* <div className="header__top-search">
-                                    <form action="#">
+                                <div style={{ width:"150px" }} >
+                                    {/*  className="header__top-search" <form action="#">
                                         <input type="text" value={search} onChange={(e) => setsearch(e.target.value)} placeholder="Search here... " />
-                                    </form>
-                                </div> */}
+                                    </form> */}
+
+                                    <ReactFlagsSelect
+                                        countries={['GB', 'FR', 'DE',  'SA', 'ES']} // Add 'SWA' for Swahili
+                                        customLabels={{ GB: 'EN-GB', FR: 'FR', DE: 'DE',  SA:'SA', ES:'Spanish'}} // Include 'SWA' for Swahili
+                                        placeholder="Select Language"
+                                        selected={selected}
+                                        defaultCountry="US"
+                                        onSelect={(code) => handleCountry(code)}
+                                        />
+
+                                </div>
                             </div>
                             <div className="col-lg-4 col-md-3 order-0 order-lg-2 d-none d-md-block">
                                 <div className="header__top-logo logo text-lg-center">

@@ -13,8 +13,13 @@ import Header6 from './Header/Header6'
 import Header7 from './Header/Header7'
 import PageHead from './PageHead'
 
-const Layout = ({ headerStyle, footerStyle, children, breadcrumbCategory, breadcrumbPostTitle, footerClass, headTitle,logoWhite, handleSearch, setsearch }) => {
+const Layout = ({ headerStyle, footerStyle, children, breadcrumbCategory, breadcrumbPostTitle, footerClass, headTitle,logoWhite, handleSearch, setsearch, selectedx, setSelectedx }) => {
 
+    // useEffect(() => {
+    //     // Your effect code here
+    //     console.log(setSelectedx)
+    // }, []);
+    console.log(setSelectedx)
     const handleMobileMenuOpen = () => {
         document.body.classList.add("mobile-menu-visible")
     }
@@ -116,6 +121,8 @@ const Layout = ({ headerStyle, footerStyle, children, breadcrumbCategory, breadc
                 // handleSearch={handleSearch}
                 // search={search}
                 // setsearch={setsearch}
+                // selectedx={selectedx}
+                // setSelectedx={setSelectedx} 
             /> : null}
             {headerStyle == 7 ? <Header7
                 handleMobileMenuOpen={handleMobileMenuOpen}

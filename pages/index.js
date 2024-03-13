@@ -2,11 +2,12 @@ import Layout from "@/components/layout/Layout";
 import TrendingSlider from "@/components/slider/TrendingSlider";
 import data from "@/util/blogData";
 import Link from "next/link";
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Marquee from "react-fast-marquee";
 import ModalVideo from "react-modal-video";
 import {createClient} from 'contentful';
 import { CoinGeckoClient } from 'coingecko-api-v3';
+import { context } from "@/components/context";
 import { NextSeo } from 'next-seo';
 import axios from 'axios';
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
@@ -23,7 +24,8 @@ export default function Home1() {
     space:'t0pszie0jiqu',
     accessToken:'bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM',
   });
-
+  const created = useContext(context);
+  const {selectedx, setSelectedx} = created
   const coin = new CoinGeckoClient({
     timeout: 10000,
     autoRetry: true,
@@ -32,6 +34,7 @@ const arrxz = ['Editor'];
 let son = JSON.stringify(arrxz)
 // console.log(son)
 //https://dabarmedia.com
+// http://127.0.0.1:8000
   const apiClient = axios.create({
     baseURL: "https://dabarmedia.com/",
     withCredentials: true
@@ -41,22 +44,46 @@ const [dataall, Setdataall] = useState([])
 
 useEffect(()=>{
 
-  const checkupdatex = async()=>{
-    let urlzxs = '/api/updatestories';
-    await  apiClient.get('/sanctum/csrf-cookie')
-      let headers = new Headers();
-     headers.append('Content-Type', 'application/json')
-     let checkupdate =  await  apiClient.get(urlzxs,headers)
-}
-const min = 60 * 1000
-const inteval = setInterval(()=>{
-  checkupdatex()
-},min)
- return clearInterval(()=>inteval)
+//   const checkupdatex = async()=>{
+//     let urlzxs = '/api/updatestories';
+//     await  apiClient.get('/sanctum/csrf-cookie')
+//       let headers = new Headers();
+//      headers.append('Content-Type', 'application/json')
+//      let checkupdate =  await  apiClient.get(urlzxs,headers)
+// }
+// const min = 60 * 1000
+// const inteval = setInterval(()=>{
+//   checkupdatex()
+// },min)
+//  return clearInterval(()=>inteval)
 },[])
+
+
 
   useEffect( ()=>{
     // updatestories
+
+    const changlang = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+
+      let res = await axios.request(options);
+      return res.data;
+  };
+   
+    
     const HeroAPi = async()=>{
       // Hero Stories
       // let top = await client.getEntries({content_type:"topstories",
@@ -94,6 +121,8 @@ const inteval = setInterval(()=>{
         const originalString = JSON.stringify(item.id);
 const encryptedString = CryptoJS.AES.encrypt(originalString, 'TheDabar').toString();
 const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
+        //  let ansheading =  await changeLang(item.heading);
+        //  console.log(ansheading)
         return {
           // heading: item.fields.storyId.fields.heading,
           // // summary: item.fields.storyId.fields.summary,
@@ -104,7 +133,7 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
           // writername:writer.fields.name,
           // timez:formattedDate
 
-          heading: item.heading,
+          heading:item.heading ,
           // summary: item.fields.storyId.fields.summary,
           summary:item.presummary,
           thumbnail: item.main_image,
@@ -115,7 +144,36 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
         };
       })
     );
-    setHerodata(newData)
+
+    // setHerodata(newData)
+
+    if (selectedx === 'GB') {
+      setHerodata(newData);
+  } else if (selectedx !== "" && selectedx !== 'GB') {
+    console.log("here", selectedx)
+    const translatedData = await Promise.all(newData.map(async (item) => {
+      let heading = await changlang(selectedx, item.heading);
+      let summary = await changlang(selectedx, item.summary);
+      let subcategories = await changlang(selectedx, item.subcategories);
+      let timez = await changlang(selectedx, item.timez);
+
+      return {
+          heading: heading.data,
+          summary: summary.data,
+          thumbnail: item.thumbnail,
+          subcategories: subcategories.data,
+          id: item.id,
+          writername: item.writername,
+          timez: timez.data
+      };
+  }));
+  setHerodata(translatedData);
+
+  }else {
+      setHerodata(newData);
+      }
+
+
     const homePageData = {
       heading:
         "Dabar | Business Insights, Technology trends and conversations across the Globe.",
@@ -219,8 +277,35 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
          };
        })
      );
-     setfeatured(newData)
+    //  setfeatured(newData)
     //  eight slide
+
+
+    if (selectedx === 'GB') {
+      setfeatured(newData);
+  } else if (selectedx !== "" && selectedx !== 'GB') {
+    console.log("here", selectedx)
+    const translatedData = await Promise.all(newData.map(async (item) => {
+      let heading = await changlang(selectedx, item.heading);
+      let summary = await changlang(selectedx, item.summary);
+      let subcategories = await changlang(selectedx, item.subcategories);
+      let timez = await changlang(selectedx, item.timez);
+
+      return {
+          heading: heading.data,
+          summary: summary.data,
+          thumbnail: item.thumbnail,
+          subcategories: subcategories.data,
+          id: item.id,
+          writername: item.writername,
+          timez: timez.data
+      };
+  }));
+  setfeatured(translatedData);
+
+  }else {
+    setfeatured(newData);
+      }
              
     }
 
@@ -284,7 +369,34 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
        })
      );
 
-     setPopular(newData)
+    //  setPopular(newData)
+
+
+    if (selectedx === 'GB') {
+      setPopular(newData);
+  } else if (selectedx !== "" && selectedx !== 'GB') {
+    console.log("here", selectedx)
+    const translatedData = await Promise.all(newData.map(async (item) => {
+      let heading = await changlang(selectedx, item.heading);
+      let summary = await changlang(selectedx, item.summary);
+      let subcategories = await changlang(selectedx, item.subcategories);
+      let timez = await changlang(selectedx, item.timez);
+
+      return {
+          heading: heading.data,
+          summary: summary.data,
+          thumbnail: item.thumbnail,
+          subcategories: subcategories.data,
+          id: item.id,
+          writername: item.writername,
+          timez: timez.data
+      };
+  }));
+  setPopular(translatedData);
+
+  }else {
+    setPopular(newData);
+      }
 
     }
 
@@ -349,8 +461,8 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
         setcyptocoin(cyptocoin=>info)
       })
       .catch(error => console.log('error', error))
-  },[])
-
+  },[selectedx])
+   
   const [testbody, Settestbody] = useState([])
 
   useEffect(()=>{
@@ -471,11 +583,34 @@ const sanitizedEncryptedString = encryptedString.replace(/\//g, '');
 
   },[])
 const [currentpopular, setcurrentpopular] = useState(1)
+
   const handleviewmore = async(e)=>{
     e.preventDefault();
+    const changlang = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+      try {
+        let res = await axios.request(options);
+        return res.data;
+      } catch (error) {
+        console.log(error) 
+      }
+     
+  };
     if(currentpopular <  lastpopular){
       let answerxs =   currentpopular + 1
-  
       setcurrentpopular(answerxs)
        let urlz = '/api/popular?page='+answerxs;
         await  apiClient.get('/sanctum/csrf-cookie')
@@ -512,7 +647,36 @@ const [currentpopular, setcurrentpopular] = useState(1)
 
        let newDataCopy = [...newData];
        let dataz = [...popular, ...newDataCopy];
-       setPopular(dataz);
+      //  setPopular(dataz);
+
+
+      if (selectedx === 'GB') {
+        setPopular(dataz);
+    } else if (selectedx !== "" && selectedx !== 'GB') {
+      console.log("here", selectedx)
+      const translatedData = await Promise.all(dataz.map(async (item) => {
+        let heading = await changlang(selectedx, item.heading);
+        let summary = await changlang(selectedx, item.summary);
+        let subcategories = await changlang(selectedx, item.subcategories);
+        let timez = await changlang(selectedx, item.timez);
+  
+        return {
+            heading: heading.data,
+            summary: summary.data,
+            thumbnail:item.thumbnail,
+            subcategories: subcategories.data,
+            id: item.id,
+            writername: item.writername,
+            timez: timez.data
+        };
+    }));
+    setPopular(translatedData);
+  
+    }else {
+      setPopular(dataz);
+        }
+
+
 
     }else if (currentpopular ==  lastpopular){
       
@@ -551,16 +715,134 @@ const [currentpopular, setcurrentpopular] = useState(1)
        );
 
 
+        // setPopular(newData);
+         
+      if (selectedx === 'GB') {
         setPopular(newData);
+    } else if (selectedx !== "" && selectedx !== 'GB') {
+      console.log("here", selectedx)
+      const translatedData = await Promise.all(newData.map(async (item) => {
+        let heading = await changlang(selectedx, item.heading);
+        let summary = await changlang(selectedx, item.summary);
+        let subcategories = await changlang(selectedx, item.subcategories);
+        let timez = await changlang(selectedx, item.timez);
+  
+        return {
+            heading: heading.data,
+            summary: summary.data,
+            thumbnail: item.thumbnail,
+            subcategories: subcategories.data,
+            id: item.id,
+            writername: item.writername,
+            timez: timez.data
+        };
+    }));
+    setPopular(translatedData);
+  
+    }else {
+      setPopular(newData);
+        }
+ 
+
     }
   
 
 
     
   }
+
+  // console.log(selectedx)
+
+  useEffect(()=>{
+    // const changeLang = async(word)=>{
+    //   if(selectedx == 'GB'){
+    //     console.log('first', selectedx)
+    //     return word
+    //   }else if(selectedx != "" &&  selectedx != 'GB'){
+    
+    //     const options = {
+    //       method: 'POST',
+    //       url: 'https://deepl-translator2.p.rapidapi.com/translate',
+    //       headers: {
+    //         'content-type': 'application/json',
+    //         'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+    //         'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+    //       },
+    //       data: {
+    //         source_lang: 'EN',
+    //         target_lang: 'ZH',
+    //         text: word
+    //       }
+    //     };
+        
+    //     try {
+    //       const response = await axios.request(options);
+    //       console.log(response.data);
+    //     } catch (error) {
+    //       console.error(error);
+    //     }
+    
+    
+    //   }else{
+    //     return word
+    
+    //   }
+    // }
+    
+    
+    // changeLang('my name is stephen okpeku')
+
+
+  },[])
+
+
+
+  
+  
+  // changeLang('my name is stephen okpeku')
+//  const [langchan, setlangchan] = useState("")
+//   const changeLang = (word)=>{
+//     if(selectedx == 'GB'){
+//       console.log('first', selectedx)
+//       return word
+//     }else if(selectedx != "" &&  selectedx != 'GB'){
+  
+//       const options = {
+//         method: 'POST',
+//         url: 'https://deepl-translator2.p.rapidapi.com/translate',
+//         headers: {
+//           'content-type': 'application/json',
+//           'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+//           'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+//         },
+//         data: {
+//           source_lang: 'EN',
+//           target_lang: selectedx,
+//           text: word
+//         }
+//       };
+      
+//       try {
+//         axios.request(options).then(res=>setlangchan(res.data));
+//         console.log(langchan)
+//         return langchan.data;
+//       }catch(error) {
+//         console.error(error);
+//       }
+     
+      
+  
+  
+//     }else{
+//       return word
+  
+//     }
+//   }
+
+
   return (
     <>
-      <Layout headerStyle={6} footerStyle={3} footerClass="black-bg" logoWhite>
+      <Layout headerStyle={6} footerStyle={3}  selectedx={selectedx} setSelectedx={setSelectedx} footerClass="black-bg" logoWhite>
         <div className="slider__marquee clearfix">
           <div className="marquee_mode">
             <Marquee className="js-marquee" pauseOnHover={true}>
@@ -601,7 +883,7 @@ const [currentpopular, setcurrentpopular] = useState(1)
                           Herodata[0].summary == null
                             ? ""
                             : Herodata[0].summary.length > 100
-                            ? Herodata[0].summary.substr(0, 120) + "..."
+                            ?Herodata[0].summary.substr(0, 120) + "..."
                             : Herodata[0].summary}
                         </p>
                       </h2>
@@ -721,7 +1003,7 @@ const [currentpopular, setcurrentpopular] = useState(1)
             </div>
             <div className="trending__slider">
               <div className="swiper-container trending-active">
-                <TrendingSlider showItem={4} />
+                <TrendingSlider selectedx={selectedx}  showItem={4} />
               </div>
             </div>
           </div>

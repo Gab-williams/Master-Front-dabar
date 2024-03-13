@@ -7,7 +7,7 @@ import {createClient} from 'contentful';
 import axios from "axios"
 import { AES, enc } from 'crypto-js';
 
-export default function TrendingSlider({ showItem }) {
+export default function TrendingSlider({ showItem, selectedx }) {
 
     const  [Tendall, setTendall] = useState([])
     const client =  createClient({
@@ -22,6 +22,27 @@ export default function TrendingSlider({ showItem }) {
 
       useEffect(()=>{
         // Tending News
+     
+        const changlang = async (selectedx, word) => {
+            const options = {
+                method: 'POST',
+                url: 'https://deepl-translator2.p.rapidapi.com/translate',
+                headers: {
+                    'content-type': 'application/json',
+                    'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+                    'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+                },
+                data: {
+                    source_lang: 'EN',
+                    target_lang: selectedx,
+                    text: word
+                }
+            };
+      
+            let res = await axios.request(options);
+            return res.data;
+        };
+
     const TendData = async()=>{
         let tending = await client.getEntries({content_type:'tending',  select:'fields'})
 
@@ -77,13 +98,41 @@ export default function TrendingSlider({ showItem }) {
             })
           );
     
-          setTendall(newData)
+        //   setTendall(newData)
+         
+        if (selectedx === 'GB') {
+            setTendall(newData);
+        } else if (selectedx !== "" && selectedx !== 'GB') {
+          console.log("here", selectedx)
+          const translatedData = await Promise.all(newData.map(async (item) => {
+            let heading = await changlang(selectedx, item.heading);
+            let summary = await changlang(selectedx, item.summary);
+            let subcategories = await changlang(selectedx, item.subcategories);
+            let timez = await changlang(selectedx, item.timez);
+      
+            return {
+                heading: heading.data,
+                summary: summary.data,
+                thumbnail: item.thumbnail,
+                subcategories: subcategories.data,
+                id: item.id,
+                writername: item.writername,
+                timez: timez.data
+            };
+        }));
+        setTendall(translatedData);
+      
+        }else {
+            setTendall(newData);
+            }
+
+
     }
     
     TendData()
     
      
-    },[])
+    },[selectedx])
 
 
     return (

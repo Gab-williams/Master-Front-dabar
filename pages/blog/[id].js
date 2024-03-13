@@ -9,7 +9,7 @@ import {
 } from "react-share";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import data from "../../util/blogData";
 import { createClient } from "contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
@@ -18,6 +18,7 @@ import { Markup } from 'interweave';
 // import { AES, enc } from 'crypto-js';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
+import { context } from "../../components/context";
 export default function BlogDetails() {
   let Router = useRouter();
   const [item, setItem] = useState(null);
@@ -28,10 +29,15 @@ export default function BlogDetails() {
   const [category, setcategory] = useState("");
   const [dataLocial, setdataLocial] = useState({});
   const [readtime, setreadtime] = useState("");
+
+  const created = useContext(context);
+  const {selectedx, setSelectedx} = created
+
   const client = createClient({
     space: "t0pszie0jiqu",
     accessToken: "bm2qgxL1ruXxTPkEQT0KgtAuHOwVxlOzOuj-AoNo-AM",
   });
+
 
   const apiClient = axios.create({
     baseURL: "https://dabarmedia.com/",
@@ -103,24 +109,7 @@ export default function BlogDetails() {
     fetchData();
   }, [id]);
 
-  // let localinfo = localStorage.getItem("stories");
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     if (localinfo) {
-  //       let story = JSON.parse(localStorage.getItem("stories"));
-  //       let ans = story.find(
-  //         (item) =>
-  //           item.heading?.toLowerCase() == fieldsdata.heading?.toLowerCase()
-  //       );
-
-  //       setdataLocial((dataLocial) => ans);
-  //     }
-  //   }, 2000);
-
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, [fieldsdata.heading]);
+  
 
   const [random, setrandom] = useState([]);
   // useEffect(() => {
@@ -310,6 +299,9 @@ if (htmlTagRegex.test(fieldsdata.body)) {
 // Replace the matched style attribute with an empty string
 var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
   return <Markup content={stringWithoutStyle} />
+
+
+  
   }else{
 
     try {
@@ -328,6 +320,97 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
 // console.log(body)
   }
 
+  const [contentx, setContextx] = useState("")
+
+  useEffect(()=>{
+
+    
+    const changlang = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+
+      let res = await axios.request(options);
+      return res.data;
+  };
+
+
+
+  const bodylang = async()=>{
+
+    const htmlTagRegex = /<[a-z][\s\S]*>/;
+
+    if (htmlTagRegex.test(fieldsdata.body)) {
+      var styleRegex = /style\s*=\s*"([^"]*)"/g;
+    
+    // Replace the matched style attribute with an empty string
+    var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
+      let word = <Markup content={stringWithoutStyle} />
+       
+      if (selectedx === 'GB') {
+        
+        setContextx(word);
+    } else if (selectedx !== "" && selectedx !== 'GB') {
+   
+   let answord =  await changlang(selectedx, word).data
+    setContextx(answord)
+
+    }else {
+      setContextx(word)
+
+        }
+
+
+
+      }else{
+    
+        try {
+          const converted = JSON.parse(fieldsdata.body);
+          
+          if (typeof converted !== 'undefined' && Object.keys(converted).length > 0) {
+          
+            let word = documentToReactComponents(converted);
+            console.log(word)
+            if (selectedx === 'GB') {
+        
+              setContextx(word);
+          } else if (selectedx !== "" && selectedx !== 'GB') {
+         
+         let answord =  await changlang(selectedx, word).data
+          setContextx(answord)
+      
+          }else {
+            setContextx(word)
+      
+              }
+
+          } 
+        } catch (error) {
+          // Handle the error as needed
+        }
+      
+     
+      }
+
+  }
+
+  bodylang()
+  
+
+  },[selectedx, id])
+console.log("hello", contentx)
+  
   // const isStringArray = Array.isArray(JSON.parse(fieldsdata.body));
   // console.log(isStringArray)
 
@@ -405,7 +488,7 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
                                   <div className="row ">
                                     <div className="col-md-12 col-sm-6">
                                       <div className="details-inner-image ">
-                                          {convertdata(fieldsdata.body)}
+                                          {contentx}
                                       </div>
                                     </div>
                                   </div>

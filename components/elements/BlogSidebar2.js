@@ -2,9 +2,10 @@ import Link from 'next/link'
 import InstagramSidebarSlider from '../slider/InstagramSidebarSlider'
 import SidePostSlider from '../slider/SidePostSlider'
 import Authorside from "@/components/elements/AuthorSidebar"
-
-export default function BlogSidebar2() {
-
+import React, {useState, useEffect} from "react"
+import axios from 'axios'
+export default function BlogSidebar2({selectedx}) {
+  const [categoryMenux, SetcategoryMenux] = useState([])
       const categoryMenu = [
         {
           title: "Business Insights",
@@ -56,6 +57,62 @@ export default function BlogSidebar2() {
           subcategories: ["Opinion & Editorial"],
         },
       ];
+
+      useEffect(()=>{
+
+        const changlang = async (selectedx, word) => {
+          const options = {
+              method: 'POST',
+              url: 'https://deepl-translator2.p.rapidapi.com/translate',
+              headers: {
+                  'content-type': 'application/json',
+                  'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+                  'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+              },
+              data: {
+                  source_lang: 'EN',
+                  target_lang: selectedx,
+                  text: word
+              }
+          };
+    
+          let res = await axios.request(options);
+          return res.data;
+      };
+
+        const whole = async()=>{
+          if (selectedx === 'GB') {
+      
+            SetcategoryMenux(categoryMenu);
+        } else if (selectedx !== "" && selectedx !== 'GB') {
+          console.log("here", selectedx)
+          const translatedData = await Promise.all(categoryMenu.map(async (item) => {
+            let title = await changlang(selectedx, item.title);
+    
+      
+            return {
+              title: title.data,
+              img: item.img,
+       
+            };
+        }));
+        SetcategoryMenux(translatedData);
+        
+  
+        }else {
+          SetcategoryMenux(categoryMenu);
+  
+            }
+
+        }
+
+        whole()
+      
+
+      },[selectedx])
+
+
+
     return (
         <>
         
@@ -66,8 +123,8 @@ export default function BlogSidebar2() {
                     <h2 className="widget-title text-center">Trending Category</h2>
                     <ul className="list-wrap">
 
-                        {categoryMenu.map((item)=>{
-                            return  <li>
+                        {categoryMenux.map((item, index)=>{
+                            return  <li key={index}>
                             <div className="thumb"><Link  href={`/business?hello=${encodeURIComponent(item.title)}`}><img src={item.img} alt="img" /></Link></div>
                             <Link href={`/business?hello=${encodeURIComponent(item.title)}`}>{item.title}</Link>
                             
