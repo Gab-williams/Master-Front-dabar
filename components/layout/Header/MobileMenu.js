@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { useState, useContext, useEffect } from "react";
 import { context } from "../../../components/context";
-
+import axios from "axios";
 const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
 
   const created = useContext(context);
