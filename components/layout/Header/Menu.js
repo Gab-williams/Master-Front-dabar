@@ -85,7 +85,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
           let res = await axios.request(options);
           return res.data;
       };
-
+       let morex = document.querySelector(".morex")
         const whole = async()=>{
           if (selectedx === 'GB') {
       
@@ -94,7 +94,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
           console.log("here", selectedx)
           const translatedData = await Promise.all(categoryMenu.map(async (item) => {
             let title = await changlang(selectedx, item.title);
-    
+             morex.innerHTML = await changlang(selectedx, morex.innerText)
       
             return {
               title: title.data,
@@ -154,7 +154,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
                             <li className={router.pathname == "/technology" ? "active" : ""}><Link href="/technology">Technology Trends</Link></li>
                             <li><Link href="/nft">Marketing & Finance</Link></li> */}
 
-                            <li className="menu-item-has-children"><Link href="#">More</Link>
+                            <li className="menu-item-has-children"><Link href="#" className='morex'>More</Link>
                                 <ul className="sub-menu">
 
                                 {categoryMenux?.slice(3,7).map((item, i)=>{
