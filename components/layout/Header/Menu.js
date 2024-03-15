@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef} from "react";
 import { context } from "../../../components/context";
 import axios from 'axios';
 const ThemeSwitch = dynamic(() => import('@/components/elements/ThemeSwitch'), {
@@ -63,7 +63,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
         },
       ];
   
-
+    const moretry = useRef(null)
       useEffect(()=>{
 
         const changlang = async (selectedx, word) => {
@@ -85,6 +85,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
           let res = await axios.request(options);
           return res.data;
       };
+     
        let morex = document.querySelector(".morex")
         const whole = async()=>{
           if (selectedx === 'GB') {
@@ -94,7 +95,8 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
           console.log("here", selectedx)
           const translatedData = await Promise.all(categoryMenu.map(async (item) => {
             let title = await changlang(selectedx, item.title);
-             morex.innerHTML = await changlang(selectedx, morex.innerText)
+            let ansmorexs = await changlang(selectedx, 'More')
+             morex.innerHTML = ansmorexs.data
       
             return {
               title: title.data,
@@ -154,7 +156,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
                             <li className={router.pathname == "/technology" ? "active" : ""}><Link href="/technology">Technology Trends</Link></li>
                             <li><Link href="/nft">Marketing & Finance</Link></li> */}
 
-                            <li className="menu-item-has-children"><Link href="#" className='morex'>More</Link>
+                            <li className="menu-item-has-children"><Link href="#" ref={moretry} className='morex'>More</Link>
                                 <ul className="sub-menu">
 
                                 {categoryMenux?.slice(3,7).map((item, i)=>{
