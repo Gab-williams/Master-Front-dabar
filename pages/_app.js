@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+ 
     <Provider>
       <Head>
       
@@ -94,6 +95,7 @@ function MyApp({ Component, pageProps }) {
   `}
 </Script></div>{!loading ? <Component {...pageProps} /> : <Preloader />}</main>
 </Provider>
+
     </>
   );
 }

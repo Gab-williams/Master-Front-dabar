@@ -242,8 +242,23 @@ export default function BlogDetails() {
       // setrandom(newData);
 
       if (selectedx === 'GB') {
-     
-        setrandom(newData);
+        const translatedData = await Promise.all(newData.map(async (item) => {
+          let heading = await changlang("EN", item.heading);
+          let presummary = await changlang("EN", item.summary);
+          let category = await changlang("EN", item.subcategories);
+          let timez = await changlang("EN", item.timez);
+    
+          return {
+              heading: heading.data,
+              summary: presummary.data,
+              thumbnail: item.thumbnail,
+              subcategories: category.data,
+              id: item.id,
+              writername: item.writername,
+              timez: timez.data
+          };
+      }));
+      setrandom(translatedData);
     } else if (selectedx !== "" && selectedx !== 'GB') {
       console.log("here", selectedx)
       const translatedData = await Promise.all(newData.map(async (item) => {
@@ -406,9 +421,12 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
         let dateandtime = document.querySelector(".dateandtime")
         let readtimexs = document.querySelector(".readtime")
         if (selectedx === 'GB') {
-          titlexs.innerHTML = titlexs.innerText
-          dateandtime.innerHTML = dateandtime.innerText
-          readtimexs.innerHTML = readtimexs.innerText
+          let anstitlexs =  await changlang("EN", titlexs.innerText)
+         let ansdateandtime =  await changlang("EN", dateandtime.innerText)
+          let ansreadtimexs =   await changlang("EN", readtimexs.innerText)
+          titlexs.innerHTML = anstitlexs.data
+          dateandtime.innerHTML = ansdateandtime.data
+          readtimexs.innerHTML = ansreadtimexs.data
         }else if (selectedx !== "" && selectedx !== 'GB'){
           let anstitlexs =  await changlang(selectedx, titlexs.innerText)
          let ansdateandtime =  await changlang(selectedx, dateandtime.innerText)
@@ -422,14 +440,16 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
         }
       for (var i = 0; i < cont.childNodes.length; i++) {
         if (selectedx === 'GB') {
-          cont.childNodes[i].innerHTML =  cont.childNodes[i].innerText
-        }else if (selectedx !== "" && selectedx !== 'GB' && cont.childNodes[i].innerText.trim() != "" ) {
+          let anslang = await changlang("EN", cont.childNodes[i].innerText)
+          // console.log(anslang.data)
+         cont.childNodes[i].innerHTML =  anslang.data        }else if (selectedx !== "" && selectedx !== 'GB' && cont.childNodes[i].innerText.trim() != "" ) {
           // console.log(cont.childNodes[i].innerHTML)
           let anslang = await changlang(selectedx, cont.childNodes[i].innerText)
         // console.log(anslang.data)
        cont.childNodes[i].innerHTML =  anslang.data
 
-        }else{
+        }
+        else{
           cont.childNodes[i].innerHTML =  cont.childNodes[i].innerText
 
         }

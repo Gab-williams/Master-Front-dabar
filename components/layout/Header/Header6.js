@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar"
 import { useState, useEffect, useContext } from "react"
 import ReactFlagsSelect from "react-flags-select";
 import { context } from "../../../components/context";
+import axios from "axios"
 export default function Header6({ scroll,
     handleMobileMenuOpen,
     handleMobileMenuClose,
@@ -22,7 +23,7 @@ export default function Header6({ scroll,
     const {selectedx, setSelectedx} = created
  
     const [search, setsearch] = useState('');
-     const [selected, setSelected] = useState('GB')
+     const [selected, setSelected] = useState(selectedx?selectedx:'GB')
      const handleCountry =(code)=>{
         // if(code  == 'TZ'){
         //     setSelectedx('SWA')
@@ -30,14 +31,76 @@ export default function Header6({ scroll,
             
         // }else 
         if(code == 'SA'){
+
+            let obj = {countrycode:code}
+            let objstringify =  JSON.stringify(obj)
+            localStorage.setItem("countrycode", objstringify)
             setSelectedx('AR')
             setSelected(code) 
+        }else if(code == "GB"){
+            setSelectedx("GB")
+          localStorage.removeItem("countrycode")
         }
         else{
+            let obj = {countrycode:code}
+            let objstringify =  JSON.stringify(obj)
+            localStorage.setItem("countrycode", objstringify)
             setSelectedx(code)
             setSelected(code)    
         }
      }
+
+
+     useEffect(()=>{
+        let subtag = document.querySelector(".subtag")
+        if(selectedx == "" || selectedx == undefined || selectedx == null){
+          setSelectedx('GB')
+        }else if(selectedx == "GB"){
+            setSelected("GB")
+        }
+
+
+        const changlang = async (selectedx, word) => {
+            const options = {
+                method: 'POST',
+                url: 'https://deepl-translator2.p.rapidapi.com/translate',
+                headers: {
+                    'content-type': 'application/json',
+                    'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+                    'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+                },
+                data: {
+                    source_lang: 'EN',
+                    target_lang: selectedx,
+                    text: word
+                }
+            };
+
+         
+            let res = await axios.request(options);
+            return res.data;
+        };
+
+        const  changsubtag = async()=>{
+           try {
+            if(selectedx == 'GB'){
+                // let anssubtag = await changlang("EN", subtag.innerText)
+                subtag.innerText = "subscribe"
+            }else{
+                let anssubtag = await changlang(selectedx, subtag.innerText)
+                subtag.innerText = anssubtag.data
+            }
+          
+           } catch (error) {
+            console.log(error)
+           }
+         
+        }
+
+        changsubtag()
+      },[selectedx])
+
+
     return (
         <>
             <header className="header__style-six">
@@ -70,7 +133,7 @@ export default function Header6({ scroll,
                             <div className="col-lg-4 col-md-3 col-sm-6 order-3 d-none d-sm-block">
                                 <div className="header__top-right">
                                     <ul className="list-wrap">
-                                        <li className="news-btn"><Link href="https://share-eu1.hsforms.com/1H9YWJNkyTs2irrw8MuDbNw2dkpzv" target="blank" className="btn"><span className="btn-text">subscribe</span></Link></li>
+                                        <li className="news-btn"><Link href="https://share-eu1.hsforms.com/1H9YWJNkyTs2irrw8MuDbNw2dkpzv" target="blank" className="btn"><span className="btn-text subtag">subscribe</span></Link></li>
                                         {/* <li className="lang">
                                         <div className="dropdown">
                                                 <button className={`dropdown-toggle ${langToggle ? "show" : ""}`} type="button" onClick={handleLangToggle}>

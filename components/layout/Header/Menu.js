@@ -21,6 +21,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
     const categoryMenu = [
         {
           title: "Business Insights",
+          name:"Business Insights",
           subcategories: [
             "Industry Insights",
             "Entrepreneurship",
@@ -31,6 +32,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
         },
         {
           title: "Technology Trends",
+          name:"Technology Trends",
           subcategories: [
             "Technology & Innovation",
             "Blockchain & Cryptocurrency",
@@ -39,10 +41,12 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
         },
         {
           title: "Marketing & Finance",
+          name: "Marketing & Finance",
           subcategories: ["Marketing & Advertising", "Finance & Investment"],
         },
         {
           title: "Workplace & Culture",
+          name:"Workplace & Culture",
           subcategories: [
             "Human Resources",
             "Diversity & Inclusion",
@@ -51,14 +55,17 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
         },
         {
           title: "Productivity & Innovation",
+          name:"Productivity & Innovation",
           subcategories: ["Productivity & Tools", "Innovation Implementation"],
         },
         {
           title: "Multimedia & Events",
+          name:"Multimedia & Events",
           subcategories: ["Events & Conferences", "Multimedia Content"],
         },
         {
           title: "Opinions & Editorials",
+          name: "Opinions & Editorials",
           subcategories: ["Opinion & Editorial"],
         },
       ];
@@ -89,7 +96,8 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
        let morex = document.querySelector(".morex")
         const whole = async()=>{
           if (selectedx === 'GB') {
-      
+            let ansmorexs = await changlang("EN", 'More')
+            morex.innerHTML = ansmorexs.data
             SetcategoryMenux(categoryMenu);
         } else if (selectedx !== "" && selectedx !== 'GB') {
           console.log("here", selectedx)
@@ -100,6 +108,7 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
       
             return {
               title: title.data,
+              name: item.name,
               img: item.img,
        
             };
@@ -145,10 +154,10 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
                         <ul className="navigation">
                             {categoryMenux?.slice(0,3).map((item, i)=>{
                               if(hello){
-                                return <li key={i} className={hello.toLowerCase() == item.title.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.title)}`}>{item.title}</Link></li>
+                                return <li key={i} className={hello.toLowerCase() == item.name.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.name)}`}>{item.title}</Link></li>
 
                               }else{
-                                return <li key={i} className={router.pathname.toLowerCase() == item.title.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.title)}`}>{item.title}</Link></li>
+                                return <li key={i} className={router.pathname.toLowerCase() == item.name.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.name)}`}>{item.title}</Link></li>
 
                               }
                             })}
@@ -161,10 +170,10 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
 
                                 {categoryMenux?.slice(3,7).map((item, i)=>{
                               if(hello){
-                                return <li key={i} className={hello.toLowerCase() == item.title.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.title)}`}>{item.title}</Link></li>
+                                return <li key={i} className={hello.toLowerCase() == item.name.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.name)}`}>{item.title}</Link></li>
 
                               }else{
-                                return <li key={i} className={router.pathname.toLowerCase() == item.title.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.title)}`}>{item.title}</Link></li>
+                                return <li key={i} className={router.pathname.toLowerCase() == item.name.toLowerCase() ? "active" : ""}><Link href={`/business?hello=${encodeURIComponent(item.name)}`}>{item.title}</Link></li>
 
                               }                            
                                 })}

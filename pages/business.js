@@ -93,7 +93,7 @@ export default function Business() {
             let headers = new Headers();
            headers.append('Content-Type', 'application/json')
             let category =  await  apiClient.get(urlz,headers)
-             console.log(category.data.success)
+            //  console.log(category.data.success)
              setlastpage(category.data.success.last_page)
       const newData = await Promise.all(
         category.data.success.data.map(async (item) => {

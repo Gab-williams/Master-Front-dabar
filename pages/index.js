@@ -754,46 +754,59 @@ const [currentpopular, setcurrentpopular] = useState(1)
   // console.log(selectedx)
 
   useEffect(()=>{
-    // const changeLang = async(word)=>{
-    //   if(selectedx == 'GB'){
-    //     console.log('first', selectedx)
-    //     return word
-    //   }else if(selectedx != "" &&  selectedx != 'GB'){
-    
-    //     const options = {
-    //       method: 'POST',
-    //       url: 'https://deepl-translator2.p.rapidapi.com/translate',
-    //       headers: {
-    //         'content-type': 'application/json',
-    //         'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
-    //         'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
-    //       },
-    //       data: {
-    //         source_lang: 'EN',
-    //         target_lang: 'ZH',
-    //         text: word
-    //       }
-    //     };
-        
-    //     try {
-    //       const response = await axios.request(options);
-    //       console.log(response.data);
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    
-    
-    //   }else{
-    //     return word
-    
-    //   }
-    // }
-    
-    
-    // changeLang('my name is stephen okpeku')
+  let popular_post = document.querySelector(".popular_post")
+  let trending_news = document.querySelector(".trending_news")  
+  let tending_more = document.querySelector(".tending_more")  
+  let featured_editor = document.querySelector(".featured_editor")
+  let editor_choice = document.querySelector(".editor_choice")
+  let editor_more = document.querySelector(".editor_more")
+   let stories_popular =document.querySelector(".stories_popular")
+   let popular_stories = document.querySelector(".popular_stories")
+   let stories_more = document.querySelector(".stories_more")
 
+   const changlang = async (selectedx, word) => {
+    const options = {
+        method: 'POST',
+        url: 'https://deepl-translator2.p.rapidapi.com/translate',
+        headers: {
+            'content-type': 'application/json',
+            'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+            'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+        },
+        data: {
+            source_lang: 'EN',
+            target_lang: selectedx,
+            text: word
+        }
+    };
 
-  },[])
+    let res = await axios.request(options);
+    return res.data;
+};
+
+const subheader = async()=>{
+  let anspopular_post = await changlang(selectedx, popular_post.innerText)
+ let anstrending_news = await changlang(selectedx, trending_news.innerText)
+ let anstending_more = await changlang(selectedx, tending_more.innerText)
+ let ansfeatured_editor = await changlang(selectedx, featured_editor.innerText)
+let anseditor_choice =  await changlang(selectedx, editor_choice.innerText)
+let anseditor_more =  await changlang(selectedx, editor_more.innerText)
+ let ansstories_popular = await changlang(selectedx, stories_popular.innerText)
+let anspopular_stories =  await changlang(selectedx, popular_stories.innerText)
+ let ansstories_more = await changlang(selectedx, stories_more.innerText)
+ popular_post.innerHTML = anspopular_post.data
+ trending_news.innerHTML = anstrending_news.data
+ tending_more.innerHTML = anstending_more.data
+ featured_editor.innerHTML = ansfeatured_editor.data
+ editor_choice.innerHTML = anseditor_choice.data
+ editor_more.innerHTML = anseditor_more.data
+ stories_popular.innerHTML = ansstories_popular.data
+ popular_stories.innerHTML = anspopular_stories.data
+ stories_more.innerHTML = ansstories_more.data
+}
+
+subheader()
+  },[selectedx])
 
 
 
@@ -988,13 +1001,13 @@ const [currentpopular, setcurrentpopular] = useState(1)
               <div className="row align-items-end">
                 <div className="col-sm-6">
                   <div className="section__title">
-                    <span className="section__sub-title">Popular Posts</span>
-                    <h3 className="section__main-title">Trending News</h3>
+                    <span className="section__sub-title popular_post">Popular Posts</span>
+                    <h3 className="section__main-title trending_news">Trending News</h3>
                   </div>
                 </div>
                 <div className="col-sm-6">
                   <div className="section__read-more text-start text-sm-end">
-                    <Link href="/blog">
+                    <Link href="/blog" className="tending_more">
                       More Post <i className="far fa-long-arrow-right" />
                     </Link>
                   </div>
@@ -1028,13 +1041,13 @@ const [currentpopular, setcurrentpopular] = useState(1)
               <div className="row align-items-end">
                 <div className="col-sm-6">
                   <div className="section__title">
-                    <span className="section__sub-title">Featured</span>
-                    <h3 className="section__main-title">Editor's Choice</h3>
+                    <span className="section__sub-title featured_editor">Featured</span>
+                    <h3 className="section__main-title editor_choice">Editor's Choice</h3>
                   </div>
                 </div>
                 <div className="col-sm-6">
                   <div className="section__read-more text-start text-sm-end">
-                    <Link href="/blog">
+                    <Link href="/blog" className="editor_more">
                       More Featured Post{" "}
                       <i className="far fa-long-arrow-right" />
                     </Link>
@@ -1219,13 +1232,13 @@ const [currentpopular, setcurrentpopular] = useState(1)
               <div className="row align-items-end">
                 <div className="col-sm-6">
                   <div className="section__title">
-                    <span className="section__sub-title">Stories</span>
-                    <h3 className="section__main-title">Popular Stories</h3>
+                    <span className="section__sub-title stories_popular">Stories</span>
+                    <h3 className="section__main-title popular_stories">Popular Stories</h3>
                   </div>
                 </div>
                 <div className="col-sm-6">
                   <div className="section__read-more text-start text-sm-end">
-                    <Link href="/blog">
+                    <Link href="/blog" className="stories_more">
                       More Post <i className="far fa-long-arrow-right" />
                     </Link>
                   </div>

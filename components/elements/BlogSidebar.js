@@ -37,14 +37,22 @@ export default function BlogSidebar(props) {
    const changlang = async()=>{
        
       if (selectedx === 'GB') {
-        categx.innerHTML = categx.innerText
-        businessx.innerHTML = businessx.innerText
-        technologyx.innerHTML = technologyx.innerText
-        financex.innerHTML = financex.innerText
-        culture.innerHTML = culture.innerText
-        productivityx.innerHTML = productivityx.innerText
-        eventsx.innerHTML = eventsx.innerText
-        opinions.innerHTML = opinions.innerText
+        let anscategory = await changlangx("EN", categx.innerText)
+        let  ansbusinessx =   await changlangx("EN", businessx.innerText)
+         let anstechnologyx =    await changlangx("EN", technologyx.innerText)
+       let ansfinancex =  await changlangx("EN", financex.innerText)
+        let ansculture =  await changlangx("EN", culture.innerText)
+         let ansproductivityx =  await changlangx("EN", productivityx.innerText)
+          let anseventsx =   await changlangx("EN", eventsx.innerText)
+         let ansopinions = await changlangx("EN", opinions.innerText)
+         categx.innerHTML = anscategory.data
+         businessx.innerHTML = ansbusinessx.data
+         technologyx.innerHTML = anstechnologyx.data
+         financex.innerHTML =  ansfinancex.data
+         culture.innerHTML = ansculture.data
+         productivityx.innerHTML = ansproductivityx.data
+         eventsx.innerHTML = anseventsx.data
+         opinions.innerHTML = ansopinions.data
       }else if (selectedx !== "" && selectedx !== 'GB') {
         let anscategory = await changlangx(selectedx, categx.innerText)
        let  ansbusinessx =   await changlangx(selectedx, businessx.innerText)

@@ -59,7 +59,7 @@ export default function BlogSidebar2({selectedx}) {
       ];
 
       useEffect(()=>{
-
+       let trendcate = document.querySelector(".trendcate")
         const changlang = async (selectedx, word) => {
           const options = {
               method: 'POST',
@@ -85,10 +85,10 @@ export default function BlogSidebar2({selectedx}) {
       
             SetcategoryMenux(categoryMenu);
         } else if (selectedx !== "" && selectedx !== 'GB') {
-          console.log("here", selectedx)
+          let anstrendcate = await changlang(selectedx, trendcate.innerText)
+          trendcate.innerHTML = anstrendcate.data
           const translatedData = await Promise.all(categoryMenu.map(async (item) => {
             let title = await changlang(selectedx, item.title);
-    
       
             return {
               title: title.data,
@@ -120,7 +120,7 @@ export default function BlogSidebar2({selectedx}) {
             <aside className="blog-sidebarb">
            
                 <div className="widget sidebar-widget widget_categories ">
-                    <h2 className="widget-title text-center">Trending Category</h2>
+                    <h2 className="widget-title text-center trendcate">Trending Category</h2>
                     <ul className="list-wrap">
 
                         {categoryMenux.map((item, index)=>{
