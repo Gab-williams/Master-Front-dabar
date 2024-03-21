@@ -769,7 +769,7 @@ const [currentpopular, setcurrentpopular] = useState(1)
         method: 'POST',
         url: 'https://deepl-translator2.p.rapidapi.com/translate',
         headers: {
-            'content-type': 'application/json',
+            'Content-Type': 'application/json',
             'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
             'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
         },
@@ -794,8 +794,20 @@ let anseditor_more =  await changlang(selectedx, editor_more.innerText)
  let ansstories_popular = await changlang(selectedx, stories_popular.innerText)
 let anspopular_stories =  await changlang(selectedx, popular_stories.innerText)
  let ansstories_more = await changlang(selectedx, stories_more.innerText)
- popular_post.innerHTML = anspopular_post.data
- trending_news.innerHTML = anstrending_news.data
+
+ if(selectedx == "GB"){
+  popular_post.textContent == 'Popular Posts'
+  trending_news.textContent = 'Trending News'
+  tending_more.textContent = 'More Post'
+  featured_editor.textContent = "Featured"
+  editor_choice.textContent = "Editor's Choice"
+  editor_more.textContent = "More Featured Post"
+  stories_popular.textContent = "Stories"
+  popular_stories.textContent = "Popular Stories"
+  stories_more.textContent = "More Post"
+ }
+ popular_post.textContent = anspopular_post.data
+ trending_news.textContent = anstrending_news.data
  tending_more.innerHTML = anstending_more.data
  featured_editor.innerHTML = ansfeatured_editor.data
  editor_choice.innerHTML = anseditor_choice.data

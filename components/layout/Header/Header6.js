@@ -100,6 +100,15 @@ export default function Header6({ scroll,
         changsubtag()
       },[selectedx])
 
+    //   useEffect(() => {
+    //   if (window.performance.navigation.type === 1){
+    //     setSelectedx("GB")
+    //     setSelectedx("GB")
+    //   }
+     
+          
+    //   }, []);
+
 
     return (
         <>

@@ -19,7 +19,7 @@ const Layout = ({ headerStyle, footerStyle, children, breadcrumbCategory, breadc
     //     // Your effect code here
     //     console.log(setSelectedx)
     // }, []);
-    console.log(setSelectedx)
+    // console.log(setSelectedx)
     const handleMobileMenuOpen = () => {
         document.body.classList.add("mobile-menu-visible")
     }
