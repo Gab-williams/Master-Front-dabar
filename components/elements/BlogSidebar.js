@@ -22,9 +22,10 @@ export default function BlogSidebar(props) {
               text: word
           }
       };
-
-      let res = await axios.request(options);
-      return res.data;
+     
+        let res = await axios.request(options);
+        return res?.data
+        
   };
     let categx = document.querySelector(".categx")
     let businessx = document.querySelector(".businessx")
@@ -54,14 +55,23 @@ export default function BlogSidebar(props) {
          eventsx.innerHTML = anseventsx.data
          opinions.innerHTML = ansopinions.data
       }else if (selectedx !== "" && selectedx !== 'GB') {
-        let anscategory = await changlangx(selectedx, categx.innerText)
-       let  ansbusinessx =   await changlangx(selectedx, businessx.innerText)
-        let anstechnologyx =    await changlangx(selectedx, technologyx.innerText)
-      let ansfinancex =  await changlangx(selectedx, financex.innerText)
-       let ansculture =  await changlangx(selectedx, culture.innerText)
-        let ansproductivityx =  await changlangx(selectedx, productivityx.innerText)
-         let anseventsx =   await changlangx(selectedx, eventsx.innerText)
-        let ansopinions = await changlangx(selectedx, opinions.innerText)
+        let anscategx = categx.innerText.replace(/&\s*/g, '')
+        let ansbusinessxs = businessx.innerText.replace(/&\s*/g, '')
+        let anstech = technologyx.innerText.replace(/&\s*/g, '')
+        let ansfin = financex.innerText.replace(/&\s*/g, '')
+        let anscul = culture.innerText.replace(/&\s*/g, '')
+        let anspro = productivityx.innerText.replace(/&\s*/g, '')
+        let anseven = eventsx.innerText.replace(/&\s*/g, '')
+        let ansopi = opinions.innerText.replace(/&\s*/g, '')
+
+        let anscategory = await changlangx(selectedx, anscategx)
+       let  ansbusinessx =   await changlangx(selectedx, ansbusinessxs)
+        let anstechnologyx =    await changlangx(selectedx, anstech)
+      let ansfinancex =  await changlangx(selectedx, ansfin)
+       let ansculture =  await changlangx(selectedx, anscul)
+        let ansproductivityx =  await changlangx(selectedx, anspro)
+         let anseventsx =   await changlangx(selectedx, anseven)
+        let ansopinions = await changlangx(selectedx, ansopi)
         categx.innerHTML = anscategory.data
         businessx.innerHTML = ansbusinessx.data
         technologyx.innerHTML = anstechnologyx.data
@@ -123,7 +133,7 @@ export default function BlogSidebar(props) {
           </div>
         </div>
         <div className="widget sidebar-widget widget_categories">
-          <h4 className="widget-title text-center categx" >Trending Category</h4>
+          <h4 className="widget-title text-center categx" data-name="Trending Category" >Trending Category</h4>
           <ul className="list-wrap">
             <li>
               <div className="thumb">
@@ -134,7 +144,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog" className="businessx">Business Insights</Link>
+              <Link href="/blog"  data-name="Business Insights" className="businessx">Business Insights</Link>
             </li>
             <li>
               <div className="thumb">
@@ -145,7 +155,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog" className="technologyx">Technology Trends</Link>
+              <Link href="/blog" data-name="Technology Trends" className="technologyx">Technology Trends</Link>
             </li>
             <li>
               <div className="thumb">
@@ -156,7 +166,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog" className="financex">Marketing & Finance</Link>
+              <Link href="/blog" data-name="Marketing Finance" className="financex">Marketing & Finance</Link>
             </li>
             <li>
               <div className="thumb">
@@ -167,7 +177,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog" className="culture">Workplace & Culture</Link>
+              <Link href="/blog" data-name="Workplace Culture" className="culture">Workplace & Culture</Link>
             </li>
             <li>
               <div className="thumb">
@@ -178,7 +188,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog" className="productivityx">Productivity & Innovation</Link>
+              <Link href="/blog" data-name="Productivity Innovation" className="productivityx">Productivity & Innovation</Link>
             </li>
             <li>
               <div className="thumb">
@@ -189,7 +199,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog" className="eventsx">Multimedia & Events</Link>
+              <Link href="/blog" data-name="Multimedia Events" className="eventsx">Multimedia & Events</Link>
             </li>
             <li>
               <div className="thumb">
@@ -200,7 +210,7 @@ export default function BlogSidebar(props) {
                   />
                 </Link>
               </div>
-              <Link href="/blog" className="opinions">Opinions & Editorials</Link>
+              <Link href="/blog" data-name="Opinions Editorials" className="opinions">Opinions & Editorials</Link>
             </li>
           </ul>
         </div>

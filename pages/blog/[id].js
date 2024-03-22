@@ -313,7 +313,7 @@ export default function BlogDetails() {
     },
   };
 
-  console.log(fieldsdata)
+  // console.log(fieldsdata)
   let body;
 
   if (fieldsdata.body) {
@@ -321,10 +321,10 @@ export default function BlogDetails() {
       const converted = JSON.parse(fieldsdata.body);
       
       if (typeof converted !== 'undefined' && Object.keys(converted).length > 0) {
-        console.log('object');
+        // console.log('object');
         body = documentToReactComponents(converted);
       } else {
-        console.log('other');
+        // console.log('other');
         body = <Markup content={fieldsdata.body} />;
       }
     } catch (error) {
@@ -390,7 +390,7 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
   const contRef = useRef(null);
   const titleRef = useRef(null)
   useEffect(()=>{
-    
+  let oldlang = localStorage.getItem('countrycode')?JSON.parse(localStorage.getItem('countrycode')):{}
     const changlang = async (selectedx, word) => {
       const options = {
           method: 'POST',
@@ -407,8 +407,10 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
           }
       };
 
-      let res = await axios.request(options);
-      return res.data;
+        let res = await axios.request(options);
+        return res?.data
+     
+
   };
 
    const bodylang = async()=>{
@@ -421,43 +423,45 @@ var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
         let dateandtime = document.querySelector(".dateandtime")
         let readtimexs = document.querySelector(".readtime")
         if (selectedx === 'GB') {
-          let anstitlexs =  await changlang("EN", titlexs.innerText)
-         let ansdateandtime =  await changlang("EN", dateandtime.innerText)
-          let ansreadtimexs =   await changlang("EN", readtimexs.innerText)
-          titlexs.innerHTML = anstitlexs.data
-          dateandtime.innerHTML = ansdateandtime.data
-          readtimexs.innerHTML = ansreadtimexs.data
+          let anstitlexs =  await changlang("EN", titlexs.textContent)
+         let ansdateandtime =  await changlang("EN", dateandtime.textContent)
+          let ansreadtimexs =   await changlang("EN", readtimexs.textContent)
+          titlexs.textContent = anstitlexs.data
+          dateandtime.textContent = ansdateandtime.data
+          readtimexs.textContent = ansreadtimexs.data
         }else if (selectedx !== "" && selectedx !== 'GB'){
           let anstitlexs =  await changlang(selectedx, titlexs.innerText)
          let ansdateandtime =  await changlang(selectedx, dateandtime.innerText)
           let ansreadtimexs =   await changlang(selectedx, readtimexs.innerText)
-          titlexs.innerHTML = anstitlexs.data
-          dateandtime.innerHTML = ansdateandtime.data
-          readtimexs.innerHTML = ansreadtimexs.data
-        }else{
-          titlexs.innerHTML = titlexs.innerText
-          dateandtime.innerHTML = dateandtime.innerText
+          titlexs.textContent = anstitlexs.data
+          dateandtime.textContent = ansdateandtime.data
+          readtimexs.textContent = ansreadtimexs.data
         }
+        // else{
+        //   titlexs.textContent = titlexs.innerText
+        //   dateandtime.textContent = dateandtime.innerText
+        // }
       for (var i = 0; i < cont.childNodes.length; i++) {
         if (selectedx === 'GB') {
           let anslang = await changlang("EN", cont.childNodes[i].innerText)
           // console.log(anslang.data)
-         cont.childNodes[i].innerHTML =  anslang.data        }else if (selectedx !== "" && selectedx !== 'GB' && cont.childNodes[i].innerText.trim() != "" ) {
-          // console.log(cont.childNodes[i].innerHTML)
-          let anslang = await changlang(selectedx, cont.childNodes[i].innerText)
-        // console.log(anslang.data)
-       cont.childNodes[i].innerHTML =  anslang.data
+         cont.childNodes[i].innerText =  anslang.data       
+         }else if (selectedx !== 'GB' && cont.childNodes[i].innerText.trim() != "" ) {
+          // console.log(selectedx, cont.childNodes[i].textContent)
+          let anslang = await changlang(selectedx, cont.childNodes[i].textContent)
+          // console.log(anslang.data)
+       cont.childNodes[i].innerText =  anslang.data
 
         }
-        else{
-          cont.childNodes[i].innerHTML =  cont.childNodes[i].innerText
+        // else{
+        //   cont.childNodes[i].innerText =  cont.childNodes[i].innerText
 
-        }
+        // }
       }
     }
    }
    bodylang()
-  },[fieldsdata.body, selectedx])
+  },[fieldsdata, selectedx])
   return (
     <>
       {fieldsdata && (

@@ -40,6 +40,7 @@ const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
     const categoryMenu = [
         {
           title: "Business Insights",
+          name: "Business Insights",
           subcategories: [
             "Industry Insights",
             "Entrepreneurship",
@@ -50,6 +51,7 @@ const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
         },
         {
           title: "Technology Trends",
+          name: "Technology Trends",
           subcategories: [
             "Technology & Innovation",
             "Blockchain & Cryptocurrency",
@@ -58,10 +60,12 @@ const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
         },
         {
           title: "Marketing & Finance",
+          name: "Marketing & Finance",
           subcategories: ["Marketing & Advertising", "Finance & Investment"],
         },
         {
           title: "Workplace & Culture",
+          name: "Workplace & Culture",
           subcategories: [
             "Human Resources",
             "Diversity & Inclusion",
@@ -70,68 +74,84 @@ const MobileMenu = ({ handleMobileMenuClose, openClass }) => {
         },
         {
           title: "Productivity & Innovation",
+          name: "Productivity & Innovation",
           subcategories: ["Productivity & Tools", "Innovation Implementation"],
         },
         {
           title: "Multimedia & Events",
+          name: "Multimedia & Events",
           subcategories: ["Events & Conferences", "Multimedia Content"],
         },
         {
           title: "Opinions & Editorials",
+          name: "Opinions & Editorials",
           subcategories: ["Opinion & Editorial"],
         },
       ];
 
 
       useEffect(()=>{
+        if(categoryMenu.length > 0){
 
-        const changlang = async (selectedx, word) => {
-          const options = {
-              method: 'POST',
-              url: 'https://deepl-translator2.p.rapidapi.com/translate',
-              headers: {
-                  'content-type': 'application/json',
-                  'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
-                  'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
-              },
-              data: {
-                  source_lang: 'EN',
-                  target_lang: selectedx,
-                  text: word
-              }
-          };
-    
-          let res = await axios.request(options);
-          return res.data;
-      };
-
-        const whole = async()=>{
-          if (selectedx === 'GB') {
-      
-            SetcategoryMenux(categoryMenu);
-        } else if (selectedx !== "" && selectedx !== 'GB') {
-          console.log("here", selectedx)
-          const translatedData = await Promise.all(categoryMenu.map(async (item) => {
-            let title = await changlang(selectedx, item.title);
-    
-      
-            return {
-              title: title.data,
-              img: item.img,
-       
+          const changlang = async (selectedx, word) => {
+            const options = {
+                method: 'POST',
+                url: 'https://deepl-translator2.p.rapidapi.com/translate',
+                headers: {
+                    'content-type': 'application/json',
+                    'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+                    'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+                },
+                data: {
+                    source_lang: 'EN',
+                    target_lang: selectedx,
+                    text: word
+                }
             };
-        }));
-        SetcategoryMenux(translatedData);
+          
+            try {
+              let res = await axios.request(options);
+              return res?.data
+              }catch(error){
+                if (error.response && error.response.status === 400) {
+                  return ""
+                } else {
+                  return ""
+                }
+              } 
+            };
+  
+          const whole = async()=>{
+            if (selectedx === 'GB') {
         
+              SetcategoryMenux(categoryMenu);
+          } else if (selectedx !== 'GB') {
+            console.log("here", selectedx)
+            const translatedData = await Promise.all(categoryMenu.map(async (item) => {
+              var newStr = item.name.replace(/&\s*/g, '');
+              let title = await changlang(selectedx, newStr);
+        
+              return {
+                title: title.code == 200?title.data:"",
+                img: item.img,
+         
+              };
+          }));
+          SetcategoryMenux(translatedData);
+          
+    
+          }
+          // else {
+          //   SetcategoryMenux(categoryMenu);
+    
+          //     }
   
-        }else {
-          SetcategoryMenux(categoryMenu);
+          }
   
-            }
+          whole()
 
         }
 
-        whole()
       
 
       },[selectedx])

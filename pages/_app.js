@@ -93,7 +93,7 @@ function MyApp({ Component, pageProps }) {
     gtag('js', new Date());
     gtag('config', 'G-J8HLPZVV8W');
   `}
-</Script></div>{!loading ? <Component {...pageProps} /> : <Preloader />}</main>
+</Script></div>{!loading ? <Component className="hide-nextjs-portal" {...pageProps} /> : <Preloader />}</main>
 </Provider>
 
     </>

@@ -89,7 +89,9 @@ button {
   text-decoration: none;
   transition: all 0.3s ease-out 0s;
 }
-
+nextjs-portal {
+  display: none;
+}
 a:focus,
 .btn:focus,
 .button:focus {

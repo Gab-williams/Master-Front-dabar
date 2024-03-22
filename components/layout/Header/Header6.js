@@ -6,6 +6,7 @@ import { useState, useEffect, useContext } from "react"
 import ReactFlagsSelect from "react-flags-select";
 import { context } from "../../../components/context";
 import axios from "axios"
+import { useRouter } from "next/router"
 export default function Header6({ scroll,
     handleMobileMenuOpen,
     handleMobileMenuClose,
@@ -21,7 +22,9 @@ export default function Header6({ scroll,
     
     const created = useContext(context);
     const {selectedx, setSelectedx} = created
- 
+    const router = useRouter();
+    const { pathname } = router;
+  
     const [search, setsearch] = useState('');
      const [selected, setSelected] = useState(selectedx?selectedx:'GB')
      const handleCountry =(code)=>{
@@ -30,24 +33,71 @@ export default function Header6({ scroll,
         //     setSelected(code)  
             
         // }else 
-        if(code == 'SA'){
 
-            let obj = {countrycode:code}
-            let objstringify =  JSON.stringify(obj)
-            localStorage.setItem("countrycode", objstringify)
-            setSelectedx('AR')
-            setSelected(code) 
-        }else if(code == "GB"){
-            setSelectedx("GB")
-          localStorage.removeItem("countrycode")
+        if(pathname == '/blog/[id]'){
+
+            if(code == 'SA'){
+
+                let obj = {countrycode:'SA'}
+                let objstringify =  JSON.stringify(obj)
+                localStorage.setItem("countrycode", objstringify)
+                setSelectedx('AR')
+                setSelected(code) 
+                //  router.reload();
+            }else if(code == "GB"){
+                setSelectedx("GB")
+              localStorage.removeItem("countrycode")
+              router.reload();
+            }
+            else{
+                let obj = {countrycode:code}
+                let objstringify =  JSON.stringify(obj)
+                localStorage.setItem("countrycode", objstringify)
+                setSelectedx(code)
+                setSelected(code)  
+                router.reload();  
+            }
+      
+        }else{
+
+            if(code == 'SA'){
+
+                let obj = {countrycode:code}
+                let objstringify =  JSON.stringify(obj)
+                localStorage.setItem("countrycode", objstringify)
+                setSelectedx('AR')
+                setSelected(code) 
+            }else if(code == "GB"){
+                setSelectedx("GB")
+              localStorage.removeItem("countrycode")
+            }
+            else{
+                let obj = {countrycode:code}
+                let objstringify =  JSON.stringify(obj)
+                localStorage.setItem("countrycode", objstringify)
+                setSelectedx(code)
+                setSelected(code)    
+            }
+
         }
-        else{
-            let obj = {countrycode:code}
-            let objstringify =  JSON.stringify(obj)
-            localStorage.setItem("countrycode", objstringify)
-            setSelectedx(code)
-            setSelected(code)    
-        }
+        // if(code == 'SA'){
+
+        //     let obj = {countrycode:code}
+        //     let objstringify =  JSON.stringify(obj)
+        //     localStorage.setItem("countrycode", objstringify)
+        //     setSelectedx('AR')
+        //     setSelected(code) 
+        // }else if(code == "GB"){
+        //     setSelectedx("GB")
+        //   localStorage.removeItem("countrycode")
+        // }
+        // else{
+        //     let obj = {countrycode:code}
+        //     let objstringify =  JSON.stringify(obj)
+        //     localStorage.setItem("countrycode", objstringify)
+        //     setSelectedx(code)
+        //     setSelected(code)    
+        // }
      }
 
 

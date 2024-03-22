@@ -90,7 +90,9 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
           };
     
           let res = await axios.request(options);
-          return res.data;
+          return res?.data
+         
+        
       };
      
        let morex = document.querySelector(".morex")
@@ -102,12 +104,13 @@ export default function Menu({ handleMobileMenuOpen, handleSidebarOpen, offCanva
         } else if (selectedx !== "" && selectedx !== 'GB') {
           console.log("here", selectedx)
           const translatedData = await Promise.all(categoryMenu.map(async (item) => {
-            let title = await changlang(selectedx, item.title);
+                let anstitle = item.name.replace(/&\s*/g, '')
+            let title = await changlang(selectedx, anstitle);
             let ansmorexs = await changlang(selectedx, 'More')
              morex.innerHTML = ansmorexs.data
       
             return {
-              title: title.data,
+              title: title.code == 200?title.data:"",
               name: item.name,
               img: item.img,
        

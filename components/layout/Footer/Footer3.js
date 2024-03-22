@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-
+// import { context } from "../../components/context";
+import { context } from '../../context';
 export default function Footer3({ footerClass, logoWhite }) {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -11,6 +12,59 @@ export default function Footer3({ footerClass, logoWhite }) {
     baseURL: "https://dabarmedia.com/",
     withCredentials: true
   });
+
+  const created = useContext(context);
+  const {selectedx, setSelectedx} = created
+  useEffect(()=>{
+    const changlang = async (selectedx, word) => {
+      const options = {
+          method: 'POST',
+          url: 'https://deepl-translator2.p.rapidapi.com/translate',
+          headers: {
+              'content-type': 'application/json',
+              'X-RapidAPI-Key': '7bddd58440msh9a827296af53740p1be7eajsn6674d57991b0',
+              'X-RapidAPI-Host': 'deepl-translator2.p.rapidapi.com'
+          },
+          data: {
+              source_lang: 'EN',
+              target_lang: selectedx,
+              text: word
+          }
+      };
+
+      let res = await axios.request(options);
+      return res?.data;
+  };
+  let footernew = document.querySelector(".footernew")
+  let footerget = document.querySelector(".footerget")
+  let footersub = document.querySelector(".footersub")
+  let footerp = document.querySelector(".footerp")
+  let footerconact = document.querySelector(".footerconact")
+  let footerpolicy = document.querySelector(".footerpolicy")
+  const footerall = async()=>{
+    if (selectedx === 'GB') {
+      footernew.textContent = "newsletter"
+      footerget.textContent = "Get notified of the best articles on Dabar"
+       footersub.textContent = "Subscribe"
+    }else if (selectedx !== "" && selectedx !== 'GB') {
+      let ansfooternew = await changlang(selectedx, footernew.textContent);
+      let ansfooterget = await changlang(selectedx, footerget.textContent);
+      let ansfootersub = await changlang(selectedx, footersub.textContent);
+      let ansfooterp = await changlang(selectedx, footerp.textContent)
+      let ansfooterconact = await changlang(selectedx, footerconact.textContent)
+      let ansfooterpolicy = await changlang(selectedx, footerpolicy.textContent)
+          // console.log(ansfooternew.data, ansfooterget.data, ansfootersub.data)
+      footernew.textContent = ansfooternew.data
+     footerget.textContent = ansfooterget.data
+      footersub.textContent = ansfootersub.data
+      footerp.textContent = ansfooterp.data
+      footerconact.textContent = ansfooterconact.data
+      footerpolicy.textContent = ansfooterpolicy.data
+    }
+  }
+
+  footerall()
+  },[selectedx])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,8 +107,8 @@ export default function Footer3({ footerClass, logoWhite }) {
                   <div className="newsletter__title-icon">
                     <i className="fas fa-envelope-open-text" />
                   </div>
-                  <span className="sub-title text-white">newsletter</span>
-                  <h4 className={`title  text-white`}>
+                  <span className="sub-title text-white footernew">newsletter</span>
+                  <h4 className={`title  text-white footerget`}>
                     Get notified of the best articles<br /> on Dabar
                   </h4>
 
@@ -62,7 +116,7 @@ export default function Footer3({ footerClass, logoWhite }) {
                 <div className="newsletter__form-wrap text-center">
                   {isSubscribed ? (
                     <div className="success-alert">
-                    <p className='text-white'>Thank you for subscribing!</p>
+                    <p className='text-white '  id="footerthank">Thank you for subscribing!</p>
                   </div>
                   ) : (
                     <form onSubmit={handleSubmit} className="newsletter__form">
@@ -90,7 +144,7 @@ export default function Footer3({ footerClass, logoWhite }) {
                         </div>
                       </div>
                       <button className="btn" type="submit">
-                        <span className="text">Subscribe</span>
+                        <span className="text footersub">Subscribe</span>
                         <i className="fas fa-paper-plane" />
                       </button>
                     </form>
@@ -154,7 +208,7 @@ export default function Footer3({ footerClass, logoWhite }) {
             <div className="row">
               <div className="col-lg-6">
                 <div className="copyright__text">
-                  <p>
+                  <p className='footerp'>
                     All Rights Reserved © <a>Dabar</a> -{" "}
                     {new Date().getFullYear()}
                   </p>
@@ -164,10 +218,10 @@ export default function Footer3({ footerClass, logoWhite }) {
                 <div className="copyright__menu">
                   <ul className="list-wrap">
                     <li>
-                      <Link href="/contact">Contact Us</Link>
+                      <Link href="/contact" className='footerconact'>Contact Us</Link>
                     </li>
                     <li>
-                    <a href="/privacy" target="_blank">Privacy Policy</a>
+                    <a href="/privacy" target="_blank" className='footerpolicy'>Privacy Policy</a>
 
                     </li>
                   </ul>
