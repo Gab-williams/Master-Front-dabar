@@ -348,14 +348,27 @@ export default function BlogDetails() {
  const monthIndex = timez.getMonth();
  const year = timez.getFullYear();
  const formattedDate = `${day?day:""} ${monthNames[monthIndex?monthIndex:0]} ${year?year:""}`;
+ function isJSONInHTML(htmlString) {
+  // Regular expression to match JSON-like patterns
+  var jsonRegex = /{[^{}]*}/;
+
+  // Search for JSON-like patterns in the HTML string
+  var match = jsonRegex.exec(htmlString);
+
+  // If a match is found, return true; otherwise, return false
+  return match !== null;
+}
+
 
 
   const convertdata = ()=>{
     // const converted = JSON.parse(fieldsdata.body);
 
     const htmlTagRegex = /<[a-z][\s\S]*>/;
-
-if (htmlTagRegex.test(fieldsdata.body) && Object.keys(fieldsdata.body).length == 0) {
+    
+//  console.log(isJSONInHTML(fieldsdata.body))
+//  && Object.keys(fieldsdata.body).length == 0
+if (fieldsdata.body &&  !isJSONInHTML(fieldsdata.body) ) {
   var styleRegex = /style\s*=\s*"([^"]*)"/g;
 // Replace the matched style attribute with an empty string
 var stringWithoutStyle = fieldsdata.body.replace(styleRegex, '');
