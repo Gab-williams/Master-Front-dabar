@@ -32,7 +32,7 @@
   --tg-body-font-family: 'Josefin sans', sans-serif;
   --tg-heading-font-family: 'Josefin sans', sans-serif;
   --tg-icon-font-family: "Font Awesome 5 Pro";
-  --tg-body-font-size: 16px;
+  --tg-body-font-size: 20px;
   --tg-body-line-height: 1.62;
   --tg-heading-line-height: 1.2;
   --tg-common-color-blue: #0d6efd;
@@ -58,7 +58,7 @@
   --tg-fw-bold: 700;
   --tg-fw-semi-bold: 600;
   --tg-fw-medium: 500;
-  --tg-fw-regular: 400;
+  --tg-fw-regular: 300;
   --tg-fw-light: 300;
 }
 
